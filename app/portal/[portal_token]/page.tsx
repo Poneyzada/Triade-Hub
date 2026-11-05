@@ -17,10 +17,18 @@ import {
   AlertCircle,
   HelpCircle,
   ChevronRight,
+  FileText,
+  CreditCard,
+  QrCode,
+  Copy,
+  ThumbsUp,
+  ThumbsDown,
+  Lock,
+  XCircle,
 } from "lucide-react";
 import { useTriade } from "@/lib/store";
-import { formatDate } from "@/lib/utils";
-import { OnboardingStep, Task } from "@/types/database";
+import { formatDate, formatCurrency } from "@/lib/utils";
+import { OnboardingStep, Task, Approval, Invoice, Contract } from "@/types/database";
 
 export default function ClientPortalPage() {
   const params = useParams();
@@ -29,13 +37,36 @@ export default function ClientPortalPage() {
     getClientByPortalToken,
     getClientSteps,
     getClientTasks,
+    getClientApprovals,
+    getClientInvoices,
+    getClientContract,
     completeClientStep,
+    reviewApproval,
+    signContract,
+    workspace,
     isLoaded,
   } = useTriade();
 
-  const [activeTab, setActiveTab] = useState<"onboarding" | "tasks" | "links">("onboarding");
+  const [activeTab, setActiveTab] = useState<
+    "onboarding" | "tasks" | "approvals" | "invoices" | "contract" | "links"
+  >("onboarding");
+
+  // Step inputs
   const [stepInputs, setStepInputs] = useState<Record<string, string>>({});
   const [submittedSteps, setSubmittedSteps] = useState<Record<string, boolean>>({});
+
+  // Approval feedbacks
+  const [feedbackInputs, setFeedbackInputs] = useState<Record<string, string>>({});
+  const [editingFeedbackId, setEditingFeedbackId] = useState<string | null>(null);
+
+  // PIX Modal
+  const [selectedPixInvoice, setSelectedPixInvoice] = useState<Invoice | null>(null);
+  const [copiedPix, setCopiedPix] = useState(false);
+
+  // Contract Signature Modal / State
+  const [signerName, setSignerName] = useState("");
+  const [signerDoc, setSignerDoc] = useState("");
+  const [signedSuccess, setSignedSuccess] = useState(false);
 
   const client = getClientByPortalToken(portalToken);
 
@@ -44,7 +75,7 @@ export default function ClientPortalPage() {
       <div className="min-h-screen bg-[#09090B] flex items-center justify-center text-zinc-400">
         <div className="flex items-center gap-3">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-triade-gold border-t-transparent" />
-          <span className="text-sm font-medium">Carregando seu portal...</span>
+          <span className="text-sm font-medium">Carregando seu portal VIP...</span>
         </div>
       </div>
     );
@@ -58,17 +89,17 @@ export default function ClientPortalPage() {
         </div>
         <h1 className="text-xl font-bold text-zinc-100">Portal Não Encontrado</h1>
         <p className="text-sm text-zinc-400 max-w-md mt-2">
-          Não localizamos nenhuma conta associada ao token informado. Verifique se o link foi digitado corretamente ou entre em contato com a Tríade Studio.
+          Não localizamos nenhuma conta associada ao token informado. Verifique se o link foi digitado corretamente.
         </p>
-        <div className="mt-6 font-mono text-xs text-zinc-500 bg-black/60 px-3 py-1.5 rounded-lg border border-zinc-800">
-          Token: {portalToken}
-        </div>
       </div>
     );
   }
 
   const steps = getClientSteps(client.id);
   const tasks = getClientTasks(client.id).filter((t) => t.visible_to_client);
+  const approvals = getClientApprovals(client.id);
+  const invoices = getClientInvoices(client.id);
+  const contract = getClientContract(client.id);
 
   const completedStepsCount = steps.filter(
     (s) => s.status === "aprovado" || s.status === "enviado_cliente"
@@ -83,32 +114,50 @@ export default function ClientPortalPage() {
   const handleSubmitStep = (stepId: string) => {
     const text = stepInputs[stepId];
     if (!text || !text.trim()) {
-      alert("Por favor, preencha as informações ou cole o link antes de enviar.");
+      alert("Por favor, preencha as informações antes de enviar.");
       return;
     }
     completeClientStep(stepId, text.trim());
     setSubmittedSteps((prev) => ({ ...prev, [stepId]: true }));
   };
 
-  const getServiceLabel = () => {
-    switch (client.service_type) {
-      case "trafego":
-        return "Gestão de Tráfego & Performance";
-      case "site":
-        return "Desenvolvimento de Site Institucional";
-      case "app":
-        return "Desenvolvimento de Aplicativo";
-      case "full":
-        return "Full-Service • Tráfego + Tecnologia";
+  const handleApprove = (approvalId: string) => {
+    reviewApproval(approvalId, "aprovado");
+    alert("✓ Entrega aprovada com sucesso! Nossa equipe foi notificada.");
+  };
+
+  const handleSubmitAdjustment = (approvalId: string) => {
+    const text = feedbackInputs[approvalId];
+    if (!text || !text.trim()) {
+      alert("Por favor, descreva as alterações desejadas.");
+      return;
     }
+    reviewApproval(approvalId, "solicitado_ajustes", text.trim());
+    setEditingFeedbackId(null);
+    alert("Feedback registrado! Faremos as alterações solicitadas com prioridade.");
+  };
+
+  const handleCopyPix = (pix: string) => {
+    navigator.clipboard.writeText(pix);
+    setCopiedPix(true);
+    setTimeout(() => setCopiedPix(false), 2000);
+  };
+
+  const handleSignContract = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contract || !signerName.trim() || !signerDoc.trim()) {
+      alert("Preencha seu Nome Completo e CPF/CNPJ para assinar.");
+      return;
+    }
+    signContract(contract.id, signerName.trim(), signerDoc.trim());
+    setSignedSuccess(true);
   };
 
   return (
     <div className="min-h-screen bg-[#09090B] text-zinc-100 flex flex-col items-center">
-      {/* Background Cosmic Atmosphere */}
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.06)_0%,transparent_60%)]" />
 
-      {/* Top Header com a Marca da Tríade Studio */}
+      {/* Top Header */}
       <header className="w-full border-b border-triade-border bg-[#0E0F13]/90 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-triade-goldLight via-triade-gold to-triade-goldDark text-black font-extrabold text-sm shadow-gold-glow">
@@ -117,10 +166,7 @@ export default function ClientPortalPage() {
           <div>
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-black tracking-widest text-zinc-100 uppercase">
-                TRÍADE
-              </span>
-              <span className="text-[10px] font-bold text-triade-gold tracking-widest uppercase">
-                STUDIO
+                {workspace.name}
               </span>
             </div>
             <p className="text-[10px] text-zinc-400">Portal do Cliente VIP</p>
@@ -128,7 +174,7 @@ export default function ClientPortalPage() {
         </div>
 
         <a
-          href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20estou%20no%20Portal%20da%20Tr%C3%ADade%20Studio%20e%20preciso%20de%20ajuda!"
+          href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20estou%20no%20meu%20Portal%20e%20gostaria%20de%20um%20suporte."
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-semibold transition-colors"
@@ -146,17 +192,16 @@ export default function ClientPortalPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-triade-gold/30 bg-triade-gold/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-triade-goldLight mb-2">
                 <Sparkles className="h-3 w-3 text-triade-gold" />
-                <span>Espaço Exclusivo</span>
+                <span>Espaço VIP • {workspace.name}</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-100 tracking-tight">
                 {client.company_name}
               </h1>
               <p className="text-sm text-zinc-400 mt-1">
-                Responsável: <span className="text-zinc-200 font-medium">{client.name}</span> • {getServiceLabel()}
+                Responsável: <span className="text-zinc-200 font-medium">{client.name}</span> • Serviço: {client.service_type.toUpperCase()}
               </p>
             </div>
 
-            {/* Pasta do Drive Rápida */}
             {client.access_vault?.drive_folder_url && (
               <a
                 href={client.access_vault.drive_folder_url}
@@ -165,13 +210,13 @@ export default function ClientPortalPage() {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-zinc-700 bg-zinc-800/90 hover:bg-zinc-700 text-xs font-semibold text-zinc-200 transition-colors shadow-sm self-start sm:self-auto"
               >
                 <FolderOpen className="h-4 w-4 text-triade-gold" />
-                <span>Abrir Google Drive</span>
+                <span>Google Drive</span>
                 <ExternalLink className="h-3.5 w-3.5 text-zinc-400" />
               </a>
             )}
           </div>
 
-          {/* Barra de Progresso do Onboarding em Dourado Metálico */}
+          {/* Barra de Progresso do Onboarding */}
           <div className="mt-6 pt-6 border-t border-zinc-800">
             <div className="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
               <span className="text-zinc-300 flex items-center gap-2">
@@ -189,33 +234,18 @@ export default function ClientPortalPage() {
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
-
-            <p className="text-[11px] text-zinc-400 mt-2">
-              {progressPercent === 100
-                ? "🎉 Parabéns! Todos os passos iniciais foram fornecidos com sucesso."
-                : `Complete os passos abaixo para que a equipe da Tríade Studio inicie suas campanhas e entregas.`}
-            </p>
           </div>
         </div>
 
-        {/* Tab Selector */}
-        <div className="flex items-center gap-2 border-b border-triade-border pb-2 overflow-x-auto">
+        {/* Tab Selector (Todas as 6 abas do sistema completo) */}
+        <div className="flex items-center gap-1.5 border-b border-triade-border pb-2 overflow-x-auto">
           {[
-            {
-              id: "onboarding",
-              label: `1. Onboarding & Acessos (${completedStepsCount}/${steps.length})`,
-              icon: Sparkles,
-            },
-            {
-              id: "tasks",
-              label: `2. Tarefas em Andamento (${tasks.length})`,
-              icon: Layers,
-            },
-            {
-              id: "links",
-              label: "3. Links do Projeto",
-              icon: Globe,
-            },
+            { id: "onboarding", label: `Onboarding (${completedStepsCount}/${steps.length})`, icon: Sparkles },
+            { id: "approvals", label: `Aprovações (${approvals.length})`, icon: CheckCircle2, badge: approvals.filter((a) => a.status === "pendente").length },
+            { id: "invoices", label: `Faturas (${invoices.length})`, icon: CreditCard },
+            { id: "contract", label: "Contrato Digital", icon: FileText, signed: contract?.status === "assinado" },
+            { id: "tasks", label: `Tarefas (${tasks.length})`, icon: Layers },
+            { id: "links", label: "Links & Arquivos", icon: Globe },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -223,36 +253,43 @@ export default function ClientPortalPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${
                   isActive
                     ? "bg-triade-gold text-black shadow-gold-glow"
                     : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
                 }`}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-3.5 w-3.5" />
                 <span>{tab.label}</span>
+                {tab.badge && tab.badge > 0 && (
+                  <span className="ml-1 px-1.5 py-0.2 rounded-full text-[9px] bg-red-500 text-white font-extrabold">
+                    {tab.badge}
+                  </span>
+                )}
+                {tab.signed && (
+                  <span className="text-[10px] text-emerald-400">✓</span>
+                )}
               </button>
             );
           })}
         </div>
 
-        {/* TAB 1: ONBOARDING STEPS INTERATIVOS */}
+        {/* TAB 1: ONBOARDING */}
         {activeTab === "onboarding" && (
           <div className="space-y-4">
             <div className="text-xs text-zinc-400">
-              Preencha ou anexe as informações solicitadas em cada passo. Nossos especialistas receberão instantaneamente.
+              Preencha ou anexe os dados solicitados. A equipe da {workspace.name} receberá e analisará em tempo real.
             </div>
 
             <div className="space-y-4">
               {steps.map((step) => {
                 const isApproved = step.status === "aprovado";
-                const isSubmitted =
-                  step.status === "enviado_cliente" || submittedSteps[step.id];
+                const isSubmitted = step.status === "enviado_cliente" || submittedSteps[step.id];
 
                 return (
                   <div
                     key={step.id}
-                    className={`rounded-2xl border p-5 sm:p-6 transition-all ${
+                    className={`rounded-2xl border p-5 transition-all ${
                       isApproved
                         ? "border-emerald-500/40 bg-emerald-500/5"
                         : isSubmitted
@@ -261,9 +298,9 @@ export default function ClientPortalPage() {
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-start gap-3.5">
+                      <div className="flex items-start gap-3">
                         <div
-                          className={`flex h-8 w-8 items-center justify-center rounded-xl text-xs font-bold mt-0.5 ${
+                          className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold mt-0.5 ${
                             isApproved
                               ? "bg-emerald-500 text-black"
                               : isSubmitted
@@ -271,24 +308,16 @@ export default function ClientPortalPage() {
                               : "bg-zinc-800 text-zinc-300"
                           }`}
                         >
-                          {isApproved ? (
-                            <Check className="h-4 w-4 stroke-[3]" />
-                          ) : (
-                            step.order_index
-                          )}
+                          {isApproved ? <Check className="h-4 w-4 stroke-[3]" /> : step.order_index}
                         </div>
                         <div>
-                          <h3 className="text-sm sm:text-base font-bold text-zinc-100">
-                            {step.title}
-                          </h3>
-                          <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-                            {step.description}
-                          </p>
+                          <h3 className="text-sm font-bold text-zinc-100">{step.title}</h3>
+                          <p className="text-xs text-zinc-400 mt-0.5 leading-relaxed">{step.description}</p>
                         </div>
                       </div>
 
                       <span
-                        className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full flex-shrink-0 ${
+                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full flex-shrink-0 ${
                           isApproved
                             ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
                             : isSubmitted
@@ -296,45 +325,36 @@ export default function ClientPortalPage() {
                             : "bg-amber-500/10 text-amber-300 border border-amber-500/20"
                         }`}
                       >
-                        {isApproved
-                          ? "Concluído ✓"
-                          : isSubmitted
-                          ? "Em Análise"
-                          : "Pendente"}
+                        {isApproved ? "Concluído ✓" : isSubmitted ? "Em Análise" : "Pendente"}
                       </span>
                     </div>
 
-                    {/* Formulário Interativo do Cliente */}
                     {!isApproved && (
-                      <div className="mt-4 pt-4 border-t border-zinc-800/80">
+                      <div className="mt-4 pt-3 border-t border-zinc-800">
                         {isSubmitted ? (
-                          <div className="rounded-xl border border-triade-cyan/30 bg-black/40 p-3">
-                            <span className="text-[10px] uppercase font-bold text-triade-cyanLight block mb-1">
-                              Informações enviadas para a agência:
+                          <div className="rounded-xl border border-triade-cyan/30 bg-black/40 p-2.5">
+                            <span className="text-[10px] uppercase font-bold text-triade-cyanLight block mb-0.5">
+                              Dados enviados com sucesso:
                             </span>
-                            <p className="text-xs text-zinc-200">
-                              {stepInputs[step.id] || step.client_response}
-                            </p>
+                            <p className="text-xs text-zinc-200">{stepInputs[step.id] || step.client_response}</p>
                           </div>
                         ) : (
-                          <div className="space-y-3">
+                          <div className="space-y-2.5">
                             <textarea
                               rows={2}
                               placeholder="Cole o link do Drive, ID da conta, usuário ou digite sua resposta..."
                               value={stepInputs[step.id] ?? (step.client_response || "")}
-                              onChange={(e) =>
-                                handleInputChange(step.id, e.target.value)
-                              }
-                              className="w-full rounded-xl border border-zinc-700 bg-zinc-900/90 p-3 text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none"
+                              onChange={(e) => handleInputChange(step.id, e.target.value)}
+                              className="w-full rounded-xl border border-zinc-700 bg-zinc-900/90 p-2.5 text-xs text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none"
                             />
                             <div className="flex justify-end">
                               <button
                                 type="button"
                                 onClick={() => handleSubmitStep(step.id)}
-                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-bold shadow-gold-glow hover:opacity-90 transition-opacity"
+                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-bold shadow-gold-glow hover:opacity-90"
                               >
                                 <Send className="h-3.5 w-3.5" />
-                                <span>Enviar para a Tríade Studio</span>
+                                <span>Enviar para a Agência</span>
                               </button>
                             </div>
                           </div>
@@ -348,65 +368,160 @@ export default function ClientPortalPage() {
           </div>
         )}
 
-        {/* TAB 2: TAREFAS EM ANDAMENTO (VISIBLE_TO_CLIENT = TRUE) */}
-        {activeTab === "tasks" && (
+        {/* TAB 2: CENTRAL DE APROVAÇÕES (FASE 2) */}
+        {activeTab === "approvals" && (
           <div className="space-y-4">
             <div className="text-xs text-zinc-400">
-              Acompanhe aqui o andamento operacional de cada entrega da Tríade Studio para a sua empresa.
+              Revise os materiais criados pela nossa equipe. Clique em <b>Aprovar</b> para prosseguir ou solicite ajustes com observações.
             </div>
 
-            <div className="space-y-3">
-              {tasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-sm"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h4 className="text-sm font-bold text-zinc-100">
-                        {task.title}
-                      </h4>
-                      {task.description && (
-                        <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-                          {task.description}
-                        </p>
-                      )}
-                      <div className="flex items-center gap-2 mt-3 text-[11px] text-zinc-500">
-                        <span>Previsão de Entrega:</span>
-                        <span className="text-zinc-300 font-medium">
-                          {formatDate(task.deadline)}
-                        </span>
+            <div className="space-y-4">
+              {approvals.map((appr) => {
+                const isApproved = appr.status === "aprovado";
+                const isEditing = editingFeedbackId === appr.id;
+
+                return (
+                  <div
+                    key={appr.id}
+                    className={`rounded-2xl border p-5 sm:p-6 transition-all ${
+                      isApproved
+                        ? "border-emerald-500/40 bg-emerald-500/5"
+                        : appr.status === "solicitado_ajustes"
+                        ? "border-amber-500/40 bg-amber-500/5"
+                        : "border-triade-border bg-[#121215]"
+                    }`}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
+                            {appr.type.replace("_", " ")}
+                          </span>
+                          <span className="text-[11px] text-zinc-500">
+                            Postado em {formatDate(appr.created_at)}
+                          </span>
+                        </div>
+                        <h3 className="text-base font-bold text-zinc-100">{appr.title}</h3>
+                        <p className="text-xs text-zinc-400 mt-1">{appr.description}</p>
                       </div>
+
+                      <span
+                        className={`text-xs font-bold uppercase px-3 py-1 rounded-full border self-start ${
+                          isApproved
+                            ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
+                            : appr.status === "solicitado_ajustes"
+                            ? "bg-amber-500/15 text-amber-300 border-amber-500/30"
+                            : "bg-purple-500/15 text-purple-300 border-purple-500/30"
+                        }`}
+                      >
+                        {isApproved ? "✓ Aprovado" : appr.status === "solicitado_ajustes" ? "Ajustes Solicitados" : "Aguardando Sua Aprovação"}
+                      </span>
                     </div>
 
-                    <span
-                      className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${
-                        task.status === "done"
-                          ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
-                          : task.status === "review"
-                          ? "bg-purple-500/15 text-purple-300 border border-purple-500/30"
-                          : task.status === "in_progress"
-                          ? "bg-triade-cyan/15 text-triade-cyanLight border border-triade-cyan/30"
-                          : "bg-zinc-800 text-zinc-400"
-                      }`}
-                    >
-                      {task.status === "done"
-                        ? "Concluído"
-                        : task.status === "review"
-                        ? "Em Revisão"
-                        : task.status === "in_progress"
-                        ? "Em Produção"
-                        : "Na Fila"}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                    {/* Preview da Imagem */}
+                    {appr.media_url && (
+                      <div className="mt-4 rounded-xl overflow-hidden border border-zinc-800 max-h-72">
+                        <img src={appr.media_url} alt={appr.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
 
-              {tasks.length === 0 && (
+                    {/* Copy Text */}
+                    {appr.copy_text && (
+                      <div className="mt-3 p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/80">
+                        <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
+                          Texto / Copy Proposta:
+                        </span>
+                        <p className="text-xs text-zinc-200 italic whitespace-pre-wrap leading-relaxed">
+                          "{appr.copy_text}"
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Feedback existente */}
+                    {appr.client_feedback && (
+                      <div className="mt-3 p-3 rounded-xl border border-amber-500/30 bg-amber-500/5">
+                        <span className="text-[10px] uppercase font-bold text-amber-300 block mb-0.5">
+                          Sua Solicitação de Ajuste:
+                        </span>
+                        <p className="text-xs text-zinc-200">{appr.client_feedback}</p>
+                      </div>
+                    )}
+
+                    {/* Botões de Ação do Cliente */}
+                    {!isApproved && (
+                      <div className="mt-4 pt-4 border-t border-zinc-800 flex flex-wrap items-center justify-between gap-3">
+                        <a
+                          href={appr.preview_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          <span>Abrir Link Externo (Figma / Staging)</span>
+                        </a>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setEditingFeedbackId(isEditing ? null : appr.id)}
+                            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 text-xs font-bold transition-colors"
+                          >
+                            <ThumbsDown className="h-3.5 w-3.5" />
+                            <span>Solicitar Ajuste</span>
+                          </button>
+
+                          <button
+                            onClick={() => handleApprove(appr.id)}
+                            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-black text-xs font-bold shadow-md hover:opacity-95 transition-opacity"
+                          >
+                            <ThumbsUp className="h-3.5 w-3.5" />
+                            <span>Aprovar Entrega ✓</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Caixa de Texto para Solicitar Ajuste */}
+                    {isEditing && (
+                      <div className="mt-3 p-3 rounded-xl border border-amber-500/30 bg-black/60 space-y-2">
+                        <label className="block text-xs font-bold text-amber-300">
+                          O que você gostaria de ajustar neste material?
+                        </label>
+                        <textarea
+                          rows={2}
+                          placeholder="Ex: Trocar a cor da chamada, alterar o texto da frase final..."
+                          value={feedbackInputs[appr.id] || ""}
+                          onChange={(e) =>
+                            setFeedbackInputs({ ...feedbackInputs, [appr.id]: e.target.value })
+                          }
+                          className="w-full rounded-xl border border-zinc-700 bg-zinc-900 p-2.5 text-xs text-zinc-100 focus:outline-none"
+                        />
+                        <div className="flex justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setEditingFeedbackId(null)}
+                            className="px-3 py-1.5 text-xs text-zinc-400"
+                          >
+                            Cancelar
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleSubmitAdjustment(appr.id)}
+                            className="px-4 py-1.5 rounded-lg bg-amber-500 text-black text-xs font-bold"
+                          >
+                            Enviar Ajuste
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              {approvals.length === 0 && (
                 <div className="py-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-[#121215]/50">
-                  <Layers className="h-8 w-8 text-zinc-600 mx-auto mb-2" />
+                  <CheckCircle2 className="h-8 w-8 text-zinc-600 mx-auto mb-2" />
                   <p className="text-xs font-semibold text-zinc-400">
-                    Nenhuma tarefa com acompanhamento público liberada no momento.
+                    Nenhum material aguardando aprovação no momento.
                   </p>
                 </div>
               )}
@@ -414,15 +529,188 @@ export default function ClientPortalPage() {
           </div>
         )}
 
-        {/* TAB 3: LINKS ÚTEIS DO PROJETO */}
-        {activeTab === "links" && (
+        {/* TAB 3: FATURAS & PAGAMENTOS (FASE 3) */}
+        {activeTab === "invoices" && (
           <div className="space-y-4">
             <div className="text-xs text-zinc-400">
-              Acesse abaixo os arquivos compartilhados, protótipos de design e painéis de performance.
+              Acesse suas faturas, comprovantes e efetue o pagamento instantâneo via PIX ou Boleto/Cartão.
             </div>
 
+            <div className="space-y-3">
+              {invoices.map((inv) => {
+                const isPaid = inv.status === "pago";
+
+                return (
+                  <div
+                    key={inv.id}
+                    className={`rounded-2xl border p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${
+                      isPaid
+                        ? "border-emerald-500/30 bg-emerald-500/5"
+                        : "border-triade-border bg-[#121215]"
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
+                          {inv.type.replace("_", " ")}
+                        </span>
+                        <span className="text-xs text-zinc-400">
+                          Vencimento: <strong className="text-zinc-200">{formatDate(inv.due_date)}</strong>
+                        </span>
+                      </div>
+                      <h4 className="text-sm font-bold text-zinc-100">{inv.title}</h4>
+                      <p className="text-lg font-black text-triade-goldLight mt-1">
+                        {formatCurrency(inv.amount)}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-xs font-bold uppercase px-3 py-1 rounded-full border ${
+                          isPaid
+                            ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
+                            : "bg-amber-500/15 text-amber-300 border-amber-500/30"
+                        }`}
+                      >
+                        {isPaid ? "✓ Pago" : "Aguardando Pagamento"}
+                      </span>
+
+                      {!isPaid && (
+                        <button
+                          onClick={() => setSelectedPixInvoice(inv)}
+                          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-bold shadow-gold-glow hover:opacity-95 transition-opacity"
+                        >
+                          <QrCode className="h-4 w-4" />
+                          <span>Pagar via PIX</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {invoices.length === 0 && (
+                <div className="py-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-[#121215]/50">
+                  <CreditCard className="h-8 w-8 text-zinc-600 mx-auto mb-2" />
+                  <p className="text-xs font-semibold text-zinc-400">
+                    Nenhuma fatura emitida até o momento.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: CONTRATO DIGITAL */}
+        {activeTab === "contract" && (
+          <div className="space-y-4">
+            {contract ? (
+              <div className="rounded-2xl border border-triade-border bg-[#121215] p-6 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-triade-border">
+                  <div className="flex items-center gap-2 text-triade-gold font-bold text-sm">
+                    <FileText className="h-5 w-5" />
+                    <span>{contract.title}</span>
+                  </div>
+                  <span
+                    className={`text-xs font-bold uppercase px-3 py-1 rounded-full border ${
+                      contract.status === "assinado"
+                        ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
+                        : "bg-amber-500/15 text-amber-300 border-amber-500/30"
+                    }`}
+                  >
+                    {contract.status === "assinado" ? "✓ Contrato Assinado" : "Aguardando Assinatura"}
+                  </span>
+                </div>
+
+                <div className="p-4 rounded-xl bg-black/50 border border-zinc-800 text-xs text-zinc-300 leading-relaxed font-mono whitespace-pre-wrap max-h-72 overflow-y-auto">
+                  {contract.content}
+                </div>
+
+                {contract.status === "assinado" ? (
+                  <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-xs text-emerald-300 space-y-1">
+                    <p className="font-bold flex items-center gap-1.5">
+                      <Check className="h-4 w-4 stroke-[3]" />
+                      <span>Documento assinado digitalmente com validade jurídica</span>
+                    </p>
+                    <p className="text-[11px] text-zinc-400">
+                      Signatário: {contract.signer_name} (Documento: {contract.signer_document}) em {formatDate(contract.signed_at)}
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSignContract} className="pt-3 border-t border-zinc-800 space-y-3">
+                    <span className="text-xs font-bold text-zinc-200 block">
+                      Aceite e Assinatura Digital do Contrato:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        required
+                        placeholder="Nome Completo do Representante"
+                        value={signerName}
+                        onChange={(e) => setSignerName(e.target.value)}
+                        className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-zinc-100 focus:outline-none"
+                      />
+                      <input
+                        type="text"
+                        required
+                        placeholder="CPF ou CNPJ do Titular"
+                        value={signerDoc}
+                        onChange={(e) => setSignerDoc(e.target.value)}
+                        className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-zinc-100 focus:outline-none"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-extrabold shadow-gold-glow hover:opacity-95"
+                    >
+                      Assinar Contrato Digitalmente
+                    </button>
+                  </form>
+                )}
+              </div>
+            ) : (
+              <p className="text-xs text-zinc-500 italic text-center py-10">
+                Nenhum contrato gerado para este cliente ainda.
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* TAB 5: TAREFAS */}
+        {activeTab === "tasks" && (
+          <div className="space-y-4">
+            <div className="text-xs text-zinc-400">
+              Acompanhamento operacional em tempo real de cada entrega da equipe.
+            </div>
+
+            <div className="space-y-3">
+              {tasks.map((task) => (
+                <div key={task.id} className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h4 className="text-sm font-bold text-zinc-100">{task.title}</h4>
+                      {task.description && (
+                        <p className="text-xs text-zinc-400 mt-1">{task.description}</p>
+                      )}
+                      <span className="text-[11px] text-zinc-500 block mt-2">
+                        Previsão: {formatDate(task.deadline)}
+                      </span>
+                    </div>
+
+                    <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-triade-cyan/15 text-triade-cyanLight border border-triade-cyan/30">
+                      {task.status.replace("_", " ")}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: LINKS & ARQUIVOS */}
+        {activeTab === "links" && (
+          <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Drive Principal */}
               {client.access_vault?.drive_folder_url && (
                 <a
                   href={client.access_vault.drive_folder_url}
@@ -435,19 +723,14 @@ export default function ClientPortalPage() {
                       <FolderOpen className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-zinc-100">
-                        Google Drive Compartilhado
-                      </h4>
-                      <p className="text-xs text-zinc-400">
-                        Pasta oficial de criativos e arquivos
-                      </p>
+                      <h4 className="text-sm font-bold text-zinc-100">Pasta Oficial no Google Drive</h4>
+                      <p className="text-xs text-zinc-400">Acesse vídeos, fotos e documentos</p>
                     </div>
                   </div>
                   <ExternalLink className="h-4 w-4 text-triade-gold" />
                 </a>
               )}
 
-              {/* Links Cadastrados */}
               {client.access_vault?.useful_links?.map((link, idx) => (
                 <a
                   key={idx}
@@ -461,44 +744,63 @@ export default function ClientPortalPage() {
                       <Globe className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-zinc-100">
-                        {link.title}
-                      </h4>
-                      <p className="text-xs text-zinc-400">
-                        {link.category || "Link Externo"}
-                      </p>
+                      <h4 className="text-sm font-bold text-zinc-100">{link.title}</h4>
+                      <p className="text-xs text-zinc-400">{link.category || "Link"}</p>
                     </div>
                   </div>
                   <ExternalLink className="h-4 w-4 text-zinc-400" />
                 </a>
               ))}
             </div>
-
-            {/* Suporte VIP Card */}
-            <div className="rounded-2xl border border-zinc-800 bg-[#121215] p-6 text-center space-y-3 mt-6">
-              <h4 className="text-sm font-bold text-zinc-100">
-                Precisa de suporte ou tem alguma dúvida?
-              </h4>
-              <p className="text-xs text-zinc-400 max-w-md mx-auto">
-                Nosso time de atendimento está à disposição para acelerar o seu projeto.
-              </p>
-              <a
-                href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20falo%20da%20empresa%20"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-black text-xs font-bold transition-colors"
-              >
-                <MessageSquare className="h-4 w-4" />
-                <span>Falar no WhatsApp da Agência</span>
-              </a>
-            </div>
           </div>
         )}
       </main>
 
-      {/* Footer do Portal */}
+      {/* Modal PIX Copia e Cola / QR Code */}
+      {selectedPixInvoice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedPixInvoice(null)} />
+          <div className="relative w-full max-w-md rounded-2xl border border-triade-border bg-[#121215] p-6 shadow-2xl z-10 text-center space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-triade-border">
+              <h3 className="text-sm font-bold text-zinc-100">Pagamento via PIX Instantâneo</h3>
+              <button onClick={() => setSelectedPixInvoice(null)} className="text-zinc-400 hover:text-white">
+                <XCircle className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="p-4 rounded-xl bg-white text-black inline-block mx-auto shadow-md">
+              <QrCode className="h-32 w-32 mx-auto" />
+              <span className="text-[10px] text-zinc-700 font-mono block mt-1">Escaneie pelo app do seu banco</span>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-zinc-200">{selectedPixInvoice.title}</p>
+              <p className="text-xl font-black text-emerald-400 mt-0.5">
+                {formatCurrency(selectedPixInvoice.amount)}
+              </p>
+            </div>
+
+            <div className="space-y-2 text-left">
+              <span className="text-[10px] uppercase font-bold text-zinc-400 block">
+                Código PIX Copia e Cola:
+              </span>
+              <div className="p-2.5 rounded-lg border border-zinc-800 bg-black/60 font-mono text-[11px] text-zinc-300 break-all select-all max-h-20 overflow-y-auto">
+                {selectedPixInvoice.pix_copy_paste}
+              </div>
+              <button
+                onClick={() => handleCopyPix(selectedPixInvoice.pix_copy_paste!)}
+                className="w-full py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-black text-xs font-bold flex items-center justify-center gap-1.5"
+              >
+                {copiedPix ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                <span>{copiedPix ? "Código Copiado!" : "Copiar Código PIX"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <footer className="w-full border-t border-triade-border/60 py-6 text-center text-xs text-zinc-500">
-        Desenvolvido com excelência por <span className="text-triade-gold font-semibold">Tríade Studio</span> • Sistema Tríade Flow
+        Desenvolvido por <span className="text-triade-gold font-semibold">{workspace.name}</span> • Sistema Tríade Flow
       </footer>
     </div>
   );

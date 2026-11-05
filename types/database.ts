@@ -1,6 +1,6 @@
 /**
  * TRÍADE FLOW - MODELAGEM COMPLETA DO SISTEMA (9 TABELAS SUPABASE)
- * Preparado para Multi-Tenancy (Workspaces), CRM, Operação, Financeiro e Aprovações.
+ * Multi-Tenancy (Workspaces), CRM Comercial, Operação, Central de Aprovações, Financeiro e Automações.
  */
 
 export type Json =
@@ -16,12 +16,15 @@ export type ClientStatus = 'onboarding' | 'ativo' | 'pausado' | 'cancelado';
 export type TaskStatus = 'todo' | 'in_progress' | 'review' | 'done';
 export type TaskPriority = 'baixa' | 'media' | 'alta' | 'urgente';
 export type StepStatus = 'pendente' | 'enviado_cliente' | 'aprovado';
-export type ProposalStatus = 'rascunho' | 'enviada' | 'visualizada' | 'aceita' | 'recusada';
+export type ProposalStage = 'prospeccao' | 'reuniao' | 'proposta_enviada' | 'negociacao' | 'fechado' | 'perdido';
+export type ProposalStatus = 'rascunho' | 'enviada' | 'visualizada' | 'aceita' | 'recusada' | 'fechado';
 export type ContractStatus = 'rascunho' | 'aguardando_assinatura' | 'assinado' | 'expirado';
 export type ApprovalStatus = 'pendente' | 'aprovado' | 'solicitado_ajustes' | 'reprovado';
+export type ApprovalType = 'criativo_estatico' | 'carrossel' | 'video' | 'copy' | 'pagina_web' | 'fluxo_app';
 export type InvoiceStatus = 'pendente' | 'pago' | 'atrasado' | 'cancelado';
-export type InvoiceType = 'mrr' | 'avulso' | 'parcela_50_50' | 'setup';
+export type InvoiceType = 'mrr_trafego' | 'entrada_projeto' | 'entrega_projeto' | 'avulso' | 'mrr' | 'parcela_50_50' | 'setup';
 export type ExpenseCategory = 'ferramentas' | 'equipe' | 'infra' | 'marketing' | 'impostos' | 'outros';
+export type ExpenseStatus = 'pendente' | 'pago';
 
 export interface AccessVault {
   bm_id?: string;
@@ -38,16 +41,18 @@ export interface AccessVault {
   custom_fields?: Record<string, string>;
 }
 
-// 1. WORKSPACES (Multi-Tenancy)
+// 1. WORKSPACES (Multi-Tenancy & White-Label)
 export interface Workspace {
   id: string;
   name: string;
   slug: string;
   owner_id?: string;
   logo_url?: string;
-  primary_color?: string;
-  accent_color?: string;
+  primary_color: string; // Ex: #D4AF37
+  accent_color: string; // Ex: #0DA5A0
   custom_domain?: string;
+  whatsapp_webhook_url?: string; // Evolution API / Z-API / Webhook
+  payment_api_key?: string; // Asaas / AbacatePay API Key
   created_at: string;
   updated_at?: string;
 }
@@ -62,9 +67,9 @@ export interface Client {
   phone: string;
   service_type: ServiceType;
   status: ClientStatus;
-  monthly_fee: number; // MRR em centavos ou valor float (R$)
+  monthly_fee: number; // MRR em R$
   contract_value: number; // Valor global do projeto
-  portal_token: string; // Token único e amigável da rota /portal/[portal_token]
+  portal_token: string; // Rota /portal/[portal_token]
   access_vault: AccessVault;
   notes?: string;
   logo_url?: string;
@@ -78,15 +83,20 @@ export interface Proposal {
   workspace_id: string;
   client_id?: string;
   lead_name: string;
+  company_name: string;
   lead_email: string;
-  lead_phone?: string;
+  lead_phone: string;
   title: string;
   service_type: ServiceType;
-  total_value: number;
-  monthly_value?: number;
-  public_token: string; // Link público /proposta/[public_token]
+  stage: ProposalStage; // Prospeccao, Reuniao, Proposta Enviada, Negociacao, Fechado, Perdido
+  setup_value: number; // Valor de Setup Inicial
+  monthly_value: number; // Mensalidade / MRR
+  total_value: number; // Setup + Projeção
+  public_token: string; // Rota pública /proposta/[public_token]
   status: ProposalStatus;
+  diagnosis?: string; // Diagnóstico e Objetivo Estratégico
   scope_items: {
+    id?: string;
     title: string;
     description: string;
     included: boolean;
@@ -103,8 +113,10 @@ export interface Contract {
   client_id: string;
   proposal_id?: string;
   title: string;
-  content: string; // Termos do contrato / Markdown
+  content: string; // Termos do contrato em Markdown
   total_value: number;
+  setup_value?: number;
+  monthly_value?: number;
   payment_terms: string;
   status: ContractStatus;
   signed_at?: string;
@@ -124,8 +136,8 @@ export interface OnboardingStep {
   order_index: number;
   status: StepStatus;
   service_category: 'geral' | 'trafego' | 'site' | 'app';
-  client_response?: string; // Preenchido pelo cliente no Portal
-  client_attachment_url?: string; // Link de arquivo enviado
+  client_response?: string;
+  client_attachment_url?: string;
   completed_at?: string;
   created_at: string;
 }
@@ -140,14 +152,14 @@ export interface Task {
   status: TaskStatus;
   priority: TaskPriority;
   deadline?: string;
-  visible_to_client: boolean; // Flag crítica para exibição no Portal
+  visible_to_client: boolean;
   order_index?: number;
   tags?: string[];
   created_at: string;
   updated_at?: string;
 }
 
-// 7. APPROVALS (Central de Aprovação de Criativos, Landing Pages e Telas)
+// 7. APPROVALS (Central de Aprovação de Criativos, Copy e Sites)
 export interface Approval {
   id: string;
   workspace_id: string;
@@ -155,16 +167,18 @@ export interface Approval {
   task_id?: string;
   title: string;
   description?: string;
-  preview_url: string; // Link Figma, imagem, drive ou deploy de teste
+  preview_url: string; // Link Figma, imagem, drive ou deploy
+  media_url?: string; // Imagem direta / banner
+  copy_text?: string; // Texto de copy para anúncios
   thumbnail_url?: string;
-  type: 'criativo_estatico' | 'carrossel' | 'video' | 'pagina_web' | 'fluxo_app';
+  type: ApprovalType;
   status: ApprovalStatus;
   client_feedback?: string;
   reviewed_at?: string;
   created_at: string;
 }
 
-// 8. INVOICES (Cobranças, MRR e Pagamentos 50/50)
+// 8. INVOICES (Financeiro, MRR e Cobranças 50/50)
 export interface Invoice {
   id: string;
   workspace_id: string;
@@ -176,6 +190,7 @@ export interface Invoice {
   status: InvoiceStatus;
   type: InvoiceType;
   pix_copy_paste?: string;
+  invoice_url?: string;
   barcode?: string;
   receipt_url?: string;
   created_at: string;
@@ -190,6 +205,7 @@ export interface Expense {
   amount: number;
   due_date: string;
   paid_at?: string;
+  status: ExpenseStatus; // pendente | pago
   is_recurring: boolean;
   notes?: string;
   created_at: string;

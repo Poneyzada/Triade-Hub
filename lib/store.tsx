@@ -9,9 +9,17 @@ import {
   Approval,
   Invoice,
   Expense,
+  Proposal,
+  Contract,
   ServiceType,
   TaskStatus,
   AccessVault,
+  ProposalStage,
+  ApprovalStatus,
+  ApprovalType,
+  InvoiceStatus,
+  InvoiceType,
+  ExpenseCategory,
 } from "@/types/database";
 import {
   INITIAL_WORKSPACE,
@@ -21,18 +29,24 @@ import {
   INITIAL_APPROVALS,
   INITIAL_INVOICES,
   INITIAL_EXPENSES,
+  INITIAL_PROPOSALS,
+  INITIAL_CONTRACTS,
 } from "@/lib/mock-data";
 import { generatePortalToken } from "@/lib/utils";
+import { sendWhatsAppNotification, WhatsAppTemplates } from "@/lib/whatsapp";
 
 interface TriadeContextType {
   workspace: Workspace;
+  workspaces: Workspace[];
   clients: Client[];
   onboardingSteps: OnboardingStep[];
   tasks: Task[];
   approvals: Approval[];
   invoices: Invoice[];
   expenses: Expense[];
-  
+  proposals: Proposal[];
+  contracts: Contract[];
+
   // Métricas Computadas
   metrics: {
     activeMRR: number;
@@ -40,7 +54,16 @@ interface TriadeContextType {
     pendingOnboardingsCount: number;
     pendingApprovalsCount: number;
     monthRevenue: number;
+    projectsRevenue: number;
+    totalOverdue: number;
+    totalExpenses: number;
+    netProfit: number;
   };
+
+  // Multi-Tenancy & Workspace
+  switchWorkspace: (workspaceId: string) => void;
+  createWorkspace: (data: { name: string; slug: string; primary_color?: string; accent_color?: string; logo_url?: string }) => Workspace;
+  updateWorkspace: (updates: Partial<Workspace>) => void;
 
   // Ações de Clientes & Onboarding
   addClient: (clientData: {
@@ -67,11 +90,75 @@ interface TriadeContextType {
   updateTask: (taskId: string, updates: Partial<Task>) => void;
   deleteTask: (taskId: string) => void;
 
+  // FASE 2: CRM & Propostas
+  addProposal: (data: {
+    lead_name: string;
+    company_name: string;
+    lead_email: string;
+    lead_phone: string;
+    title: string;
+    service_type: ServiceType;
+    setup_value: number;
+    monthly_value: number;
+    valid_until: string;
+    diagnosis?: string;
+    scope_items: { title: string; description: string; included: boolean }[];
+  }) => Proposal;
+  updateProposalStage: (id: string, stage: ProposalStage) => void;
+  approveAndCloseProposal: (proposalId: string) => Promise<{ client: Client; contract: Contract }>;
+  getProposalByToken: (token: string) => Proposal | undefined;
+
+  // FASE 2: Contratos & Assinatura Digital
+  signContract: (contractId: string, signerName: string, signerDoc: string) => void;
+  getClientContract: (clientId: string) => Contract | undefined;
+
+  // FASE 2: Central de Aprovações
+  addApproval: (data: {
+    client_id: string;
+    title: string;
+    description?: string;
+    preview_url: string;
+    media_url?: string;
+    copy_text?: string;
+    type: ApprovalType;
+  }) => Approval;
+  reviewApproval: (approvalId: string, status: ApprovalStatus, feedback?: string) => void;
+
+  // FASE 3: Financeiro, Faturas e Despesas
+  addInvoice: (data: {
+    client_id: string;
+    title: string;
+    amount: number;
+    due_date: string;
+    type: InvoiceType;
+    invoice_url?: string;
+  }) => Invoice;
+  markInvoiceAsPaid: (invoiceId: string) => void;
+  generate5050Invoices: (clientId: string, projectTitle: string, setupValue: number) => void;
+  generateMRRInvoice: (clientId: string, monthlyFee: number) => void;
+  addExpense: (data: {
+    title: string;
+    category: ExpenseCategory;
+    amount: number;
+    due_date: string;
+    is_recurring?: boolean;
+    status?: "pendente" | "pago";
+  }) => Expense;
+  toggleExpenseStatus: (expenseId: string) => void;
+
+  // FASE 4: WhatsApp
+  notifyClientWhatsApp: (params: {
+    phone: string;
+    trigger: "welcome" | "approval" | "onboarding" | "invoice";
+    data: any;
+  }) => Promise<{ success: boolean; fallbackUrl: string }>;
+
   // Consultas Rápidas
   getClientByPortalToken: (token: string) => Client | undefined;
   getClientSteps: (clientId: string) => OnboardingStep[];
   getClientTasks: (clientId: string) => Task[];
   getClientApprovals: (clientId: string) => Approval[];
+  getClientInvoices: (clientId: string) => Invoice[];
 
   // Utilidades
   resetToDefaultData: () => void;
@@ -81,43 +168,55 @@ interface TriadeContextType {
 const TriadeContext = createContext<TriadeContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
-  WORKSPACE: "triade_flow_workspace_v1",
-  CLIENTS: "triade_flow_clients_v1",
-  STEPS: "triade_flow_steps_v1",
-  TASKS: "triade_flow_tasks_v1",
-  APPROVALS: "triade_flow_approvals_v1",
-  INVOICES: "triade_flow_invoices_v1",
-  EXPENSES: "triade_flow_expenses_v1",
+  WORKSPACE: "triade_flow_workspace_v2",
+  WORKSPACES_LIST: "triade_flow_workspaces_list_v2",
+  CLIENTS: "triade_flow_clients_v2",
+  STEPS: "triade_flow_steps_v2",
+  TASKS: "triade_flow_tasks_v2",
+  APPROVALS: "triade_flow_approvals_v2",
+  INVOICES: "triade_flow_invoices_v2",
+  EXPENSES: "triade_flow_expenses_v2",
+  PROPOSALS: "triade_flow_proposals_v2",
+  CONTRACTS: "triade_flow_contracts_v2",
 };
 
 export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [workspace, setWorkspace] = useState<Workspace>(INITIAL_WORKSPACE);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([INITIAL_WORKSPACE]);
   const [clients, setClients] = useState<Client[]>(INITIAL_CLIENTS);
   const [onboardingSteps, setOnboardingSteps] = useState<OnboardingStep[]>(INITIAL_ONBOARDING_STEPS);
   const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
   const [approvals, setApprovals] = useState<Approval[]>(INITIAL_APPROVALS);
   const [invoices, setInvoices] = useState<Invoice[]>(INITIAL_INVOICES);
   const [expenses, setExpenses] = useState<Expense[]>(INITIAL_EXPENSES);
+  const [proposals, setProposals] = useState<Proposal[]>(INITIAL_PROPOSALS);
+  const [contracts, setContracts] = useState<Contract[]>(INITIAL_CONTRACTS);
 
-  // Inicialização com LocalStorage (Fallback Inteligente para rodar imediatamente sem .env)
+  // Inicialização com LocalStorage (Fallback Inteligente para funcionar sem setup prévio)
   useEffect(() => {
     try {
       const savedWs = localStorage.getItem(STORAGE_KEYS.WORKSPACE);
+      const savedWsList = localStorage.getItem(STORAGE_KEYS.WORKSPACES_LIST);
       const savedClients = localStorage.getItem(STORAGE_KEYS.CLIENTS);
       const savedSteps = localStorage.getItem(STORAGE_KEYS.STEPS);
       const savedTasks = localStorage.getItem(STORAGE_KEYS.TASKS);
       const savedApprovals = localStorage.getItem(STORAGE_KEYS.APPROVALS);
       const savedInvoices = localStorage.getItem(STORAGE_KEYS.INVOICES);
       const savedExpenses = localStorage.getItem(STORAGE_KEYS.EXPENSES);
+      const savedProposals = localStorage.getItem(STORAGE_KEYS.PROPOSALS);
+      const savedContracts = localStorage.getItem(STORAGE_KEYS.CONTRACTS);
 
       if (savedWs) setWorkspace(JSON.parse(savedWs));
+      if (savedWsList) setWorkspaces(JSON.parse(savedWsList));
       if (savedClients) setClients(JSON.parse(savedClients));
       if (savedSteps) setOnboardingSteps(JSON.parse(savedSteps));
       if (savedTasks) setTasks(JSON.parse(savedTasks));
       if (savedApprovals) setApprovals(JSON.parse(savedApprovals));
       if (savedInvoices) setInvoices(JSON.parse(savedInvoices));
       if (savedExpenses) setExpenses(JSON.parse(savedExpenses));
+      if (savedProposals) setProposals(JSON.parse(savedProposals));
+      if (savedContracts) setContracts(JSON.parse(savedContracts));
     } catch (e) {
       console.warn("Usando dados iniciais em memória:", e);
     } finally {
@@ -130,39 +229,71 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (!isLoaded) return;
     try {
       localStorage.setItem(STORAGE_KEYS.WORKSPACE, JSON.stringify(workspace));
+      localStorage.setItem(STORAGE_KEYS.WORKSPACES_LIST, JSON.stringify(workspaces));
       localStorage.setItem(STORAGE_KEYS.CLIENTS, JSON.stringify(clients));
       localStorage.setItem(STORAGE_KEYS.STEPS, JSON.stringify(onboardingSteps));
       localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
       localStorage.setItem(STORAGE_KEYS.APPROVALS, JSON.stringify(approvals));
       localStorage.setItem(STORAGE_KEYS.INVOICES, JSON.stringify(invoices));
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
+      localStorage.setItem(STORAGE_KEYS.PROPOSALS, JSON.stringify(proposals));
+      localStorage.setItem(STORAGE_KEYS.CONTRACTS, JSON.stringify(contracts));
     } catch (e) {
       console.error("Falha ao salvar no localStorage", e);
     }
-  }, [isLoaded, workspace, clients, onboardingSteps, tasks, approvals, invoices, expenses]);
+  }, [
+    isLoaded,
+    workspace,
+    workspaces,
+    clients,
+    onboardingSteps,
+    tasks,
+    approvals,
+    invoices,
+    expenses,
+    proposals,
+    contracts,
+  ]);
 
-  // CÁLCULO DE MÉTRICAS EXECUTIVAS
+  // CÁLCULO DE MÉTRICAS EXECUTIVAS E FLUXO DE CAIXA CONSOLIDADO
   const metrics = useMemo(() => {
     // 1. MRR Ativo (Soma dos clientes ativos com mensalidade)
     const activeMRR = clients
       .filter((c) => c.status === "ativo")
       .reduce((sum, c) => sum + (Number(c.monthly_fee) || 0), 0);
 
-    // 2. Projetos em Andamento (tasks em todo, in_progress ou review)
+    // 2. Projetos em Andamento
     const ongoingProjectsCount = tasks.filter((t) => t.status !== "done").length;
 
-    // 3. Onboardings Pendentes (Clientes em status onboarding ou com steps não aprovados)
+    // 3. Onboardings Pendentes
     const pendingOnboardingsCount = clients.filter((c) => c.status === "onboarding").length;
 
-    // 4. Aprovações Aguardando Cliente
+    // 4. Aprovações Pendentes
     const pendingApprovalsCount = approvals.filter(
       (a) => a.status === "pendente" || a.status === "solicitado_ajustes"
     ).length;
 
-    // 5. Faturamento do Mês (Faturas pagas ou faturadas no ciclo atual)
+    // 5. Total Recebido no Mês
     const monthRevenue = invoices
       .filter((inv) => inv.status === "pago")
       .reduce((sum, inv) => sum + Number(inv.amount), 0);
+
+    // 6. Receita de Projetos (Sites/Apps)
+    const projectsRevenue = invoices
+      .filter((inv) => inv.status === "pago" && (inv.type === "entrada_projeto" || inv.type === "entrega_projeto" || inv.type === "parcela_50_50" || inv.type === "setup"))
+      .reduce((sum, inv) => sum + Number(inv.amount), 0);
+
+    // 7. Inadimplência (Faturas vencidas/atrasadas)
+    const now = new Date().toISOString().split("T")[0];
+    const totalOverdue = invoices
+      .filter((inv) => inv.status === "atrasado" || (inv.status === "pendente" && inv.due_date < now))
+      .reduce((sum, inv) => sum + Number(inv.amount), 0);
+
+    // 8. Despesas da Agência
+    const totalExpenses = expenses.reduce((sum, exp) => sum + Number(exp.amount), 0);
+
+    // 9. Lucro Líquido Real
+    const netProfit = monthRevenue - totalExpenses;
 
     return {
       activeMRR,
@@ -170,13 +301,14 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       pendingOnboardingsCount,
       pendingApprovalsCount,
       monthRevenue,
+      projectsRevenue,
+      totalOverdue,
+      totalExpenses,
+      netProfit,
     };
-  }, [clients, tasks, approvals, invoices]);
+  }, [clients, tasks, approvals, invoices, expenses]);
 
-  /**
-   * REGRA CRÍTICA: MOTOR DE ONBOARDING AUTOMÁTICO
-   * Gera passos dinâmicos dependendo do tipo de serviço contratado.
-   */
+  // MOTOR DE ONBOARDING AUTOMÁTICO
   const generateStepsForService = (
     clientId: string,
     serviceType: ServiceType
@@ -284,7 +416,43 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return steps;
   };
 
-  // Criação de Cliente com Acionamento do Motor de Onboarding
+  // MULTI-TENANCY WORKSPACES
+  const switchWorkspace = (workspaceId: string) => {
+    const target = workspaces.find((w) => w.id === workspaceId);
+    if (target) setWorkspace(target);
+  };
+
+  const createWorkspace = (data: {
+    name: string;
+    slug: string;
+    primary_color?: string;
+    accent_color?: string;
+    logo_url?: string;
+  }) => {
+    const newWs: Workspace = {
+      id: `ws-${Date.now().toString(36)}`,
+      name: data.name,
+      slug: data.slug,
+      primary_color: data.primary_color || "#D4AF37",
+      accent_color: data.accent_color || "#0DA5A0",
+      logo_url: data.logo_url,
+      custom_domain: `${data.slug}.flow.triadestudio.com.br`,
+      created_at: new Date().toISOString(),
+    };
+    setWorkspaces((prev) => [...prev, newWs]);
+    setWorkspace(newWs);
+    return newWs;
+  };
+
+  const updateWorkspace = (updates: Partial<Workspace>) => {
+    setWorkspace((prev) => {
+      const updated = { ...prev, ...updates, updated_at: new Date().toISOString() };
+      setWorkspaces((list) => list.map((w) => (w.id === prev.id ? updated : w)));
+      return updated;
+    });
+  };
+
+  // CLIENTS
   const addClient: TriadeContextType["addClient"] = (clientData) => {
     const newId = `cli-${Date.now().toString(36)}`;
     const portalToken = generatePortalToken(clientData.company_name);
@@ -297,24 +465,20 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       email: clientData.email,
       phone: clientData.phone,
       service_type: clientData.service_type,
-      status: "onboarding", // Todo novo cliente inicia em onboarding
+      status: "onboarding",
       monthly_fee: clientData.monthly_fee || 0,
       contract_value: clientData.contract_value || 0,
       portal_token: portalToken,
-      access_vault: clientData.access_vault || {
-        useful_links: [],
-      },
+      access_vault: clientData.access_vault || { useful_links: [] },
       notes: clientData.notes,
       created_at: new Date().toISOString(),
     };
 
-    // Gerar passos automáticos da REGRA CRÍTICA
     const generatedSteps = generateStepsForService(newId, clientData.service_type);
 
     setClients((prev) => [newClient, ...prev]);
     setOnboardingSteps((prev) => [...prev, ...generatedSteps]);
 
-    // Criar primeira tarefa no Kanban de boas-vindas
     const welcomeTask: Task = {
       id: `tsk-${Date.now().toString(36)}`,
       workspace_id: workspace.id,
@@ -345,10 +509,7 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         if (c.id !== clientId) return c;
         return {
           ...c,
-          access_vault: {
-            ...c.access_vault,
-            ...vaultUpdates,
-          },
+          access_vault: { ...c.access_vault, ...vaultUpdates },
           updated_at: new Date().toISOString(),
         };
       })
@@ -376,7 +537,7 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     );
   };
 
-  // Kanban Tasks Actions
+  // TASKS (KANBAN)
   const addTask: TriadeContextType["addTask"] = (taskData) => {
     const newTask: Task = {
       ...taskData,
@@ -391,17 +552,13 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const updateTaskStatus = (taskId: string, status: TaskStatus) => {
     setTasks((prev) =>
-      prev.map((t) =>
-        t.id === taskId ? { ...t, status, updated_at: new Date().toISOString() } : t
-      )
+      prev.map((t) => (t.id === taskId ? { ...t, status, updated_at: new Date().toISOString() } : t))
     );
   };
 
   const updateTask = (taskId: string, updates: Partial<Task>) => {
     setTasks((prev) =>
-      prev.map((t) =>
-        t.id === taskId ? { ...t, ...updates, updated_at: new Date().toISOString() } : t
-      )
+      prev.map((t) => (t.id === taskId ? { ...t, ...updates, updated_at: new Date().toISOString() } : t))
     );
   };
 
@@ -409,7 +566,384 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setTasks((prev) => prev.filter((t) => t.id !== taskId));
   };
 
-  // Consultas por Token e IDs
+  // FASE 2: CRM & PROPOSTAS
+  const addProposal: TriadeContextType["addProposal"] = (data) => {
+    const publicToken = `prop-${data.company_name
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "-")
+      .replace(/-+/g, "-")}-${Math.random().toString(36).substring(2, 6)}`;
+
+    const newProp: Proposal = {
+      id: `prop-${Date.now().toString(36)}`,
+      workspace_id: workspace.id,
+      lead_name: data.lead_name,
+      company_name: data.company_name,
+      lead_email: data.lead_email,
+      lead_phone: data.lead_phone,
+      title: data.title,
+      service_type: data.service_type,
+      stage: "proposta_enviada",
+      status: "enviada",
+      setup_value: data.setup_value,
+      monthly_value: data.monthly_value,
+      total_value: data.setup_value + data.monthly_value * 12,
+      public_token: publicToken,
+      diagnosis: data.diagnosis,
+      scope_items: data.scope_items.map((s, i) => ({ ...s, id: `scope-${i + 1}` })),
+      valid_until: data.valid_until,
+      created_at: new Date().toISOString(),
+    };
+
+    setProposals((prev) => [newProp, ...prev]);
+    return newProp;
+  };
+
+  const updateProposalStage = (id: string, stage: ProposalStage) => {
+    setProposals((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, stage, status: stage === "fechado" ? "fechado" : p.status } : p))
+    );
+  };
+
+  /**
+   * AUTOMAÇÃO CRÍTICA DE FECHAMENTO (FASE 2)
+   * Quando o cliente aprova a proposta:
+   * a) Muda stage da proposta para 'fechado' e grava accepted_at.
+   * b) Cria automaticamente o cliente em clients.
+   * c) Dispara o motor de onboarding_steps.
+   * d) Gera automaticamente o contrato em contracts.
+   * e) Retorna o novo cliente para redirecionamento ao Portal.
+   */
+  const approveAndCloseProposal = async (proposalId: string) => {
+    const prop = proposals.find((p) => p.id === proposalId);
+    if (!prop) throw new Error("Proposta não encontrada");
+
+    const acceptedAt = new Date().toISOString();
+
+    // a) Atualiza proposta
+    setProposals((prev) =>
+      prev.map((p) =>
+        p.id === proposalId ? { ...p, stage: "fechado", status: "fechado", accepted_at: acceptedAt } : p
+      )
+    );
+
+    // b) Cria cliente na tabela clients
+    const clientId = `cli-${Date.now().toString(36)}`;
+    const portalToken = generatePortalToken(prop.company_name);
+
+    const newClient: Client = {
+      id: clientId,
+      workspace_id: workspace.id,
+      name: prop.lead_name,
+      company_name: prop.company_name,
+      email: prop.lead_email,
+      phone: prop.lead_phone,
+      service_type: prop.service_type,
+      status: "onboarding",
+      monthly_fee: prop.monthly_value,
+      contract_value: prop.total_value,
+      portal_token: portalToken,
+      access_vault: { useful_links: [] },
+      notes: `Convertido automaticamente via Proposta Interativa (${prop.title}). Diagnóstico: ${prop.diagnosis || "N/A"}`,
+      created_at: new Date().toISOString(),
+    };
+
+    // c) Dispara motor de onboarding
+    const steps = generateStepsForService(clientId, prop.service_type);
+
+    // d) Gera contrato na tabela contracts
+    const contractId = `ct-${Date.now().toString(36)}`;
+    const newContract: Contract = {
+      id: contractId,
+      workspace_id: workspace.id,
+      client_id: clientId,
+      proposal_id: prop.id,
+      title: `Contrato de Prestação de Serviços: ${prop.title}`,
+      content: `# CONTRATO DE PRESTAÇÃO DE SERVIÇOS PROFISSIONAIS
+
+Entre **${workspace.name}** (CONTRATADA) e **${prop.company_name}** (CONTRATANTE), representada por **${prop.lead_name}**.
+
+### 1. DO OBJETO E ESCOPO
+O presente contrato formaliza os serviços de ${prop.service_type.toUpperCase()}:
+${prop.scope_items.filter((s) => s.included).map((s) => `- **${s.title}**: ${s.description}`).join("\n")}
+
+### 2. DO INVESTIMENTO E CONDIÇÕES
+- **Setup Inicial:** R$ ${prop.setup_value.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+- **Mensalidade / Retainer:** R$ ${prop.monthly_value.toLocaleString("pt-BR", { minimumFractionDigits: 2 })} / mês
+- **Condições:** Vencimento recorrente todo dia 10.
+
+### 3. CONFIDENCIALIDADE
+As partes comprometem-se a guardar absoluto sigilo sobre credenciais, acessos e estratégias comerciais compartilhadas no Portal do Cliente.`,
+      total_value: prop.total_value,
+      setup_value: prop.setup_value,
+      monthly_value: prop.monthly_value,
+      payment_terms: `Setup de R$ ${prop.setup_value.toLocaleString("pt-BR")} + R$ ${prop.monthly_value.toLocaleString("pt-BR")}/mês.`,
+      status: "aguardando_assinatura",
+      created_at: new Date().toISOString(),
+    };
+
+    // Gera tarefas iniciais e faturas iniciais se tiver setup
+    if (prop.setup_value > 0) {
+      if (prop.service_type === "site" || prop.service_type === "app") {
+        // Gerar parcelamento 50/50
+        const half = prop.setup_value / 2;
+        const inv1: Invoice = {
+          id: `inv-${Date.now()}-1`,
+          workspace_id: workspace.id,
+          client_id: clientId,
+          title: `Entrada (50%) - ${prop.title}`,
+          amount: half,
+          due_date: new Date().toISOString().split("T")[0],
+          status: "pendente",
+          type: "entrada_projeto",
+          pix_copy_paste: `00020126580014BR.GOV.BCB.PIX0136triadestudio@pix.com.br5204000053039865408${half}.005802BR5913TRIADE STUDIO6009SAO PAULO62070503***6304E110`,
+          invoice_url: `https://asaas.com/i/inv-${clientId}-entrada`,
+          created_at: new Date().toISOString(),
+        };
+        const inv2: Invoice = {
+          id: `inv-${Date.now()}-2`,
+          workspace_id: workspace.id,
+          client_id: clientId,
+          title: `Entrega Final (50%) - ${prop.title}`,
+          amount: half,
+          due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+          status: "pendente",
+          type: "entrega_projeto",
+          pix_copy_paste: `00020126580014BR.GOV.BCB.PIX0136triadestudio@pix.com.br5204000053039865408${half}.005802BR5913TRIADE STUDIO6009SAO PAULO62070503***6304E111`,
+          invoice_url: `https://asaas.com/i/inv-${clientId}-entrega`,
+          created_at: new Date().toISOString(),
+        };
+        setInvoices((prev) => [inv1, inv2, ...prev]);
+      }
+    }
+
+    setClients((prev) => [newClient, ...prev]);
+    setOnboardingSteps((prev) => [...prev, ...steps]);
+    setContracts((prev) => [newContract, ...prev]);
+
+    return { client: newClient, contract: newContract };
+  };
+
+  const getProposalByToken = (token: string) => {
+    return proposals.find((p) => p.public_token.toLowerCase() === token.toLowerCase());
+  };
+
+  const signContract = (contractId: string, signerName: string, signerDoc: string) => {
+    setContracts((prev) =>
+      prev.map((c) =>
+        c.id === contractId
+          ? {
+              ...c,
+              status: "assinado",
+              signed_at: new Date().toISOString(),
+              signer_name: signerName,
+              signer_document: signerDoc,
+              signature_ip: "189.120.44.12",
+            }
+          : c
+      )
+    );
+  };
+
+  const getClientContract = (clientId: string) => {
+    return contracts.find((c) => c.client_id === clientId);
+  };
+
+  // FASE 2: CENTRAL DE APROVAÇÕES
+  const addApproval: TriadeContextType["addApproval"] = (data) => {
+    const newApproval: Approval = {
+      id: `appr-${Date.now().toString(36)}`,
+      workspace_id: workspace.id,
+      client_id: data.client_id,
+      title: data.title,
+      description: data.description,
+      preview_url: data.preview_url,
+      media_url: data.media_url,
+      copy_text: data.copy_text,
+      type: data.type,
+      status: "pendente",
+      created_at: new Date().toISOString(),
+    };
+    setApprovals((prev) => [newApproval, ...prev]);
+    return newApproval;
+  };
+
+  const reviewApproval = (approvalId: string, status: ApprovalStatus, feedback?: string) => {
+    setApprovals((prev) =>
+      prev.map((a) =>
+        a.id === approvalId
+          ? {
+              ...a,
+              status,
+              client_feedback: feedback || a.client_feedback,
+              reviewed_at: new Date().toISOString(),
+            }
+          : a
+      )
+    );
+  };
+
+  // FASE 3: FINANCEIRO, FATURAS E DESPESAS
+  const addInvoice: TriadeContextType["addInvoice"] = (data) => {
+    const newInvoice: Invoice = {
+      id: `inv-${Date.now().toString(36)}`,
+      workspace_id: workspace.id,
+      client_id: data.client_id,
+      title: data.title,
+      amount: data.amount,
+      due_date: data.due_date,
+      status: "pendente",
+      type: data.type,
+      pix_copy_paste: `00020126580014BR.GOV.BCB.PIX0136triadestudio@pix.com.br5204000053039865408${data.amount}.005802BR5913TRIADE STUDIO6009SAO PAULO62070503***6304F99A`,
+      invoice_url: data.invoice_url || `https://asaas.com/i/inv-${Date.now()}`,
+      created_at: new Date().toISOString(),
+    };
+    setInvoices((prev) => [newInvoice, ...prev]);
+    return newInvoice;
+  };
+
+  const markInvoiceAsPaid = (invoiceId: string) => {
+    setInvoices((prev) =>
+      prev.map((inv) =>
+        inv.id === invoiceId
+          ? { ...inv, status: "pago", paid_at: new Date().toISOString() }
+          : inv
+      )
+    );
+  };
+
+  const generate5050Invoices = (clientId: string, projectTitle: string, setupValue: number) => {
+    const half = setupValue / 2;
+    const inv1: Invoice = {
+      id: `inv-${Date.now()}-1`,
+      workspace_id: workspace.id,
+      client_id: clientId,
+      title: `Entrada (50%) - ${projectTitle}`,
+      amount: half,
+      due_date: new Date().toISOString().split("T")[0],
+      status: "pendente",
+      type: "entrada_projeto",
+      pix_copy_paste: `00020126580014BR.GOV.BCB.PIX0136triadestudio@pix.com.br5204000053039865408${half}.005802BR5913TRIADE STUDIO6009SAO PAULO62070503***6304C101`,
+      invoice_url: `https://asaas.com/i/inv-5050-${Date.now()}-1`,
+      created_at: new Date().toISOString(),
+    };
+    const inv2: Invoice = {
+      id: `inv-${Date.now()}-2`,
+      workspace_id: workspace.id,
+      client_id: clientId,
+      title: `Entrega Final (50%) - ${projectTitle}`,
+      amount: half,
+      due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      status: "pendente",
+      type: "entrega_projeto",
+      pix_copy_paste: `00020126580014BR.GOV.BCB.PIX0136triadestudio@pix.com.br5204000053039865408${half}.005802BR5913TRIADE STUDIO6009SAO PAULO62070503***6304C102`,
+      invoice_url: `https://asaas.com/i/inv-5050-${Date.now()}-2`,
+      created_at: new Date().toISOString(),
+    };
+    setInvoices((prev) => [inv1, inv2, ...prev]);
+  };
+
+  const generateMRRInvoice = (clientId: string, monthlyFee: number) => {
+    const client = clients.find((c) => c.id === clientId);
+    const title = `Mensalidade Gestão de Tráfego - ${new Intl.DateTimeFormat("pt-BR", { month: "long" }).format(new Date())}`;
+    const newInvoice: Invoice = {
+      id: `inv-${Date.now().toString(36)}`,
+      workspace_id: workspace.id,
+      client_id: clientId,
+      title: title,
+      amount: monthlyFee,
+      due_date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      status: "pendente",
+      type: "mrr_trafego",
+      pix_copy_paste: `00020126580014BR.GOV.BCB.PIX0136triadestudio@pix.com.br5204000053039865408${monthlyFee}.005802BR5913TRIADE STUDIO6009SAO PAULO62070503***6304MRR1`,
+      invoice_url: `https://asaas.com/i/inv-mrr-${Date.now()}`,
+      created_at: new Date().toISOString(),
+    };
+    setInvoices((prev) => [newInvoice, ...prev]);
+  };
+
+  const addExpense: TriadeContextType["addExpense"] = (data) => {
+    const newExp: Expense = {
+      id: `exp-${Date.now().toString(36)}`,
+      workspace_id: workspace.id,
+      title: data.title,
+      category: data.category,
+      amount: data.amount,
+      due_date: data.due_date,
+      status: data.status || "pendente",
+      is_recurring: data.is_recurring ?? true,
+      created_at: new Date().toISOString(),
+    };
+    setExpenses((prev) => [newExp, ...prev]);
+    return newExp;
+  };
+
+  const toggleExpenseStatus = (expenseId: string) => {
+    setExpenses((prev) =>
+      prev.map((e) =>
+        e.id === expenseId
+          ? {
+              ...e,
+              status: e.status === "pago" ? "pendente" : "pago",
+              paid_at: e.status === "pago" ? undefined : new Date().toISOString(),
+            }
+          : e
+      )
+    );
+  };
+
+  // FASE 4: WHATSAPP TRIGGER DISPATCHER
+  const notifyClientWhatsApp: TriadeContextType["notifyClientWhatsApp"] = async ({
+    phone,
+    trigger,
+    data,
+  }) => {
+    let message = "";
+    const origin = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+
+    switch (trigger) {
+      case "welcome":
+        message = WhatsAppTemplates.welcomeOnboarding(
+          data.clientName,
+          data.companyName,
+          `${origin}/portal/${data.portalToken}`
+        );
+        break;
+      case "approval":
+        message = WhatsAppTemplates.newApproval(
+          data.clientName,
+          data.itemTitle,
+          `${origin}/portal/${data.portalToken}`
+        );
+        break;
+      case "onboarding":
+        message = WhatsAppTemplates.onboardingReminder(
+          data.clientName,
+          data.stepTitle,
+          `${origin}/portal/${data.portalToken}`
+        );
+        break;
+      case "invoice":
+        message = WhatsAppTemplates.invoiceReminder(
+          data.clientName,
+          data.invoiceTitle,
+          data.amount,
+          data.dueDate,
+          data.pixCode,
+          `${origin}/portal/${data.portalToken}`
+        );
+        break;
+    }
+
+    const res = await sendWhatsAppNotification({
+      phone,
+      message,
+      webhookUrl: workspace.whatsapp_webhook_url,
+    });
+
+    return res;
+  };
+
+  // Consultas Rápidas
   const getClientByPortalToken = (token: string) => {
     return clients.find((c) => c.portal_token.toLowerCase() === token.toLowerCase());
   };
@@ -428,14 +962,21 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return approvals.filter((a) => a.client_id === clientId);
   };
 
+  const getClientInvoices = (clientId: string) => {
+    return invoices.filter((i) => i.client_id === clientId);
+  };
+
   const resetToDefaultData = () => {
     setWorkspace(INITIAL_WORKSPACE);
+    setWorkspaces([INITIAL_WORKSPACE]);
     setClients(INITIAL_CLIENTS);
     setOnboardingSteps(INITIAL_ONBOARDING_STEPS);
     setTasks(INITIAL_TASKS);
     setApprovals(INITIAL_APPROVALS);
     setInvoices(INITIAL_INVOICES);
     setExpenses(INITIAL_EXPENSES);
+    setProposals(INITIAL_PROPOSALS);
+    setContracts(INITIAL_CONTRACTS);
     try {
       localStorage.clear();
     } catch {}
@@ -445,13 +986,19 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     <TriadeContext.Provider
       value={{
         workspace,
+        workspaces,
         clients,
         onboardingSteps,
         tasks,
         approvals,
         invoices,
         expenses,
+        proposals,
+        contracts,
         metrics,
+        switchWorkspace,
+        createWorkspace,
+        updateWorkspace,
         addClient,
         updateClient,
         updateAccessVault,
@@ -461,10 +1008,26 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         updateTaskStatus,
         updateTask,
         deleteTask,
+        addProposal,
+        updateProposalStage,
+        approveAndCloseProposal,
+        getProposalByToken,
+        signContract,
+        getClientContract,
+        addApproval,
+        reviewApproval,
+        addInvoice,
+        markInvoiceAsPaid,
+        generate5050Invoices,
+        generateMRRInvoice,
+        addExpense,
+        toggleExpenseStatus,
+        notifyClientWhatsApp,
         getClientByPortalToken,
         getClientSteps,
         getClientTasks,
         getClientApprovals,
+        getClientInvoices,
         resetToDefaultData,
         isLoaded,
       }}
