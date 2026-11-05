@@ -100,10 +100,10 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-triade-border bg-[#121215] shadow-2xl p-6 sm:p-8 z-10">
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-triade-border bg-[#0B1724] shadow-2xl p-6 sm:p-8 z-10">
         <div className="flex items-center justify-between pb-4 border-b border-triade-border">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-triade-goldLight to-triade-gold text-black font-bold">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-600 text-black font-bold">
               <Building className="h-5 w-5" />
             </div>
             <div>
@@ -138,7 +138,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   placeholder="Ex: Nexus Odontologia"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none focus:ring-1 focus:ring-triade-gold"
+                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none focus:ring-1 focus:ring-triade-cyan"
                 />
               </div>
             </div>
@@ -155,7 +155,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   placeholder="Ex: Dr. Felipe Mendes"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none focus:ring-1 focus:ring-triade-gold"
+                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none focus:ring-1 focus:ring-triade-cyan"
                 />
               </div>
             </div>
@@ -174,7 +174,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   placeholder="contato@empresa.com.br"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none focus:ring-1 focus:ring-triade-gold"
+                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none focus:ring-1 focus:ring-triade-cyan"
                 />
               </div>
             </div>
@@ -190,7 +190,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   placeholder="(11) 99999-8888"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none focus:ring-1 focus:ring-triade-gold"
+                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none focus:ring-1 focus:ring-triade-cyan"
                 />
               </div>
             </div>
@@ -214,7 +214,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   onClick={() => setServiceType(item.type as ServiceType)}
                   className={`flex flex-col text-left p-3 rounded-xl border transition-all ${
                     serviceType === item.type
-                      ? "border-triade-gold bg-triade-gold/10 text-white shadow-gold-glow"
+                      ? "border-triade-cyan bg-triade-cyan/15 text-triade-cyanLight shadow-blue-glow"
                       : "border-triade-border bg-zinc-900/50 text-zinc-400 hover:border-zinc-700"
                   }`}
                 >
@@ -238,7 +238,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   placeholder="Ex: 3500"
                   value={monthlyFee}
                   onChange={(e) => setMonthlyFee(e.target.value === "" ? "" : Number(e.target.value))}
-                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none focus:ring-1 focus:ring-triade-gold"
+                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none focus:ring-1 focus:ring-triade-cyan"
                 />
               </div>
             </div>
@@ -254,7 +254,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   placeholder="Ex: 42000"
                   value={contractValue}
                   onChange={(e) => setContractValue(e.target.value === "" ? "" : Number(e.target.value))}
-                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none focus:ring-1 focus:ring-triade-gold"
+                  className="w-full rounded-xl border border-triade-border bg-zinc-900/80 pl-9 pr-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none focus:ring-1 focus:ring-triade-cyan"
                 />
               </div>
             </div>
@@ -287,7 +287,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-triade-goldLight via-triade-gold to-triade-goldDark text-black text-sm font-bold shadow-gold-glow hover:opacity-95 transition-opacity"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-sm font-bold shadow-blue-glow hover:opacity-95 transition-opacity"
             >
               Criar Cliente & Disparar Onboarding
             </button>

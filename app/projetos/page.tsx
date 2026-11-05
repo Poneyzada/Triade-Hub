@@ -106,7 +106,7 @@ export default function ProjetosKanbanPage() {
         {/* Header do Módulo */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-triade-border">
           <div>
-            <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-triade-blue text-xs font-bold uppercase tracking-wider mb-1">
               <Layers className="h-4 w-4" />
               <span>Operação da Agência</span>
             </div>
@@ -120,7 +120,7 @@ export default function ProjetosKanbanPage() {
 
           <button
             onClick={() => openNewTaskInColumn("todo")}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-triade-cyanLight to-triade-cyan text-black text-sm font-bold shadow-cyan-glow hover:opacity-95 transition-all self-start sm:self-auto"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-sm font-bold shadow-blue-glow hover:opacity-95 transition-all self-start sm:self-auto"
           >
             <Plus className="h-4 w-4 stroke-[3]" />
             <span>Nova Tarefa</span>
@@ -128,7 +128,7 @@ export default function ProjetosKanbanPage() {
         </div>
 
         {/* Barra de Filtros */}
-        <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl border border-triade-border bg-[#121215]">
+        <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl border border-triade-border bg-[#0E1C2A]">
           <div className="flex flex-wrap items-center gap-3">
             {/* Filtro por Cliente */}
             <div className="flex items-center gap-2">
@@ -169,12 +169,12 @@ export default function ProjetosKanbanPage() {
             onClick={() => setOnlyClientVisible(!onlyClientVisible)}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
               onlyClientVisible
-                ? "border-triade-gold bg-triade-gold/15 text-triade-goldLight shadow-gold-glow"
-                : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-200"
+                ? "border-triade-cyan bg-triade-cyan/15 text-triade-cyanLight shadow-blue-glow"
+                : "border-zinc-800 bg-[#0B1724] text-zinc-400 hover:text-zinc-200"
             }`}
           >
             {onlyClientVisible ? (
-              <Eye className="h-3.5 w-3.5 text-triade-gold" />
+              <Eye className="h-3.5 w-3.5 text-triade-cyan" />
             ) : (
               <EyeOff className="h-3.5 w-3.5" />
             )}
@@ -190,7 +190,7 @@ export default function ProjetosKanbanPage() {
             return (
               <div
                 key={col.id}
-                className="flex flex-col rounded-2xl border border-triade-border bg-[#0E0F13] p-4 min-h-[500px]"
+                className="flex flex-col rounded-2xl border border-triade-border bg-[#0B1724] p-4 min-h-[500px]"
               >
                 {/* Header da Coluna */}
                 <div className="flex items-center justify-between pb-3 mb-3 border-b border-triade-border">
@@ -223,7 +223,7 @@ export default function ProjetosKanbanPage() {
                     return (
                       <div
                         key={task.id}
-                        className="group relative rounded-xl border border-triade-border bg-[#14151B] p-4 shadow-sm hover:border-triade-gold/40 transition-all flex flex-col justify-between"
+                        className="group relative rounded-xl border border-triade-border bg-[#0E1C2A] p-4 shadow-sm hover:border-triade-cyan/40 transition-all flex flex-col justify-between"
                       >
                         <div>
                           {/* Top: Client Name & Visibilidade */}
@@ -246,13 +246,13 @@ export default function ProjetosKanbanPage() {
                                 }
                                 className={`flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded transition-colors ${
                                   task.visible_to_client
-                                    ? "bg-triade-gold/15 text-triade-goldLight border border-triade-gold/30"
-                                    : "bg-zinc-800 text-zinc-500 hover:text-zinc-300"
+                                    ? "bg-triade-cyan/15 text-triade-cyanLight border border-triade-cyan/30"
+                                    : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-zinc-200"
                                 }`}
                               >
                                 {task.visible_to_client ? (
                                   <>
-                                    <Eye className="h-2.5 w-2.5" />
+                                    <Eye className="h-2.5 w-2.5 text-triade-cyan" />
                                     <span>Portal</span>
                                   </>
                                 ) : (

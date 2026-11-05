@@ -46,7 +46,7 @@ export const NewExpenseModal: React.FC<NewExpenseModalProps> = ({ isOpen, onClos
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative w-full max-w-lg rounded-2xl border border-triade-border bg-[#121215] p-6 sm:p-8 shadow-2xl z-10">
+      <div className="relative w-full max-w-lg rounded-2xl border border-triade-border bg-[#0E1C2A] p-6 sm:p-8 shadow-2xl z-10">
         <div className="flex items-center justify-between pb-4 border-b border-triade-border">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/20 text-red-400 border border-red-500/30">
@@ -135,7 +135,7 @@ export const NewExpenseModal: React.FC<NewExpenseModalProps> = ({ isOpen, onClos
               type="checkbox"
               checked={isRecurring}
               onChange={(e) => setIsRecurring(e.target.checked)}
-              className="h-4 w-4 rounded border-zinc-700 bg-zinc-800 text-triade-gold"
+              className="h-4 w-4 rounded border-zinc-700 bg-zinc-800 text-triade-cyan focus:ring-triade-cyan"
             />
           </div>
 

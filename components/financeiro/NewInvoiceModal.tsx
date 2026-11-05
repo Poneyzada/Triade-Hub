@@ -63,7 +63,7 @@ export const NewInvoiceModal: React.FC<NewInvoiceModalProps> = ({ isOpen, onClos
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative w-full max-w-xl rounded-2xl border border-triade-border bg-[#121215] p-6 sm:p-8 shadow-2xl z-10">
+      <div className="relative w-full max-w-xl rounded-2xl border border-triade-border bg-[#0E1C2A] p-6 sm:p-8 shadow-2xl z-10">
         <div className="flex items-center justify-between pb-4 border-b border-triade-border">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
@@ -84,16 +84,16 @@ export const NewInvoiceModal: React.FC<NewInvoiceModalProps> = ({ isOpen, onClos
         </div>
 
         {/* Geradores Inteligentes Automáticos */}
-        <div className="mt-4 p-4 rounded-xl border border-triade-gold/30 bg-triade-gold/5 space-y-2">
-          <span className="text-xs font-bold text-triade-goldLight flex items-center gap-1.5">
-            <Sparkles className="h-4 w-4 text-triade-gold" />
+        <div className="mt-4 p-4 rounded-xl border border-triade-cyan/30 bg-triade-cyan/5 space-y-2">
+          <span className="text-xs font-bold text-triade-cyanLight flex items-center gap-1.5">
+            <Sparkles className="h-4 w-4 text-triade-cyan" />
             <span>Gerador Inteligente de Cobrança:</span>
           </span>
           <div className="flex flex-wrap gap-2 pt-1">
             <button
               type="button"
               onClick={handleGenerate5050}
-              className="px-3 py-1.5 rounded-lg border border-triade-gold/40 bg-triade-gold/15 text-triade-goldLight text-xs font-bold hover:bg-triade-gold/25 transition-colors"
+              className="px-3 py-1.5 rounded-lg border border-triade-cyan/40 bg-triade-cyan/15 text-triade-cyanLight text-xs font-bold hover:bg-triade-cyan/25 transition-colors"
             >
               Parcelamento 50/50 (Entrada + Entrega)
             </button>
@@ -193,7 +193,7 @@ export const NewInvoiceModal: React.FC<NewInvoiceModalProps> = ({ isOpen, onClos
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-black text-xs font-bold shadow-md"
+              className="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-bold shadow-blue-glow hover:opacity-95"
             >
               Criar Cobrança Avulsa
             </button>

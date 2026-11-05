@@ -27,6 +27,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTriade } from "@/lib/store";
+import { TriadeLogo } from "@/components/ui/TriadeLogo";
 import { formatDate, formatCurrency } from "@/lib/utils";
 import { OnboardingStep, Task, Approval, Invoice, Contract } from "@/types/database";
 
@@ -154,15 +155,13 @@ export default function ClientPortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090B] text-zinc-100 flex flex-col items-center">
-      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.06)_0%,transparent_60%)]" />
+    <div className="min-h-screen bg-[#050B11] text-zinc-200 flex flex-col items-center">
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.08)_0%,transparent_60%)]" />
 
       {/* Top Header */}
-      <header className="w-full border-b border-triade-border bg-[#0E0F13]/90 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+      <header className="w-full border-b border-triade-border bg-[#08131F]/90 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-triade-goldLight via-triade-gold to-triade-goldDark text-black font-extrabold text-sm shadow-gold-glow">
-            ▲
-          </div>
+          <TriadeLogo size={36} />
           <div>
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-black tracking-widest text-zinc-100 uppercase">
@@ -187,11 +186,11 @@ export default function ClientPortalPage() {
       {/* Hero do Cliente */}
       <main className="w-full max-w-4xl px-4 sm:px-6 py-8 space-y-6 flex-1 z-10">
         {/* Welcome Banner */}
-        <div className="rounded-3xl border border-triade-border bg-gradient-to-b from-[#14151B] to-[#101115] p-6 sm:p-8 shadow-card-subtle relative overflow-hidden">
+        <div className="rounded-3xl border border-triade-border bg-gradient-to-b from-[#0E1C2A] to-[#08131F] p-6 sm:p-8 shadow-card-subtle relative overflow-hidden">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-triade-gold/30 bg-triade-gold/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-triade-goldLight mb-2">
-                <Sparkles className="h-3 w-3 text-triade-gold" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-triade-cyan/30 bg-triade-cyan/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-triade-cyanLight mb-2">
+                <Sparkles className="h-3 w-3 text-triade-cyan" />
                 <span>Espaço VIP • {workspace.name}</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-100 tracking-tight">
@@ -207,9 +206,9 @@ export default function ClientPortalPage() {
                 href={client.access_vault.drive_folder_url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-zinc-700 bg-zinc-800/90 hover:bg-zinc-700 text-xs font-semibold text-zinc-200 transition-colors shadow-sm self-start sm:self-auto"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-triade-border bg-[#0B1724] hover:bg-[#0E1C2A] text-xs font-semibold text-zinc-200 transition-colors shadow-sm self-start sm:self-auto"
               >
-                <FolderOpen className="h-4 w-4 text-triade-gold" />
+                <FolderOpen className="h-4 w-4 text-triade-cyanLight" />
                 <span>Google Drive</span>
                 <ExternalLink className="h-3.5 w-3.5 text-zinc-400" />
               </a>
@@ -217,20 +216,20 @@ export default function ClientPortalPage() {
           </div>
 
           {/* Barra de Progresso do Onboarding */}
-          <div className="mt-6 pt-6 border-t border-zinc-800">
+          <div className="mt-6 pt-6 border-t border-triade-border">
             <div className="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
               <span className="text-zinc-300 flex items-center gap-2">
-                <Shield className="h-4 w-4 text-triade-gold" />
+                <Shield className="h-4 w-4 text-triade-cyan" />
                 <span>Progresso da Configuração Inicial (Onboarding)</span>
               </span>
-              <span className="text-triade-goldLight font-bold text-sm">
+              <span className="text-triade-cyanLight font-bold text-sm">
                 {progressPercent}%
               </span>
             </div>
 
-            <div className="w-full h-3 rounded-full bg-zinc-900 border border-zinc-800 overflow-hidden p-0.5">
+            <div className="w-full h-3 rounded-full bg-[#050B11] border border-triade-border overflow-hidden p-0.5">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-triade-goldLight via-triade-gold to-triade-goldDark transition-all duration-700 shadow-gold-glow"
+                className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 transition-all duration-700 shadow-blue-glow"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -255,8 +254,8 @@ export default function ClientPortalPage() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${
                   isActive
-                    ? "bg-triade-gold text-black shadow-gold-glow"
-                    : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
+                    ? "bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black shadow-blue-glow"
+                    : "text-zinc-400 hover:text-zinc-200 hover:bg-[#0E1C2A]"
                 }`}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -294,7 +293,7 @@ export default function ClientPortalPage() {
                         ? "border-emerald-500/40 bg-emerald-500/5"
                         : isSubmitted
                         ? "border-triade-cyan/40 bg-triade-cyan/5"
-                        : "border-triade-border bg-[#121215]"
+                        : "border-triade-border bg-[#0E1C2A]"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -345,13 +344,13 @@ export default function ClientPortalPage() {
                               placeholder="Cole o link do Drive, ID da conta, usuário ou digite sua resposta..."
                               value={stepInputs[step.id] ?? (step.client_response || "")}
                               onChange={(e) => handleInputChange(step.id, e.target.value)}
-                              className="w-full rounded-xl border border-zinc-700 bg-zinc-900/90 p-2.5 text-xs text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none"
+                              className="w-full rounded-xl border border-triade-border bg-[#0B1724] p-2.5 text-xs text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none"
                             />
                             <div className="flex justify-end">
                               <button
                                 type="button"
                                 onClick={() => handleSubmitStep(step.id)}
-                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-bold shadow-gold-glow hover:opacity-90"
+                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-bold shadow-blue-glow hover:opacity-90"
                               >
                                 <Send className="h-3.5 w-3.5" />
                                 <span>Enviar para a Agência</span>
@@ -388,7 +387,7 @@ export default function ClientPortalPage() {
                         ? "border-emerald-500/40 bg-emerald-500/5"
                         : appr.status === "solicitado_ajustes"
                         ? "border-amber-500/40 bg-amber-500/5"
-                        : "border-triade-border bg-[#121215]"
+                        : "border-triade-border bg-[#0E1C2A]"
                     }`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
@@ -518,7 +517,7 @@ export default function ClientPortalPage() {
               })}
 
               {approvals.length === 0 && (
-                <div className="py-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-[#121215]/50">
+                <div className="py-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-[#0E1C2A]/50">
                   <CheckCircle2 className="h-8 w-8 text-zinc-600 mx-auto mb-2" />
                   <p className="text-xs font-semibold text-zinc-400">
                     Nenhum material aguardando aprovação no momento.
@@ -546,7 +545,7 @@ export default function ClientPortalPage() {
                     className={`rounded-2xl border p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${
                       isPaid
                         ? "border-emerald-500/30 bg-emerald-500/5"
-                        : "border-triade-border bg-[#121215]"
+                        : "border-triade-border bg-[#0E1C2A]"
                     }`}
                   >
                     <div>
@@ -559,7 +558,7 @@ export default function ClientPortalPage() {
                         </span>
                       </div>
                       <h4 className="text-sm font-bold text-zinc-100">{inv.title}</h4>
-                      <p className="text-lg font-black text-triade-goldLight mt-1">
+                      <p className="text-lg font-black text-sky-300 mt-1">
                         {formatCurrency(inv.amount)}
                       </p>
                     </div>
@@ -578,7 +577,7 @@ export default function ClientPortalPage() {
                       {!isPaid && (
                         <button
                           onClick={() => setSelectedPixInvoice(inv)}
-                          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-bold shadow-gold-glow hover:opacity-95 transition-opacity"
+                          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-bold shadow-blue-glow hover:opacity-95 transition-opacity"
                         >
                           <QrCode className="h-4 w-4" />
                           <span>Pagar via PIX</span>
@@ -590,7 +589,7 @@ export default function ClientPortalPage() {
               })}
 
               {invoices.length === 0 && (
-                <div className="py-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-[#121215]/50">
+                <div className="py-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-[#0E1C2A]/50">
                   <CreditCard className="h-8 w-8 text-zinc-600 mx-auto mb-2" />
                   <p className="text-xs font-semibold text-zinc-400">
                     Nenhuma fatura emitida até o momento.
@@ -605,9 +604,9 @@ export default function ClientPortalPage() {
         {activeTab === "contract" && (
           <div className="space-y-4">
             {contract ? (
-              <div className="rounded-2xl border border-triade-border bg-[#121215] p-6 space-y-4">
+              <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-6 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-triade-border">
-                  <div className="flex items-center gap-2 text-triade-gold font-bold text-sm">
+                  <div className="flex items-center gap-2 text-triade-cyan font-bold text-sm">
                     <FileText className="h-5 w-5" />
                     <span>{contract.title}</span>
                   </div>
@@ -622,7 +621,7 @@ export default function ClientPortalPage() {
                   </span>
                 </div>
 
-                <div className="p-4 rounded-xl bg-black/50 border border-zinc-800 text-xs text-zinc-300 leading-relaxed font-mono whitespace-pre-wrap max-h-72 overflow-y-auto">
+                <div className="p-4 rounded-xl bg-[#050B11]/80 border border-triade-border text-xs text-zinc-300 leading-relaxed font-mono whitespace-pre-wrap max-h-72 overflow-y-auto">
                   {contract.content}
                 </div>
 
@@ -648,7 +647,7 @@ export default function ClientPortalPage() {
                         placeholder="Nome Completo do Representante"
                         value={signerName}
                         onChange={(e) => setSignerName(e.target.value)}
-                        className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-zinc-100 focus:outline-none"
+                        className="rounded-xl border border-triade-border bg-[#0B1724] px-3 py-2 text-xs text-zinc-100 focus:outline-none"
                       />
                       <input
                         type="text"
@@ -656,12 +655,12 @@ export default function ClientPortalPage() {
                         placeholder="CPF ou CNPJ do Titular"
                         value={signerDoc}
                         onChange={(e) => setSignerDoc(e.target.value)}
-                        className="rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-zinc-100 focus:outline-none"
+                        className="rounded-xl border border-triade-border bg-[#0B1724] px-3 py-2 text-xs text-zinc-100 focus:outline-none"
                       />
                     </div>
                     <button
                       type="submit"
-                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-extrabold shadow-gold-glow hover:opacity-95"
+                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-extrabold shadow-blue-glow hover:opacity-95"
                     >
                       Assinar Contrato Digitalmente
                     </button>
@@ -685,7 +684,7 @@ export default function ClientPortalPage() {
 
             <div className="space-y-3">
               {tasks.map((task) => (
-                <div key={task.id} className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-sm">
+                <div key={task.id} className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-sm">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h4 className="text-sm font-bold text-zinc-100">{task.title}</h4>
@@ -716,10 +715,10 @@ export default function ClientPortalPage() {
                   href={client.access_vault.drive_folder_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-2xl border border-triade-gold/30 bg-triade-gold/5 p-5 hover:bg-triade-gold/10 transition-colors flex items-center justify-between"
+                  className="rounded-2xl border border-triade-cyan/30 bg-triade-cyan/5 p-5 hover:bg-triade-cyan/10 transition-colors flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-triade-gold/20 text-triade-gold">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-triade-cyan/20 text-triade-cyanLight">
                       <FolderOpen className="h-5 w-5" />
                     </div>
                     <div>
@@ -727,7 +726,7 @@ export default function ClientPortalPage() {
                       <p className="text-xs text-zinc-400">Acesse vídeos, fotos e documentos</p>
                     </div>
                   </div>
-                  <ExternalLink className="h-4 w-4 text-triade-gold" />
+                  <ExternalLink className="h-4 w-4 text-triade-cyan" />
                 </a>
               )}
 
@@ -737,7 +736,7 @@ export default function ClientPortalPage() {
                   href={link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-2xl border border-triade-border bg-[#121215] p-5 hover:border-triade-cyan/40 transition-colors flex items-center justify-between"
+                  className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 hover:border-triade-cyan/40 transition-colors flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-triade-cyan/15 text-triade-cyanLight">
@@ -760,7 +759,7 @@ export default function ClientPortalPage() {
       {selectedPixInvoice && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedPixInvoice(null)} />
-          <div className="relative w-full max-w-md rounded-2xl border border-triade-border bg-[#121215] p-6 shadow-2xl z-10 text-center space-y-4">
+          <div className="relative w-full max-w-md rounded-2xl border border-triade-border bg-[#0E1C2A] p-6 shadow-2xl z-10 text-center space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-triade-border">
               <h3 className="text-sm font-bold text-zinc-100">Pagamento via PIX Instantâneo</h3>
               <button onClick={() => setSelectedPixInvoice(null)} className="text-zinc-400 hover:text-white">
@@ -784,7 +783,7 @@ export default function ClientPortalPage() {
               <span className="text-[10px] uppercase font-bold text-zinc-400 block">
                 Código PIX Copia e Cola:
               </span>
-              <div className="p-2.5 rounded-lg border border-zinc-800 bg-black/60 font-mono text-[11px] text-zinc-300 break-all select-all max-h-20 overflow-y-auto">
+              <div className="p-2.5 rounded-lg border border-zinc-800 bg-[#050B11] font-mono text-[11px] text-zinc-300 break-all select-all max-h-20 overflow-y-auto">
                 {selectedPixInvoice.pix_copy_paste}
               </div>
               <button
@@ -800,7 +799,7 @@ export default function ClientPortalPage() {
       )}
 
       <footer className="w-full border-t border-triade-border/60 py-6 text-center text-xs text-zinc-500">
-        Desenvolvido por <span className="text-triade-gold font-semibold">{workspace.name}</span> • Sistema Tríade Flow
+        Desenvolvido por <span className="text-triade-cyanLight font-semibold">{workspace.name}</span> • Sistema Tríade Flow
       </footer>
     </div>
   );

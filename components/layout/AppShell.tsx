@@ -16,7 +16,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const [newTaskOpen, setNewTaskOpen] = useState(false);
 
   return (
-    <div className="relative flex min-h-screen bg-[#09090B]">
+    <div className="relative flex min-h-screen bg-[#050B11]">
       {/* Sidebar Desktop e Mobile */}
       <Sidebar
         isOpen={mobileMenuOpen}

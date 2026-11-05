@@ -53,10 +53,10 @@ export const NewWorkspaceModal: React.FC<NewWorkspaceModalProps> = ({ isOpen, on
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative w-full max-w-lg rounded-2xl border border-triade-border bg-[#121215] p-6 sm:p-8 shadow-2xl z-10">
+      <div className="relative w-full max-w-lg rounded-2xl border border-triade-border bg-[#0E1C2A] p-6 sm:p-8 shadow-2xl z-10">
         <div className="flex items-center justify-between pb-4 border-b border-triade-border">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-triade-goldLight to-triade-gold text-black font-bold">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-500 text-black font-bold">
               <Building2 className="h-5 w-5" />
             </div>
             <div>
@@ -84,7 +84,7 @@ export const NewWorkspaceModal: React.FC<NewWorkspaceModalProps> = ({ isOpen, on
               placeholder="Ex: Vortex Growth Agency"
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
-              className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-gold focus:outline-none"
+              className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-cyan focus:outline-none"
             />
           </div>
 
@@ -147,7 +147,7 @@ export const NewWorkspaceModal: React.FC<NewWorkspaceModalProps> = ({ isOpen, on
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-triade-goldLight via-triade-gold to-triade-goldDark text-black text-xs font-bold shadow-gold-glow hover:opacity-95"
+              className="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-bold shadow-blue-glow hover:opacity-95"
             >
               Criar Workspace Isolado
             </button>

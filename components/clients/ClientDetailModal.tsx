@@ -136,7 +136,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
       case "app":
         return { label: "Aplicativo Mobile", color: "bg-purple-500/10 text-purple-400 border-purple-500/30" };
       case "full":
-        return { label: "Full-Service Tríade", color: "bg-triade-gold/15 text-triade-goldLight border-triade-gold/30" };
+        return { label: "Full-Service Tríade", color: "bg-triade-cyan/15 text-triade-cyanLight border-triade-cyan/30" };
     }
   };
 
@@ -148,11 +148,11 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border border-triade-border bg-[#121215] shadow-2xl z-10 overflow-hidden">
+      <div className="relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border border-triade-border bg-[#0B1724] shadow-2xl z-10 overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-triade-border bg-[#0E0F13]">
+        <div className="flex items-center justify-between p-6 border-b border-triade-border bg-[#07111A]">
           <div className="flex items-center gap-3.5">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-triade-goldLight via-triade-gold to-triade-goldDark text-black font-extrabold text-lg shadow-gold-glow">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-600 text-black font-extrabold text-lg shadow-blue-glow">
               {client.company_name.charAt(0)}
             </div>
             <div>
@@ -182,7 +182,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex border-b border-triade-border bg-[#101115] px-6 gap-2">
+        <div className="flex border-b border-triade-border bg-[#09141F] px-6 gap-2">
           {[
             { id: "overview", label: "Visão Geral", icon: Building },
             { id: "vault", label: "Cofre de Acessos", icon: Key },
@@ -205,8 +205,8 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
                   isActive
-                    ? "border-triade-gold text-triade-goldLight bg-triade-gold/5"
-                    : "border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40"
+                    ? "border-triade-blue text-triade-blueLight bg-triade-blue/10"
+                    : "border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-[#0D1C2A]"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -222,23 +222,23 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
           {activeTab === "overview" && (
             <div className="space-y-6">
               {/* Portal Público Callout Banner */}
-              <div className="rounded-2xl border border-triade-gold/30 bg-gradient-to-r from-triade-gold/10 via-zinc-900/60 to-black p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="rounded-2xl border border-triade-blue/30 bg-gradient-to-r from-triade-blue/15 via-[#0D1D2B] to-[#08121A] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <div className="flex items-center gap-2 text-triade-goldLight text-xs font-bold uppercase tracking-wider mb-1">
-                    <Sparkles className="h-4 w-4 text-triade-gold" />
+                  <div className="flex items-center gap-2 text-triade-blueLight text-xs font-bold uppercase tracking-wider mb-1">
+                    <Sparkles className="h-4 w-4 text-triade-blue" />
                     <span>Link Exclusivo do Portal do Cliente</span>
                   </div>
                   <p className="text-xs text-zinc-300">
                     O cliente acessa sem login por este token e visualiza o onboarding, tarefas públicas e links úteis.
                   </p>
-                  <p className="mt-1 font-mono text-[11px] text-zinc-400 bg-black/40 px-2.5 py-1 rounded inline-block">
+                  <p className="mt-1 font-mono text-[11px] text-cyan-300/80 bg-black/40 px-2.5 py-1 rounded inline-block">
                     /portal/{client.portal_token}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                   <button
                     onClick={handleCopyPortalUrl}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-triade-gold/40 bg-triade-gold/10 text-triade-goldLight text-xs font-semibold hover:bg-triade-gold/20 transition-colors"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-triade-blue/40 bg-triade-blue/10 text-triade-blueLight text-xs font-semibold hover:bg-triade-blue/20 transition-colors"
                   >
                     {copiedToken ? (
                       <>
@@ -256,7 +256,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                     href={`/portal/${client.portal_token}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-bold shadow-gold-glow hover:opacity-90 transition-opacity"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-bold shadow-blue-glow hover:opacity-90 transition-opacity"
                   >
                     <span>Abrir Portal</span>
                     <ExternalLink className="h-3.5 w-3.5" />
@@ -270,7 +270,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                   <span className="text-[10px] uppercase font-semibold text-zinc-400 block mb-1">
                     Mensalidade (MRR)
                   </span>
-                  <span className="text-lg font-bold text-triade-goldLight">
+                  <span className="text-lg font-bold text-sky-300">
                     {formatCurrency(client.monthly_fee)}
                   </span>
                 </div>
@@ -323,7 +323,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
           {activeTab === "vault" && (
             <form onSubmit={handleSaveVault} className="space-y-6">
               <div className="flex items-center justify-between pb-2 border-b border-triade-border">
-                <div className="flex items-center gap-2 text-triade-gold">
+                <div className="flex items-center gap-2 text-triade-cyan">
                   <Shield className="h-5 w-5" />
                   <h3 className="text-sm font-bold text-zinc-100">
                     Cofre Seguro de Acessos & Credenciais
@@ -331,7 +331,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                 </div>
                 <button
                   type="submit"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-triade-goldLight to-triade-gold text-black text-xs font-bold shadow-gold-glow hover:opacity-95 transition-opacity"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-bold shadow-blue-glow hover:opacity-95 transition-opacity"
                 >
                   {vaultSaved ? (
                     <>
@@ -358,7 +358,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                     placeholder="Ex: BM-889102938"
                     value={bmId}
                     onChange={(e) => setBmId(e.target.value)}
-                    className="w-full rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none"
+                    className="w-full rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none"
                   />
                 </div>
 
@@ -371,7 +371,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                     placeholder="Ex: 892-120-4491"
                     value={googleAds}
                     onChange={(e) => setGoogleAds(e.target.value)}
-                    className="w-full rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none"
+                    className="w-full rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none"
                   />
                 </div>
               </div>
@@ -386,7 +386,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                     placeholder="Ex: usuario.adm / Senha..."
                     value={loginRegistroBr}
                     onChange={(e) => setLoginRegistroBr(e.target.value)}
-                    className="w-full rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none"
+                    className="w-full rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none"
                   />
                 </div>
 
@@ -399,7 +399,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                     placeholder="Ex: dns@cliente.com.br"
                     value={loginCloudflare}
                     onChange={(e) => setLoginCloudflare(e.target.value)}
-                    className="w-full rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none"
+                    className="w-full rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none"
                   />
                 </div>
               </div>
@@ -414,7 +414,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                     placeholder="https://drive.google.com/drive/folders/..."
                     value={driveUrl}
                     onChange={(e) => setDriveUrl(e.target.value)}
-                    className="flex-1 rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-gold focus:outline-none"
+                    className="flex-1 rounded-xl border border-triade-border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-triade-cyan focus:outline-none"
                   />
                   {driveUrl && (
                     <a
@@ -423,7 +423,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                       rel="noreferrer"
                       className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-zinc-700 bg-zinc-800 text-zinc-200 text-xs font-medium hover:bg-zinc-700 transition-colors"
                     >
-                      <FolderOpen className="h-4 w-4 text-triade-gold" />
+                      <FolderOpen className="h-4 w-4 text-triade-cyanLight" />
                       <span>Abrir</span>
                     </a>
                   )}
@@ -524,7 +524,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                     Gerados com base no serviço ({client.service_type.toUpperCase()}).
                   </p>
                 </div>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-triade-gold/30 bg-triade-gold/10 text-triade-goldLight">
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-triade-cyan/30 bg-triade-cyan/10 text-triade-cyanLight">
                   {completedStepsCount} de {steps.length} concluídos ({onboardingProgress}%)
                 </span>
               </div>
@@ -532,7 +532,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
               {/* Progress bar */}
               <div className="w-full h-2 rounded-full bg-zinc-800 overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-triade-goldLight to-triade-gold transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 transition-all duration-500"
                   style={{ width: `${onboardingProgress}%` }}
                 />
               </div>
@@ -578,7 +578,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                             {/* Resposta enviada pelo cliente */}
                             {step.client_response ? (
                               <div className="mt-2 rounded-lg border border-zinc-700/60 bg-black/40 p-2.5">
-                                <span className="text-[10px] uppercase font-bold text-triade-gold block mb-1">
+                                <span className="text-[10px] uppercase font-bold text-triade-cyanLight block mb-1">
                                   Resposta enviada pelo Cliente:
                                 </span>
                                 <p className="text-xs text-zinc-200">
@@ -681,7 +681,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                             Prazo: {formatDate(task.deadline)}
                           </span>
                           {task.visible_to_client && (
-                            <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded border border-triade-gold/30 bg-triade-gold/10 text-triade-goldLight">
+                            <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded border border-triade-cyan/30 bg-triade-cyan/10 text-triade-cyanLight">
                               Visível no Portal
                             </span>
                           )}

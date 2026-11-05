@@ -70,7 +70,7 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-xl rounded-2xl border border-triade-border bg-[#121215] shadow-2xl p-6 sm:p-8 z-10">
+      <div className="relative w-full max-w-xl rounded-2xl border border-triade-border bg-[#0E1C2A] shadow-2xl p-6 sm:p-8 z-10">
         <div className="flex items-center justify-between pb-4 border-b border-triade-border">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-triade-cyan/20 border border-triade-cyan/40 text-triade-cyanLight">
@@ -211,7 +211,7 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-lg ${
                     visibleToClient
-                      ? "bg-triade-gold/20 text-triade-goldLight border border-triade-gold/40"
+                      ? "bg-triade-cyan/20 text-triade-cyanLight border border-triade-cyan/40"
                       : "bg-zinc-800 text-zinc-500"
                   }`}
                 >
@@ -230,7 +230,7 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
                 type="checkbox"
                 checked={visibleToClient}
                 onChange={(e) => setVisibleToClient(e.target.checked)}
-                className="h-5 w-5 rounded border-zinc-700 bg-zinc-800 text-triade-gold focus:ring-triade-gold"
+                className="h-5 w-5 rounded border-zinc-700 bg-zinc-800 text-triade-cyan focus:ring-triade-cyan"
               />
             </label>
           </div>
@@ -246,7 +246,7 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-triade-cyanLight to-triade-cyan text-black text-sm font-bold shadow-cyan-glow hover:opacity-95 transition-opacity"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-sm font-bold shadow-blue-glow hover:opacity-95 transition-opacity"
             >
               Salvar Tarefa
             </button>

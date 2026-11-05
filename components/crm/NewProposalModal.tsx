@@ -89,10 +89,10 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl border border-triade-border bg-[#121215] p-6 sm:p-8 shadow-2xl z-10">
+      <div className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl border border-triade-border bg-[#0E1C2A] p-6 sm:p-8 shadow-2xl z-10">
         <div className="flex items-center justify-between pb-4 border-b border-triade-border">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-triade-goldLight to-triade-gold text-black font-bold">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-500 text-black font-bold">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
@@ -121,7 +121,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
                 placeholder="Ex: Bastos & Associados"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-gold focus:outline-none"
+                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-cyan focus:outline-none"
               />
             </div>
 
@@ -135,7 +135,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
                 placeholder="Ex: Dr. Guilherme Bastos"
                 value={leadName}
                 onChange={(e) => setLeadName(e.target.value)}
-                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-gold focus:outline-none"
+                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-cyan focus:outline-none"
               />
             </div>
           </div>
@@ -151,7 +151,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
                 placeholder="guilherme@empresa.com.br"
                 value={leadEmail}
                 onChange={(e) => setLeadEmail(e.target.value)}
-                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-gold focus:outline-none"
+                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-cyan focus:outline-none"
               />
             </div>
 
@@ -165,7 +165,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
                 placeholder="(11) 99881-2244"
                 value={leadPhone}
                 onChange={(e) => setLeadPhone(e.target.value)}
-                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-gold focus:outline-none"
+                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2 text-sm text-zinc-100 focus:border-triade-cyan focus:outline-none"
               />
             </div>
           </div>
@@ -178,7 +178,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
               <select
                 value={serviceType}
                 onChange={(e) => setServiceType(e.target.value as ServiceType)}
-                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-triade-gold focus:outline-none"
+                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-triade-cyan focus:outline-none"
               >
                 <option value="trafego">Tráfego Pago</option>
                 <option value="site">Site Institucional</option>
@@ -195,7 +195,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
                 type="number"
                 value={setupValue}
                 onChange={(e) => setSetupValue(e.target.value === "" ? "" : Number(e.target.value))}
-                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-triade-gold focus:outline-none"
+                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-triade-cyan focus:outline-none"
               />
             </div>
 
@@ -207,7 +207,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
                 type="number"
                 value={monthlyValue}
                 onChange={(e) => setMonthlyValue(e.target.value === "" ? "" : Number(e.target.value))}
-                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-triade-gold focus:outline-none"
+                className="w-full rounded-xl border border-triade-border bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-triade-cyan focus:outline-none"
               />
             </div>
           </div>
@@ -220,7 +220,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
               rows={2}
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
-              className="w-full rounded-xl border border-triade-border bg-zinc-900/90 p-3 text-xs text-zinc-200 focus:border-triade-gold focus:outline-none"
+              className="w-full rounded-xl border border-triade-border bg-zinc-900/90 p-3 text-xs text-zinc-200 focus:border-triade-cyan focus:outline-none"
             />
           </div>
 
@@ -284,7 +284,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-triade-goldLight via-triade-gold to-triade-goldDark text-black text-xs font-bold shadow-gold-glow hover:opacity-95"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-bold shadow-blue-glow hover:opacity-95"
             >
               Gerar Proposta & Link Público
             </button>

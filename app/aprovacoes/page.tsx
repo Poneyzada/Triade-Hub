@@ -56,7 +56,7 @@ export default function AprovacoesPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-triade-border">
           <div>
-            <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-triade-cyan text-xs font-bold uppercase tracking-wider mb-1">
               <CheckCircle2 className="h-4 w-4" />
               <span>Central de Aprovações de Clientes</span>
             </div>
@@ -70,7 +70,7 @@ export default function AprovacoesPage() {
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-600 text-white text-xs sm:text-sm font-bold shadow-md transition-all self-start sm:self-auto"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs sm:text-sm font-bold shadow-blue-glow hover:opacity-95 transition-all self-start sm:self-auto"
           >
             <Plus className="h-4 w-4 stroke-[3]" />
             <span>Subir para Aprovação</span>
@@ -78,7 +78,7 @@ export default function AprovacoesPage() {
         </div>
 
         {/* Filtros */}
-        <div className="flex flex-wrap items-center gap-3 p-4 rounded-2xl border border-triade-border bg-[#121215]">
+        <div className="flex flex-wrap items-center gap-3 p-4 rounded-2xl border border-triade-border bg-[#0E1C2A]">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-zinc-400">Cliente:</span>
             <select
@@ -119,11 +119,11 @@ export default function AprovacoesPage() {
             return (
               <div
                 key={appr.id}
-                className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-card-subtle flex flex-col justify-between hover:border-purple-500/40 transition-all"
+                className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle flex flex-col justify-between hover:border-triade-cyan/40 transition-all"
               >
                 <div>
                   <div className="flex items-center justify-between pb-3 border-b border-triade-border">
-                    <span className="text-[10px] font-bold uppercase text-triade-gold truncate max-w-[150px]">
+                    <span className="text-[10px] font-bold uppercase text-triade-cyanLight truncate max-w-[150px]">
                       {client?.company_name || "Cliente"}
                     </span>
                     <span

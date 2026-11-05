@@ -3,13 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --background: #09090b;
-  --foreground: #f4f4f5;
-  --card: #121215;
-  --border: #27272a;
-  --gold: #d4af37;
-  --gold-light: #f3e5ab;
-  --cyan: #0da5a0;
+  --background: #050b11;
+  --foreground: #e0f2fe;
+  --card: #0e1c2a;
+  --border: #1c354a;
+  --blue: #22d3ee;
+  --blue-light: #7dd3fc;
+  --gold: #22d3ee;
+  --gold-light: #7dd3fc;
+  --cyan: #22d3ee;
 }
 
 body {
@@ -18,14 +20,15 @@ body {
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
+  /* Fundo profundo em azul petróleo com névoa sutil inspirada na imagem */
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(13, 165, 160, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 100% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 40%),
-    radial-gradient(circle at 0% 100%, rgba(13, 165, 160, 0.03) 0%, transparent 40%);
+    radial-gradient(circle at 80% 10%, rgba(34, 211, 238, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 15% 50%, rgba(2, 132, 199, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 55%);
   background-attachment: fixed;
 }
 
-/* Subtle Cosmic Grain Noise Texture */
+/* Granulado Cósmico Rico (Fiel à textura de filme granulado da foto enviada) */
 .cosmic-grain {
   position: fixed;
   top: 0;
@@ -33,79 +36,75 @@ body {
   width: 100vw;
   height: 100vh;
   content: "";
-  opacity: 0.028;
+  opacity: 0.045;
   pointer-events: none;
   z-index: 999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Custom Executive Gold & Dark Scrollbar */
+/* Scrollbar personalizada em Azul Petróleo */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #050b11;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #1c354a;
   border-radius: 9999px;
-  border: 1px solid #18181b;
+  border: 1px solid #0e1c2a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d4af37;
+  background: #22d3ee;
 }
 
-/* Glassmorphism & Metallic Gold Utilities */
+/* Painéis de Vidro Fosco em Azul Petróleo */
 .glass-panel {
-  background: rgba(18, 18, 21, 0.75);
+  background: rgba(14, 28, 42, 0.75);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(39, 39, 42, 0.8);
+  border: 1px solid rgba(28, 53, 74, 0.8);
 }
 
-.glass-panel-gold {
-  background: linear-gradient(135deg, rgba(26, 23, 16, 0.6) 0%, rgba(18, 18, 21, 0.85) 100%);
+.glass-panel-gold,
+.glass-panel-blue {
+  background: linear-gradient(135deg, rgba(14, 38, 56, 0.6) 0%, rgba(10, 22, 34, 0.85) 100%);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  border: 1px solid rgba(34, 211, 238, 0.3);
 }
 
-.text-gold-gradient {
-  background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 60%, #b89628 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
+.text-gold-gradient,
+.text-blue-gradient,
 .text-cyan-gradient {
-  background: linear-gradient(135deg, #5eead4 0%, #0da5a0 100%);
+  background: linear-gradient(135deg, #7dd3fc 0%, #22d3ee 50%, #0284c7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.border-gold-subtle {
-  border-color: rgba(212, 175, 55, 0.22);
+.border-gold-subtle,
+.border-blue-subtle {
+  border-color: rgba(34, 211, 238, 0.25);
 }
 
-.hover-glow-gold {
+.hover-glow-gold,
+.hover-glow-blue {
   transition: all 0.25s ease-in-out;
 }
-.hover-glow-gold:hover {
-  border-color: rgba(212, 175, 55, 0.4);
-  box-shadow: 0 0 20px -3px rgba(212, 175, 55, 0.15);
+.hover-glow-gold:hover,
+.hover-glow-blue:hover {
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 0 25px -3px rgba(34, 211, 238, 0.25);
 }
 
-/* Metallic Badge */
-.gold-badge {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  color: #f3e5ab;
-}
-
-.cyan-badge {
-  background: linear-gradient(135deg, rgba(13, 165, 160, 0.15) 0%, rgba(13, 165, 160, 0.05) 100%);
-  border: 1px solid rgba(13, 165, 160, 0.3);
-  color: #2dd4bf;
+/* Badges Metálicas em Ciano / Azul Petróleo */
+.gold-badge,
+.cyan-badge,
+.blue-badge {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(2, 132, 199, 0.08) 100%);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  color: #7dd3fc;
 }

@@ -79,7 +79,7 @@ export default function ConfiguracoesPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-triade-border">
           <div>
-            <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-triade-cyan text-xs font-bold uppercase tracking-wider mb-1">
               <Settings className="h-4 w-4" />
               <span>Configurações & Administração SaaS</span>
             </div>
@@ -93,7 +93,7 @@ export default function ConfiguracoesPage() {
 
           <button
             onClick={() => setIsNewWsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-triade-gold/30 bg-triade-gold/10 hover:bg-triade-gold/20 text-triade-goldLight text-xs sm:text-sm font-bold transition-all self-start sm:self-auto"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-triade-cyan/30 bg-triade-cyan/10 hover:bg-triade-cyan/20 text-triade-cyanLight text-xs sm:text-sm font-bold transition-all self-start sm:self-auto"
           >
             <Plus className="h-4 w-4" />
             <span>Nova Agência Parceira</span>
@@ -101,13 +101,13 @@ export default function ConfiguracoesPage() {
         </div>
 
         {/* Workspaces Ativos / Seletor */}
-        <div className="p-4 rounded-2xl border border-triade-border bg-[#121215] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 rounded-2xl border border-triade-border bg-[#0E1C2A] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Workspaces Multi-Tenant Registrados ({workspaces.length})
             </span>
             <p className="text-sm font-bold text-zinc-100">
-              Workspace Ativo: <span className="text-triade-goldLight">{workspace.name}</span> ({workspace.slug})
+              Workspace Ativo: <span className="text-triade-cyanLight">{workspace.name}</span> ({workspace.slug})
             </p>
           </div>
 
@@ -118,7 +118,7 @@ export default function ConfiguracoesPage() {
                 onClick={() => switchWorkspace(ws.id)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
                   ws.id === workspace.id
-                    ? "border-triade-gold bg-triade-gold/15 text-triade-goldLight shadow-sm"
+                    ? "border-triade-cyan bg-triade-cyan/15 text-triade-cyanLight shadow-sm"
                     : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white"
                 }`}
               >
@@ -132,9 +132,9 @@ export default function ConfiguracoesPage() {
         <form onSubmit={handleSaveProfile} className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Bloco 1: Identidade Visual White-Label */}
-            <div className="rounded-2xl border border-triade-border bg-[#121215] p-6 shadow-card-subtle space-y-4">
+            <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-6 shadow-card-subtle space-y-4">
               <div className="flex items-center gap-3 pb-3 border-b border-triade-border">
-                <div className="h-9 w-9 rounded-xl bg-triade-gold/20 text-triade-gold flex items-center justify-center">
+                <div className="h-9 w-9 rounded-xl bg-triade-cyan/20 text-triade-cyanLight flex items-center justify-center">
                   <Palette className="h-5 w-5" />
                 </div>
                 <div>
@@ -210,7 +210,7 @@ export default function ConfiguracoesPage() {
             </div>
 
             {/* Bloco 2: Automações e Webhooks WhatsApp & Pagamentos */}
-            <div className="rounded-2xl border border-triade-border bg-[#121215] p-6 shadow-card-subtle space-y-4">
+            <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-6 shadow-card-subtle space-y-4">
               <div className="flex items-center gap-3 pb-3 border-b border-triade-border">
                 <div className="h-9 w-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
                   <MessageSquare className="h-5 w-5" />
@@ -303,7 +303,7 @@ export default function ConfiguracoesPage() {
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-triade-border">
             <button
               type="submit"
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-triade-goldLight via-triade-gold to-triade-goldDark text-black text-xs sm:text-sm font-bold shadow-gold-glow hover:opacity-95 transition-opacity"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs sm:text-sm font-bold shadow-blue-glow hover:opacity-95 transition-opacity"
             >
               {savedSuccess ? (
                 <>

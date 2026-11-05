@@ -18,6 +18,7 @@ import {
   Building,
 } from "lucide-react";
 import { useTriade } from "@/lib/store";
+import { TriadeLogo } from "@/components/ui/TriadeLogo";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
 export default function PublicProposalPage() {
@@ -74,15 +75,13 @@ export default function PublicProposalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090B] text-zinc-100 flex flex-col items-center">
-      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.08)_0%,transparent_60%)]" />
+    <div className="min-h-screen bg-[#050B11] text-zinc-200 flex flex-col items-center">
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.08)_0%,transparent_60%)]" />
 
       {/* Top Brand Header */}
-      <header className="w-full border-b border-triade-border bg-[#0E0F13]/90 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+      <header className="w-full border-b border-triade-border bg-[#08131F]/90 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-triade-goldLight via-triade-gold to-triade-goldDark text-black font-extrabold text-sm shadow-gold-glow">
-            ▲
-          </div>
+          <TriadeLogo size={36} />
           <div>
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-black tracking-widest text-zinc-100 uppercase">
@@ -121,18 +120,18 @@ export default function PublicProposalPage() {
         )}
 
         {/* Hero Section */}
-        <div className="rounded-3xl border border-triade-border bg-gradient-to-b from-[#14151B] to-[#101115] p-6 sm:p-10 shadow-card-subtle relative overflow-hidden">
+        <div className="rounded-3xl border border-triade-border bg-gradient-to-b from-[#0E1C2A] to-[#08131F] p-6 sm:p-10 shadow-card-subtle relative overflow-hidden">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-triade-gold/30 bg-triade-gold/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-triade-goldLight mb-3">
-                <Sparkles className="h-3.5 w-3.5 text-triade-gold" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-triade-cyan/30 bg-triade-cyan/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-triade-cyanLight mb-3">
+                <Sparkles className="h-3.5 w-3.5 text-triade-cyan" />
                 <span>Proposta Comercial Personalizada</span>
               </div>
               <h1 className="text-2xl sm:text-4xl font-black text-zinc-100 tracking-tight">
                 {proposal.company_name}
               </h1>
               <p className="text-sm sm:text-base text-zinc-300 mt-1">
-                A/C: <span className="text-triade-goldLight font-bold">{proposal.lead_name}</span> • {proposal.title}
+                A/C: <span className="text-triade-cyanLight font-bold">{proposal.lead_name}</span> • {proposal.title}
               </p>
             </div>
 
@@ -141,7 +140,7 @@ export default function PublicProposalPage() {
                 className={`text-xs font-bold uppercase px-3 py-1 rounded-full border ${
                   isClosed
                     ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
-                    : "bg-triade-gold/15 text-triade-goldLight border-triade-gold/30"
+                    : "bg-triade-cyan/15 text-triade-cyanLight border-triade-cyan/30"
                 }`}
               >
                 {isClosed ? "✓ Proposta Aprovada" : `Válida até ${formatDate(proposal.valid_until)}`}
@@ -155,8 +154,8 @@ export default function PublicProposalPage() {
 
         {/* 1. Diagnóstico e Objetivo Estratégico */}
         {proposal.diagnosis && (
-          <div className="rounded-2xl border border-triade-border bg-[#121215] p-6 sm:p-8 space-y-3">
-            <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider">
+          <div className="rounded-2xl border border-triade-border bg-[#0B1724] p-6 sm:p-8 space-y-3">
+            <div className="flex items-center gap-2 text-triade-cyan text-xs font-bold uppercase tracking-wider">
               <Shield className="h-4 w-4" />
               <span>1. Diagnóstico Estratégico & Cenário Atual</span>
             </div>
@@ -170,8 +169,8 @@ export default function PublicProposalPage() {
         )}
 
         {/* 2. Entregáveis & Escopo Detalhado */}
-        <div className="rounded-2xl border border-triade-border bg-[#121215] p-6 sm:p-8 space-y-4">
-          <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider">
+        <div className="rounded-2xl border border-triade-border bg-[#0B1724] p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2 text-triade-cyan text-xs font-bold uppercase tracking-wider">
             <Layers className="h-4 w-4" />
             <span>2. Entregáveis & Escopo de Trabalho</span>
           </div>
@@ -183,10 +182,10 @@ export default function PublicProposalPage() {
             {proposal.scope_items.map((item, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-triade-gold/30 transition-colors"
+                className="p-4 rounded-xl border border-triade-border bg-[#0E1C2A] hover:border-triade-cyan/30 transition-colors"
               >
                 <div className="flex items-start gap-3">
-                  <div className="h-6 w-6 rounded-lg bg-triade-gold/20 text-triade-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="h-6 w-6 rounded-lg bg-triade-cyan/20 text-triade-cyan flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Check className="h-3.5 w-3.5 stroke-[3]" />
                   </div>
                   <div>
@@ -204,8 +203,8 @@ export default function PublicProposalPage() {
         </div>
 
         {/* 3. Cronograma de Execução */}
-        <div className="rounded-2xl border border-triade-border bg-[#121215] p-6 sm:p-8 space-y-4">
-          <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider">
+        <div className="rounded-2xl border border-triade-border bg-[#0B1724] p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2 text-triade-cyan text-xs font-bold uppercase tracking-wider">
             <Clock className="h-4 w-4" />
             <span>3. Cronograma Estimado de Execução</span>
           </div>
@@ -217,8 +216,8 @@ export default function PublicProposalPage() {
               { etapa: "Etapa 3", tempo: "Semana 3", titulo: "Go-Live / Lançamento", desc: "Aprovação final e publicação oficial" },
               { etapa: "Etapa 4", tempo: "Contínuo", titulo: "Otimização & Escala", desc: "Ajustes de conversão e relatórios semanais" },
             ].map((cron, i) => (
-              <div key={i} className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/40">
-                <span className="text-[10px] font-bold uppercase text-triade-gold block mb-1">
+              <div key={i} className="p-4 rounded-xl border border-triade-border bg-[#0E1C2A]">
+                <span className="text-[10px] font-bold uppercase text-triade-cyanLight block mb-1">
                   {cron.etapa} • {cron.tempo}
                 </span>
                 <h4 className="text-xs font-bold text-zinc-100">{cron.titulo}</h4>
@@ -229,9 +228,9 @@ export default function PublicProposalPage() {
         </div>
 
         {/* 4. Investimento & Botão de Aprovação (AUTOMAÇÃO DE FECHAMENTO) */}
-        <div className="rounded-3xl border border-triade-gold/40 bg-gradient-to-b from-[#18181D] to-[#121215] p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <div className="rounded-3xl border border-triade-cyan/40 bg-gradient-to-b from-[#0E1C2A] to-[#07121A] p-6 sm:p-10 shadow-2xl relative overflow-hidden">
           <div className="text-center max-w-xl mx-auto space-y-3">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest text-triade-gold">
+            <span className="inline-block text-xs font-bold uppercase tracking-widest text-triade-cyanLight">
               4. Proposta de Investimento
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-100">
@@ -242,7 +241,7 @@ export default function PublicProposalPage() {
           {/* Grid de Valores */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto my-8">
             {proposal.setup_value > 0 && (
-              <div className="p-6 rounded-2xl border border-triade-border bg-black/40 text-center">
+              <div className="p-6 rounded-2xl border border-triade-border bg-[#050B11]/80 text-center">
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 block mb-1">
                   Setup & Estruturação Inicial
                 </span>
@@ -256,11 +255,11 @@ export default function PublicProposalPage() {
             )}
 
             {proposal.monthly_value > 0 && (
-              <div className="p-6 rounded-2xl border border-triade-gold/30 bg-triade-gold/5 text-center">
-                <span className="text-xs font-bold uppercase tracking-wider text-triade-goldLight block mb-1">
+              <div className="p-6 rounded-2xl border border-triade-cyan/30 bg-triade-cyan/5 text-center">
+                <span className="text-xs font-bold uppercase tracking-wider text-triade-cyanLight block mb-1">
                   Mensalidade / Gestão Recorrente (MRR)
                 </span>
-                <span className="text-3xl font-black text-triade-goldLight">
+                <span className="text-3xl font-black text-sky-300">
                   {formatCurrency(proposal.monthly_value)}
                   <span className="text-sm font-normal text-zinc-400">/mês</span>
                 </span>
@@ -277,7 +276,7 @@ export default function PublicProposalPage() {
               <button
                 onClick={handleApproveProposal}
                 disabled={isApproving}
-                className="w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-triade-goldLight via-triade-gold to-triade-goldDark text-black text-base font-extrabold shadow-gold-glow hover:opacity-95 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-base font-extrabold shadow-blue-glow hover:opacity-95 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {isApproving ? (
                   <>
@@ -310,7 +309,7 @@ export default function PublicProposalPage() {
       </main>
 
       <footer className="w-full border-t border-triade-border/60 py-6 text-center text-xs text-zinc-500">
-        Apresentação desenvolvida por <span className="text-triade-gold font-semibold">{workspace.name}</span> • Todos os direitos reservados
+        Apresentação desenvolvida por <span className="text-triade-cyanLight font-semibold">{workspace.name}</span> • Todos os direitos reservados
       </footer>
     </div>
   );

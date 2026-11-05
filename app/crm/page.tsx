@@ -87,7 +87,7 @@ export default function CrmPage() {
         {/* Header do CRM */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-triade-border">
           <div>
-            <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-triade-cyan text-xs font-bold uppercase tracking-wider mb-1">
               <Target className="h-4 w-4" />
               <span>CRM Comercial & Pipeline de Vendas</span>
             </div>
@@ -101,7 +101,7 @@ export default function CrmPage() {
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-triade-goldLight via-triade-gold to-triade-goldDark text-black text-xs sm:text-sm font-bold shadow-gold-glow hover:opacity-95 transition-all self-start sm:self-auto"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs sm:text-sm font-bold shadow-blue-glow hover:opacity-95 transition-all self-start sm:self-auto"
           >
             <Plus className="h-4 w-4 stroke-[3]" />
             <span>Nova Proposta</span>
@@ -110,7 +110,7 @@ export default function CrmPage() {
 
         {/* Resumo Rápido do Pipeline */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Oportunidades Ativas
             </span>
@@ -119,7 +119,7 @@ export default function CrmPage() {
             </span>
           </div>
 
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Pipeline Setup em Jogo
             </span>
@@ -128,16 +128,16 @@ export default function CrmPage() {
             </span>
           </div>
 
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Pipeline MRR Potencial
             </span>
-            <span className="text-xl font-bold text-triade-goldLight">
+            <span className="text-xl font-bold text-sky-300">
               {formatCurrency(totalPipelineMRR)} /mês
             </span>
           </div>
 
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Fechados com Sucesso
             </span>
@@ -155,7 +155,7 @@ export default function CrmPage() {
             return (
               <div
                 key={col.id}
-                className="flex flex-col rounded-2xl border border-triade-border bg-[#0E0F13] p-3.5 min-w-[260px] min-h-[550px]"
+                className="flex flex-col rounded-2xl border border-triade-border bg-[#0B1724] p-3.5 min-w-[260px] min-h-[550px]"
               >
                 {/* Header da Coluna */}
                 <div className="flex items-center justify-between pb-3 mb-3 border-b border-triade-border">
@@ -176,14 +176,14 @@ export default function CrmPage() {
                     return (
                       <div
                         key={prop.id}
-                        className="rounded-xl border border-triade-border bg-[#14151B] p-3.5 shadow-sm hover:border-triade-gold/40 transition-all flex flex-col justify-between"
+                        className="rounded-xl border border-triade-border bg-[#0E1C2A] p-3.5 shadow-sm hover:border-triade-cyan/40 transition-all flex flex-col justify-between"
                       >
                         <div>
                           <div className="flex items-center justify-between gap-1 mb-1.5">
-                            <span className="text-[10px] font-bold uppercase text-triade-gold truncate max-w-[140px]">
+                            <span className="text-[10px] font-bold uppercase text-triade-cyanLight truncate max-w-[140px]">
                               {prop.company_name}
                             </span>
-                            <span className="text-[9px] uppercase px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-300 font-semibold">
+                            <span className="text-[9px] uppercase px-1.5 py-0.2 rounded bg-zinc-900 border border-zinc-800 text-zinc-300 font-semibold">
                               {prop.service_type}
                             </span>
                           </div>
@@ -198,7 +198,7 @@ export default function CrmPage() {
                           </p>
 
                           {/* Valores */}
-                          <div className="mt-3 p-2 rounded-lg bg-zinc-900/80 border border-zinc-800/80 space-y-1">
+                          <div className="mt-3 p-2 rounded-lg bg-[#07121A] border border-triade-border space-y-1">
                             {prop.setup_value > 0 && (
                               <div className="flex justify-between text-[11px]">
                                 <span className="text-zinc-500">Setup:</span>
@@ -210,7 +210,7 @@ export default function CrmPage() {
                             {prop.monthly_value > 0 && (
                               <div className="flex justify-between text-[11px]">
                                 <span className="text-zinc-500">Mensal:</span>
-                                <span className="font-bold text-triade-goldLight">
+                                <span className="font-bold text-triade-cyanLight">
                                   {formatCurrency(prop.monthly_value)}/mês
                                 </span>
                               </div>
@@ -224,7 +224,7 @@ export default function CrmPage() {
                             <button
                               onClick={() => handleCopyLink(prop.public_token)}
                               title="Copiar link público da proposta"
-                              className="p-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-100 text-xs flex items-center gap-1"
+                              className="p-1.5 rounded-lg border border-triade-border bg-[#07121A] text-zinc-400 hover:text-zinc-100 text-xs flex items-center gap-1"
                             >
                               {copiedToken === prop.public_token ? (
                                 <Check className="h-3 w-3 text-emerald-400" />
@@ -237,7 +237,7 @@ export default function CrmPage() {
                               href={`/proposta/${prop.public_token}`}
                               target="_blank"
                               rel="noreferrer"
-                              className="px-2.5 py-1 rounded-lg bg-triade-gold/15 hover:bg-triade-gold/25 border border-triade-gold/30 text-triade-goldLight text-[11px] font-bold flex items-center gap-1 transition-colors"
+                              className="px-2.5 py-1 rounded-lg bg-triade-cyan/15 hover:bg-triade-cyan/25 border border-triade-cyan/30 text-triade-cyanLight text-[11px] font-bold flex items-center gap-1 transition-colors"
                             >
                               <span>Ver Proposta</span>
                               <ExternalLink className="h-2.5 w-2.5" />
@@ -282,7 +282,7 @@ export default function CrmPage() {
                             {next ? (
                               <button
                                 onClick={() => updateProposalStage(prop.id, next)}
-                                className="text-[10px] text-zinc-400 hover:text-triade-gold flex items-center gap-0.5"
+                                className="text-[10px] text-zinc-400 hover:text-triade-cyan flex items-center gap-0.5"
                               >
                                 <span>Avançar</span>
                                 <ArrowRight className="h-2.5 w-2.5" />

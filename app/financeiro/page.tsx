@@ -84,7 +84,7 @@ export default function FinanceiroPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-triade-border">
           <div>
-            <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-triade-cyan text-xs font-bold uppercase tracking-wider mb-1">
               <Wallet className="h-4 w-4" />
               <span>Gestão Financeira & Fluxo de Caixa</span>
             </div>
@@ -106,7 +106,7 @@ export default function FinanceiroPage() {
             </button>
             <button
               onClick={() => setIsInvoiceModalOpen(true)}
-              className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-black text-xs sm:text-sm font-bold shadow-md hover:opacity-95 transition-all"
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs sm:text-sm font-bold shadow-blue-glow hover:opacity-95 transition-all"
             >
               <Plus className="h-4 w-4 stroke-[3]" />
               <span>Nova Cobrança</span>
@@ -117,18 +117,18 @@ export default function FinanceiroPage() {
         {/* 6 CARDS CONSOLIDADOS (FASE 3) */}
         <div className="grid grid-cols-2 lg:grid-cols-6 gap-3.5">
           {/* MRR de Tráfego */}
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               MRR (Tráfego Recorrente)
             </span>
-            <span className="text-xl font-bold text-triade-goldLight">
+            <span className="text-xl font-bold text-sky-300">
               {formatCurrency(metrics.activeMRR)}
             </span>
             <span className="text-[10px] text-zinc-500 mt-1 block">Mensalidade base</span>
           </div>
 
           {/* Receita Projetos (Sites/Apps) */}
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Receita Projetos (50/50)
             </span>
@@ -139,7 +139,7 @@ export default function FinanceiroPage() {
           </div>
 
           {/* Total Recebido no Mês */}
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Total Recebido (Mês)
             </span>
@@ -150,7 +150,7 @@ export default function FinanceiroPage() {
           </div>
 
           {/* Inadimplência / Atrasados */}
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Inadimplência
             </span>
@@ -161,7 +161,7 @@ export default function FinanceiroPage() {
           </div>
 
           {/* Despesas da Agência */}
-          <div className="rounded-xl border border-triade-border bg-[#121215] p-4">
+          <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
             <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
               Despesas & Custos
             </span>
@@ -186,7 +186,7 @@ export default function FinanceiroPage() {
         </div>
 
         {/* Barra Visual de Fluxo de Caixa */}
-        <div className="p-4 rounded-2xl border border-triade-border bg-[#121215] space-y-2">
+        <div className="p-4 rounded-2xl border border-triade-border bg-[#0E1C2A] space-y-2">
           <div className="flex items-center justify-between text-xs font-semibold">
             <span className="text-zinc-400 flex items-center gap-1.5">
               <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
@@ -216,7 +216,7 @@ export default function FinanceiroPage() {
             onClick={() => setActiveTab("invoices")}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === "invoices"
-                ? "bg-triade-gold text-black shadow-gold-glow"
+                ? "bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black shadow-blue-glow"
                 : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
@@ -226,7 +226,7 @@ export default function FinanceiroPage() {
             onClick={() => setActiveTab("expenses")}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === "expenses"
-                ? "bg-triade-gold text-black shadow-gold-glow"
+                ? "bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black shadow-blue-glow"
                 : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
@@ -242,7 +242,7 @@ export default function FinanceiroPage() {
               <select
                 value={invoiceTypeFilter}
                 onChange={(e) => setInvoiceTypeFilter(e.target.value)}
-                className="rounded-xl border border-triade-border bg-[#121215] px-3 py-1.5 text-xs font-semibold text-zinc-300 focus:outline-none"
+                className="rounded-xl border border-triade-border bg-[#0E1C2A] px-3 py-1.5 text-xs font-semibold text-zinc-300 focus:outline-none"
               >
                 <option value="todos">Todos os Tipos</option>
                 <option value="mrr_trafego">Mensalidade MRR (Tráfego)</option>
@@ -254,7 +254,7 @@ export default function FinanceiroPage() {
               <select
                 value={invoiceStatusFilter}
                 onChange={(e) => setInvoiceStatusFilter(e.target.value)}
-                className="rounded-xl border border-triade-border bg-[#121215] px-3 py-1.5 text-xs font-semibold text-zinc-300 focus:outline-none"
+                className="rounded-xl border border-triade-border bg-[#0E1C2A] px-3 py-1.5 text-xs font-semibold text-zinc-300 focus:outline-none"
               >
                 <option value="todos">Todos os Status</option>
                 <option value="pendente">Pendentes</option>
@@ -264,11 +264,11 @@ export default function FinanceiroPage() {
             </div>
 
             {/* Tabela de Invoices */}
-            <div className="rounded-2xl border border-triade-border bg-[#121215] overflow-hidden shadow-card-subtle">
+            <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] overflow-hidden shadow-card-subtle">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-triade-border bg-[#101115] text-zinc-400 uppercase text-[10px] font-bold">
+                    <tr className="border-b border-triade-border bg-[#0B1724] text-zinc-400 uppercase text-[10px] font-bold">
                       <th className="p-4">Cliente</th>
                       <th className="p-4">Título da Fatura</th>
                       <th className="p-4">Tipo</th>
@@ -295,7 +295,7 @@ export default function FinanceiroPage() {
                           <td className="p-4 text-zinc-400">
                             {formatDate(inv.due_date)}
                           </td>
-                          <td className="p-4 font-bold text-triade-goldLight text-sm">
+                          <td className="p-4 font-bold text-triade-cyanLight text-sm">
                             {formatCurrency(inv.amount)}
                           </td>
                           <td className="p-4">
@@ -358,11 +358,11 @@ export default function FinanceiroPage() {
         {/* TAB 2: DESPESAS DA AGÊNCIA */}
         {activeTab === "expenses" && (
           <div className="space-y-4">
-            <div className="rounded-2xl border border-triade-border bg-[#121215] overflow-hidden shadow-card-subtle">
+            <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] overflow-hidden shadow-card-subtle">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-triade-border bg-[#101115] text-zinc-400 uppercase text-[10px] font-bold">
+                    <tr className="border-b border-triade-border bg-[#0B1724] text-zinc-400 uppercase text-[10px] font-bold">
                       <th className="p-4">Despesa / Custo</th>
                       <th className="p-4">Categoria</th>
                       <th className="p-4">Vencimento</th>

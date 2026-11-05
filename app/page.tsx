@@ -34,7 +34,7 @@ export default function DashboardPage() {
         {/* Boas-Vindas Executiva & Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-triade-gold text-xs font-bold uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-triade-blue text-xs font-bold uppercase tracking-wider mb-1">
               <Sparkles className="h-4 w-4" />
               <span>Painel Executivo • Tríade Studio</span>
             </div>
@@ -49,95 +49,95 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/clientes"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-triade-border bg-triade-card hover:border-triade-gold/40 text-xs font-semibold text-zinc-200 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-triade-border bg-triade-card hover:border-triade-blue/50 text-xs font-semibold text-zinc-200 transition-colors"
             >
-              <Users className="h-4 w-4 text-triade-gold" />
+              <Users className="h-4 w-4 text-triade-blue" />
               <span>Ver Todos os Clientes</span>
             </Link>
           </div>
         </div>
 
-        {/* 5 CARDS EXECUTIVOS (FASE 1) */}
+        {/* 5 CARDS EXECUTIVOS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Card 1: MRR Ativo */}
-          <div className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-card-subtle relative overflow-hidden group hover:border-triade-gold/40 transition-colors">
+          <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-triade-blue/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
                 MRR Ativo
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-triade-gold/15 text-triade-gold border border-triade-gold/30">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-triade-blue/15 text-triade-blue border border-triade-blue/30">
                 <DollarSign className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-black text-triade-goldLight tracking-tight">
+            <p className="mt-3 text-2xl font-black text-triade-blueLight tracking-tight">
               {formatCurrency(metrics.activeMRR)}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-emerald-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-400">
               <TrendingUp className="h-3.5 w-3.5" />
               <span>Receita Recorrente Mensal</span>
             </div>
-            <div className="absolute -bottom-6 -right-6 h-20 w-20 rounded-full bg-triade-gold/5 blur-xl group-hover:bg-triade-gold/10 transition-colors" />
+            <div className="absolute -bottom-6 -right-6 h-20 w-20 rounded-full bg-triade-blue/10 blur-xl group-hover:bg-triade-blue/20 transition-colors" />
           </div>
 
           {/* Card 2: Projetos em Andamento */}
-          <div className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-card-subtle relative overflow-hidden group hover:border-triade-cyan/40 transition-colors">
+          <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-cyan-400/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
                 Projetos Ativos
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-triade-cyan/15 text-triade-cyanLight border border-triade-cyan/30">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
                 <Layers className="h-4 w-4" />
               </div>
             </div>
             <p className="mt-3 text-2xl font-black text-zinc-100 tracking-tight">
               {metrics.ongoingProjectsCount}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-triade-cyanLight">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-400">
               <span>Tarefas em fluxo operacional</span>
             </div>
           </div>
 
           {/* Card 3: Onboardings Pendentes */}
-          <div className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-card-subtle relative overflow-hidden group hover:border-amber-500/40 transition-colors">
+          <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-cyan-400/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
                 Onboardings
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
                 <Sparkles className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-black text-amber-300 tracking-tight">
+            <p className="mt-3 text-2xl font-black text-cyan-300 tracking-tight">
               {metrics.pendingOnboardingsCount}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-amber-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-400">
               <Clock className="h-3.5 w-3.5" />
               <span>Contas aguardando dados</span>
             </div>
           </div>
 
           {/* Card 4: Aprovações Aguardando Cliente */}
-          <div className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-card-subtle relative overflow-hidden group hover:border-purple-500/40 transition-colors">
+          <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-cyan-400/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
                 Aprovações
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/30">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
                 <CheckCircle2 className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-black text-purple-300 tracking-tight">
+            <p className="mt-3 text-2xl font-black text-cyan-300 tracking-tight">
               {metrics.pendingApprovalsCount}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-purple-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-400">
               <span>Artes & páginas na fila</span>
             </div>
           </div>
 
           {/* Card 5: Faturamento do Mês */}
-          <div className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-card-subtle relative overflow-hidden group hover:border-emerald-500/40 transition-colors">
+          <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-cyan-400/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
                 Faturamento Mês
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
@@ -160,7 +160,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-base font-bold text-zinc-100 flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-triade-gold" />
+                  <Sparkles className="h-4 w-4 text-triade-blue" />
                   <span>Radar de Onboarding Dinâmico</span>
                 </h2>
                 <p className="text-xs text-zinc-400">
@@ -169,7 +169,7 @@ export default function DashboardPage() {
               </div>
               <Link
                 href="/clientes"
-                className="text-xs text-triade-gold hover:underline font-medium"
+                className="text-xs text-triade-blue hover:underline font-medium"
               >
                 Gerenciar Todos →
               </Link>
@@ -187,11 +187,11 @@ export default function DashboardPage() {
                 return (
                   <div
                     key={c.id}
-                    className="rounded-2xl border border-triade-border bg-[#121215] p-5 hover:border-triade-gold/30 transition-all shadow-sm"
+                    className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 hover:border-triade-blue/40 transition-all shadow-sm"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-triade-goldLight to-triade-gold text-black font-extrabold text-sm shadow-sm">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-sky-600 text-black font-extrabold text-sm shadow-blue-glow">
                           {c.company_name.charAt(0)}
                         </div>
                         <div>
@@ -205,7 +205,7 @@ export default function DashboardPage() {
                           </div>
                           <p className="text-xs text-zinc-400 mt-0.5">
                             Contato: {c.name} • Mensalidade:{" "}
-                            <span className="text-triade-goldLight font-medium">
+                            <span className="text-triade-blue font-medium">
                               {formatCurrency(c.monthly_fee)}
                             </span>
                           </p>
@@ -216,7 +216,7 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => setSelectedClient(c)}
-                          className="px-3 py-1.5 rounded-xl border border-zinc-700 bg-zinc-800/80 hover:bg-zinc-700 text-xs font-semibold text-zinc-200 transition-colors"
+                          className="px-3 py-1.5 rounded-xl border border-zinc-700 bg-[#0A1622] hover:bg-[#122332] text-xs font-semibold text-zinc-200 transition-colors"
                         >
                           Cofre & Detalhes
                         </button>
@@ -224,7 +224,7 @@ export default function DashboardPage() {
                           href={`/portal/${c.portal_token}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-triade-gold/30 bg-triade-gold/10 hover:bg-triade-gold/20 text-xs font-semibold text-triade-goldLight transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-triade-blue/30 bg-triade-blue/10 hover:bg-triade-blue/20 text-xs font-semibold text-triade-blueLight transition-colors"
                         >
                           <span>Portal</span>
                           <ExternalLink className="h-3 w-3" />
@@ -242,7 +242,7 @@ export default function DashboardPage() {
                           className={`font-bold ${
                             percent === 100
                               ? "text-emerald-400"
-                              : "text-triade-goldLight"
+                              : "text-triade-blueLight"
                           }`}
                         >
                           {percent}% Concluído
@@ -250,7 +250,7 @@ export default function DashboardPage() {
                       </div>
                       <div className="w-full h-2 rounded-full bg-zinc-800 overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-triade-goldLight to-triade-gold transition-all duration-500"
+                          className="h-full bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-600 transition-all duration-500 shadow-blue-glow"
                           style={{ width: `${percent}%` }}
                         />
                       </div>
@@ -264,15 +264,15 @@ export default function DashboardPage() {
           {/* Coluna 3: Tarefas Críticas & Aprovações */}
           <div className="space-y-6">
             {/* Tarefas Operacionais em Destaque */}
-            <div className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-card-subtle">
+            <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle">
               <div className="flex items-center justify-between pb-3 border-b border-triade-border mb-4">
                 <div className="flex items-center gap-2 text-zinc-100 font-bold text-sm">
-                  <Layers className="h-4 w-4 text-triade-cyanLight" />
+                  <Layers className="h-4 w-4 text-triade-blue" />
                   <span>Entregas Prioritárias</span>
                 </div>
                 <Link
                   href="/projetos"
-                  className="text-xs text-triade-cyanLight hover:underline font-medium"
+                  className="text-xs text-triade-blue hover:underline font-medium"
                 >
                   Kanban →
                 </Link>
@@ -284,7 +284,7 @@ export default function DashboardPage() {
                   return (
                     <div
                       key={task.id}
-                      className="p-3 rounded-xl border border-triade-border bg-zinc-900/40 hover:border-zinc-700 transition-colors"
+                      className="p-3 rounded-xl border border-triade-border bg-[#091520] hover:border-triade-blue/30 transition-colors"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <p className="text-xs font-semibold text-zinc-200 line-clamp-1">
@@ -293,7 +293,7 @@ export default function DashboardPage() {
                         {task.visible_to_client && (
                           <span
                             title="Visível no Portal do Cliente"
-                            className="flex items-center gap-1 text-[9px] font-bold text-triade-gold px-1.5 py-0.5 rounded bg-triade-gold/10 border border-triade-gold/30 flex-shrink-0"
+                            className="flex items-center gap-1 text-[9px] font-bold text-triade-blue px-1.5 py-0.5 rounded bg-triade-blue/10 border border-triade-blue/30 flex-shrink-0"
                           >
                             <Eye className="h-2.5 w-2.5" />
                             <span>Portal</span>
@@ -323,15 +323,15 @@ export default function DashboardPage() {
             </div>
 
             {/* Fila de Aprovações */}
-            <div className="rounded-2xl border border-triade-border bg-[#121215] p-5 shadow-card-subtle">
+            <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle">
               <div className="flex items-center justify-between pb-3 border-b border-triade-border mb-4">
                 <div className="flex items-center gap-2 text-zinc-100 font-bold text-sm">
-                  <CheckCircle2 className="h-4 w-4 text-purple-400" />
+                  <CheckCircle2 className="h-4 w-4 text-cyan-400" />
                   <span>Aprovações de Criativos</span>
                 </div>
                 <Link
                   href="/aprovacoes"
-                  className="text-xs text-purple-400 hover:underline font-medium"
+                  className="text-xs text-cyan-400 hover:underline font-medium"
                 >
                   Fila →
                 </Link>
@@ -343,7 +343,7 @@ export default function DashboardPage() {
                   return (
                     <div
                       key={appr.id}
-                      className="p-3 rounded-xl border border-triade-border bg-zinc-900/40"
+                      className="p-3 rounded-xl border border-triade-border bg-[#091520]"
                     >
                       <p className="text-xs font-semibold text-zinc-200 line-clamp-1">
                         {appr.title}
@@ -356,7 +356,7 @@ export default function DashboardPage() {
                               ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
                               : appr.status === "solicitado_ajustes"
                               ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
-                              : "bg-zinc-800 text-zinc-300"
+                              : "bg-cyan-500/15 text-cyan-300 border border-cyan-500/30"
                           }`}
                         >
                           {appr.status.replace("_", " ")}
