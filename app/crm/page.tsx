@@ -147,15 +147,15 @@ export default function CrmPage() {
           </div>
         </div>
 
-        {/* Quadro Kanban de 6 Colunas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3.5 overflow-x-auto pb-4">
+        {/* Quadro Kanban de 6 Colunas (Fluxo Horizontal sem Sobreposição) */}
+        <div className="flex gap-4 overflow-x-auto pb-6 pt-1 select-none">
           {columns.map((col) => {
             const colProposals = proposals.filter((p) => p.stage === col.id);
 
             return (
               <div
                 key={col.id}
-                className="flex flex-col rounded-2xl border border-triade-border bg-[#0B1724] p-3.5 min-w-[260px] min-h-[550px]"
+                className="flex flex-col rounded-2xl border border-triade-border bg-[#0B1724] p-3.5 w-[285px] sm:w-[310px] flex-shrink-0 min-h-[580px] shadow-sm"
               >
                 {/* Header da Coluna */}
                 <div className="flex items-center justify-between pb-3 mb-3 border-b border-triade-border">

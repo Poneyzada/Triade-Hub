@@ -183,14 +183,14 @@ export default function ProjetosKanbanPage() {
         </div>
 
         {/* Quadro Kanban de 4 Colunas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="flex gap-4 overflow-x-auto pb-6 xl:grid xl:grid-cols-4">
           {columns.map((col) => {
             const columnTasks = filteredTasks.filter((t) => t.status === col.id);
 
             return (
               <div
                 key={col.id}
-                className="flex flex-col rounded-2xl border border-triade-border bg-[#0B1724] p-4 min-h-[500px]"
+                className="flex flex-col rounded-2xl border border-triade-border bg-[#0B1724] p-4 min-h-[500px] w-[290px] flex-shrink-0 xl:w-auto xl:flex-shrink"
               >
                 {/* Header da Coluna */}
                 <div className="flex items-center justify-between pb-3 mb-3 border-b border-triade-border">

@@ -24,14 +24,14 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
       />
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col lg:pl-72">
+      <div className="flex flex-1 flex-col lg:pl-72 min-w-0">
         <Header
           onOpenMobileMenu={() => setMobileMenuOpen(true)}
           onOpenNewClient={() => setNewClientOpen(true)}
           onOpenNewTask={() => setNewTaskOpen(true)}
         />
 
-        <main className="flex-1 p-4 sm:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-8 max-w-[1600px] w-full mx-auto min-w-0">
           {children}
         </main>
       </div>
