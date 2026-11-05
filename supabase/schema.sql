@@ -1,5 +1,5 @@
 -- ==============================================================================
--- TRÍADE FLOW - SCHEMA SUPABASE COMPLETO (FASES 1, 2, 3 E 4)
+-- TRÍADE HUB - SCHEMA SUPABASE COMPLETO (FASES 1, 2, 3 E 4)
 -- Multi-Tenancy, CRM, Operação, Aprovações, Financeiro e Automações
 -- ==============================================================================
 

@@ -16,7 +16,7 @@ export const INITIAL_WORKSPACE: Workspace = {
   slug: "triade-studio",
   primary_color: "#22D3EE",
   accent_color: "#0284C7",
-  custom_domain: "flow.triadestudio.com.br",
+  custom_domain: "hub.triadestudio.com.br",
   whatsapp_webhook_url: "https://api.evolution.triadestudio.com/webhook/send",
   payment_api_key: "asaas_api_key_live_triadestudio",
   created_at: new Date().toISOString(),

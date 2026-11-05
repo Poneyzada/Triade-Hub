@@ -105,7 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   TRÍADE
                 </span>
                 <span className="text-xs font-bold uppercase tracking-widest text-triade-blue">
-                  FLOW
+                  HUB
                 </span>
               </div>
               <span className="text-[10px] tracking-wider text-cyan-200/50">

@@ -799,7 +799,7 @@ export default function ClientPortalPage() {
       )}
 
       <footer className="w-full border-t border-triade-border/60 py-6 text-center text-xs text-zinc-500">
-        Desenvolvido por <span className="text-triade-cyanLight font-semibold">{workspace.name}</span> • Sistema Tríade Flow
+        Desenvolvido por <span className="text-triade-cyanLight font-semibold">{workspace.name}</span> • Sistema Tríade Hub
       </footer>
     </div>
   );

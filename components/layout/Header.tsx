@@ -84,7 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
                         {workspace.name}
                       </p>
                       <p className="text-[10px] text-cyan-400/80">
-                        {workspace.slug}.flow.triade
+                        {workspace.slug}.hub.triade
                       </p>
                     </div>
                   </div>

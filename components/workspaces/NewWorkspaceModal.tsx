@@ -100,7 +100,7 @@ export const NewWorkspaceModal: React.FC<NewWorkspaceModalProps> = ({ isOpen, on
                 onChange={(e) => setSlug(e.target.value)}
                 className="bg-transparent flex-1 text-zinc-100 focus:outline-none font-mono text-xs"
               />
-              <span className="text-zinc-500 text-xs">.flow.triade</span>
+              <span className="text-zinc-500 text-xs">.hub.triade</span>
             </div>
           </div>
 

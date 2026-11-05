@@ -70,7 +70,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
       company_name: companyName,
       lead_email: leadEmail,
       lead_phone: leadPhone,
-      title: `Proposta Estratégica Tríade Flow • ${companyName}`,
+      title: `Proposta Estratégica Tríade Hub • ${companyName}`,
       service_type: serviceType,
       setup_value: Number(setupValue) || 0,
       monthly_value: Number(monthlyValue) || 0,
