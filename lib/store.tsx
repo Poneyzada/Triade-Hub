@@ -11,6 +11,8 @@ import {
   Expense,
   Proposal,
   Contract,
+  ChatMessage,
+  AiAgentConfig,
   ServiceType,
   TaskStatus,
   AccessVault,
@@ -31,9 +33,12 @@ import {
   INITIAL_EXPENSES,
   INITIAL_PROPOSALS,
   INITIAL_CONTRACTS,
+  INITIAL_CHAT_MESSAGES,
+  INITIAL_AI_AGENT_CONFIG,
 } from "@/lib/mock-data";
 import { generatePortalToken } from "@/lib/utils";
 import { sendWhatsAppNotification, WhatsAppTemplates } from "@/lib/whatsapp";
+import { calculateLeadScore, checkHandoff, BantQualification } from "@/lib/lead-scoring";
 
 interface TriadeContextType {
   workspace: Workspace;
@@ -46,6 +51,8 @@ interface TriadeContextType {
   expenses: Expense[];
   proposals: Proposal[];
   contracts: Contract[];
+  chatMessages: ChatMessage[];
+  aiAgentConfig: AiAgentConfig;
 
   // Métricas Computadas
   metrics: {
@@ -153,6 +160,14 @@ interface TriadeContextType {
     data: any;
   }) => Promise<{ success: boolean; fallbackUrl: string }>;
 
+  // NOVO: IA SDR & Live Chat WhatsApp (DeskcommCRM Style)
+  getProposalMessages: (proposalId: string) => ChatMessage[];
+  sendChatMessage: (proposalId: string, body: string, sender: 'bot' | 'human' | 'lead') => void;
+  toggleAiBotStatus: (proposalId: string, status: 'bot_active' | 'human_takeover' | 'handoff_requested' | 'paused') => void;
+  updateAiAgentConfig: (updates: Partial<AiAgentConfig>) => void;
+  simulateLeadTurn: (proposalId: string, leadMessageText: string) => Promise<{ botReply: string; handoffTriggered: boolean; handoffReason?: string }>;
+  recalculateProposalScore: (proposalId: string) => void;
+
   // Consultas Rápidas
   getClientByPortalToken: (token: string) => Client | undefined;
   getClientSteps: (clientId: string) => OnboardingStep[];
@@ -178,6 +193,8 @@ const STORAGE_KEYS = {
   EXPENSES: "triade_flow_expenses_v2",
   PROPOSALS: "triade_flow_proposals_v2",
   CONTRACTS: "triade_flow_contracts_v2",
+  MESSAGES: "triade_hub_messages_v3",
+  AI_CONFIG: "triade_hub_ai_config_v3",
 };
 
 export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -192,6 +209,8 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [expenses, setExpenses] = useState<Expense[]>(INITIAL_EXPENSES);
   const [proposals, setProposals] = useState<Proposal[]>(INITIAL_PROPOSALS);
   const [contracts, setContracts] = useState<Contract[]>(INITIAL_CONTRACTS);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);
+  const [aiAgentConfig, setAiAgentConfig] = useState<AiAgentConfig>(INITIAL_AI_AGENT_CONFIG);
 
   // Inicialização com LocalStorage (Fallback Inteligente para funcionar sem setup prévio)
   useEffect(() => {
@@ -206,6 +225,8 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const savedExpenses = localStorage.getItem(STORAGE_KEYS.EXPENSES);
       const savedProposals = localStorage.getItem(STORAGE_KEYS.PROPOSALS);
       const savedContracts = localStorage.getItem(STORAGE_KEYS.CONTRACTS);
+      const savedMessages = localStorage.getItem(STORAGE_KEYS.MESSAGES);
+      const savedAiConfig = localStorage.getItem(STORAGE_KEYS.AI_CONFIG);
 
       if (savedWs) setWorkspace(JSON.parse(savedWs));
       if (savedWsList) setWorkspaces(JSON.parse(savedWsList));
@@ -217,6 +238,8 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       if (savedExpenses) setExpenses(JSON.parse(savedExpenses));
       if (savedProposals) setProposals(JSON.parse(savedProposals));
       if (savedContracts) setContracts(JSON.parse(savedContracts));
+      if (savedMessages) setChatMessages(JSON.parse(savedMessages));
+      if (savedAiConfig) setAiAgentConfig(JSON.parse(savedAiConfig));
     } catch (e) {
       console.warn("Usando dados iniciais em memória:", e);
     } finally {
@@ -238,6 +261,8 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
       localStorage.setItem(STORAGE_KEYS.PROPOSALS, JSON.stringify(proposals));
       localStorage.setItem(STORAGE_KEYS.CONTRACTS, JSON.stringify(contracts));
+      localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(chatMessages));
+      localStorage.setItem(STORAGE_KEYS.AI_CONFIG, JSON.stringify(aiAgentConfig));
     } catch (e) {
       console.error("Falha ao salvar no localStorage", e);
     }
@@ -253,6 +278,8 @@ export const TriadeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     expenses,
     proposals,
     contracts,
+    chatMessages,
+    aiAgentConfig,
   ]);
 
   // CÁLCULO DE MÉTRICAS EXECUTIVAS E FLUXO DE CAIXA CONSOLIDADO
@@ -966,6 +993,195 @@ As partes comprometem-se a guardar absoluto sigilo sobre credenciais, acessos e 
     return invoices.filter((i) => i.client_id === clientId);
   };
 
+  // NOVO: IA SDR & Live Chat WhatsApp (DeskcommCRM Style)
+  const getProposalMessages = (proposalId: string) => {
+    return chatMessages
+      .filter((m) => m.proposal_id === proposalId)
+      .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+  };
+
+  const sendChatMessage = (proposalId: string, body: string, sender: 'bot' | 'human' | 'lead') => {
+    const prop = proposals.find(p => p.id === proposalId);
+    const newMsg: ChatMessage = {
+      id: `msg-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`,
+      proposal_id: proposalId,
+      workspace_id: workspace.id,
+      sender,
+      sender_name: sender === 'bot' ? aiAgentConfig.bot_name : sender === 'human' ? 'Atendente Tríade' : (prop?.lead_name || 'Lead'),
+      body,
+      created_at: new Date().toISOString(),
+      status: 'sent',
+    };
+
+    setChatMessages(prev => [...prev, newMsg]);
+
+    setProposals(prev =>
+      prev.map(p =>
+        p.id === proposalId
+          ? {
+              ...p,
+              last_interaction_at: new Date().toISOString(),
+              ai_status: sender === 'human' ? 'human_takeover' : p.ai_status,
+            }
+          : p
+      )
+    );
+  };
+
+  const toggleAiBotStatus = (
+    proposalId: string,
+    status: 'bot_active' | 'human_takeover' | 'handoff_requested' | 'paused'
+  ) => {
+    setProposals(prev =>
+      prev.map(p => (p.id === proposalId ? { ...p, ai_status: status } : p))
+    );
+  };
+
+  const updateAiAgentConfig = (updates: Partial<AiAgentConfig>) => {
+    setAiAgentConfig(prev => ({ ...prev, ...updates }));
+  };
+
+  const recalculateProposalScore = (proposalId: string) => {
+    setProposals(prev =>
+      prev.map(p => {
+        if (p.id !== proposalId) return p;
+        const res = calculateLeadScore({
+          commitments: p.commitments,
+          objections: p.objections,
+          bant: p.bant_qualification,
+          recencyHours: 1,
+        });
+        return {
+          ...p,
+          lead_score: res.score,
+          score_band: res.band,
+          score_reason: res.reason,
+        };
+      })
+    );
+  };
+
+  const simulateLeadTurn = async (
+    proposalId: string,
+    leadMessageText: string
+  ): Promise<{ botReply: string; handoffTriggered: boolean; handoffReason?: string }> => {
+    const prop = proposals.find(p => p.id === proposalId);
+    if (!prop) throw new Error("Lead não encontrado");
+
+    const leadMsg: ChatMessage = {
+      id: `msg-lead-${Date.now()}`,
+      proposal_id: proposalId,
+      workspace_id: workspace.id,
+      sender: "lead",
+      sender_name: prop.lead_name,
+      body: leadMessageText,
+      created_at: new Date().toISOString(),
+      status: "read",
+    };
+
+    const lower = leadMessageText.toLowerCase();
+    const currentBant: BantQualification = { ...(prop.bant_qualification || {}) };
+    const currentCommitments = [...(prop.commitments || [])];
+    const currentObjections = [...(prop.objections || [])];
+
+    if (lower.includes("orçamento") || lower.includes("verba") || lower.includes("investir") || lower.includes("mensalidade") || lower.includes("r$") || /\b\d{3,5}\b/.test(lower)) {
+      currentBant.budget = true;
+    }
+    if (lower.includes("decid") || lower.includes("sócio") || lower.includes("diretor") || lower.includes("dono") || lower.includes("sozinho")) {
+      currentBant.authority = true;
+    }
+    if (lower.includes("preciso") || lower.includes("tráfego") || lower.includes("site") || lower.includes("clientes") || lower.includes("vendas") || lower.includes("leads")) {
+      currentBant.need = true;
+    }
+    if (lower.includes("urgente") || lower.includes("esse mês") || lower.includes("semana") || lower.includes("hoje") || lower.includes("rápido") || lower.includes("logo")) {
+      currentBant.timing = true;
+    }
+
+    if (lower.includes("marcar") || lower.includes("reunião") || lower.includes("fechar") || lower.includes("contrato") || lower.includes("assinar") || lower.includes("proposta")) {
+      if (!currentCommitments.some(c => c.toLowerCase().includes("reunião") || c.toLowerCase().includes("fechar"))) {
+        currentCommitments.push("Interesse explícito em reunião/fechamento");
+      }
+    }
+
+    if (lower.includes("caro") || lower.includes("muito alto") || lower.includes("não posso") || lower.includes("sem grana")) {
+      if (!currentObjections.some(o => o.toLowerCase().includes("preço") || o.toLowerCase().includes("caro"))) {
+        currentObjections.push("Objeção de preço/investimento");
+      }
+    }
+
+    const scoreResult = calculateLeadScore({
+      commitments: currentCommitments,
+      objections: currentObjections,
+      bant: currentBant,
+      recencyHours: 0,
+    });
+
+    const handoff = checkHandoff({
+      lastMessageText: leadMessageText,
+      currentScore: scoreResult.score,
+      stageRequiresHuman: prop.stage === "negociacao" || prop.stage === "proposta_enviada",
+    });
+
+    let botReply = "";
+
+    if (handoff.shouldHandoff) {
+      if (handoff.gate === "G1_HUMAN_REQUEST") {
+        botReply = `Com certeza, ${prop.lead_name}! Já pausei meu atendimento automático e avisei nossa equipe comercial. Um dos nossos diretores vai te chamar aqui no WhatsApp em instantes! 🚀`;
+      } else if (handoff.gate === "G4_HIGH_SCORE") {
+        botReply = `Perfeito, ${prop.lead_name}! Você tem o perfil exato do que aceleramos na Tríade. Vou chamar nosso diretor de contas agora mesmo para formalizarmos a parceria e alinharmos o início imediato! 🤝`;
+      } else {
+        botReply = `Entendido perfeitamente! Já passei todo o resumo da nossa conversa para a nossa equipe e vamos dar continuidade personalizada com você agora mesmo.`;
+      }
+    } else {
+      if (!currentBant.need) {
+        botReply = `Entendi! E me conta, ${prop.lead_name}: qual é o principal objetivo da ${prop.company_name} hoje — atrair novos clientes com tráfego qualificado ou renovar o posicionamento digital com um novo site/sistema?`;
+      } else if (!currentBant.budget) {
+        botReply = `Excelente foco! E para estruturarmos a estratégia ideal, vocês já têm uma verba mensal estimada para investimento em tráfego e mídia paga?`;
+      } else if (!currentBant.authority) {
+        botReply = `Perfeito! Você é quem toma a decisão final sobre contratações na empresa ou tem outros sócios que participarão da nossa conversa?`;
+      } else {
+        botReply = `Maravilha, ${prop.lead_name}! Com essas informações já montei um diagnóstico preliminar para a ${prop.company_name}. Você prefere que eu te envie o link da proposta estratégica interativa agora ou prefere agendar uma call rápida de 15 minutos?`;
+      }
+    }
+
+    const botMsg: ChatMessage = {
+      id: `msg-bot-${Date.now() + 1}`,
+      proposal_id: proposalId,
+      workspace_id: workspace.id,
+      sender: "bot",
+      sender_name: aiAgentConfig.bot_name,
+      body: botReply,
+      created_at: new Date(Date.now() + 1000).toISOString(),
+      status: "sent",
+    };
+
+    setChatMessages(prev => [...prev, leadMsg, botMsg]);
+
+    setProposals(prev =>
+      prev.map(p =>
+        p.id === proposalId
+          ? {
+              ...p,
+              lead_score: scoreResult.score,
+              score_band: scoreResult.band,
+              score_reason: scoreResult.reason,
+              bant_qualification: currentBant,
+              commitments: currentCommitments,
+              objections: currentObjections,
+              ai_status: handoff.shouldHandoff ? "handoff_requested" : p.ai_status || "bot_active",
+              last_interaction_at: new Date().toISOString(),
+            }
+          : p
+      )
+    );
+
+    return {
+      botReply,
+      handoffTriggered: handoff.shouldHandoff,
+      handoffReason: handoff.reason,
+    };
+  };
+
   const resetToDefaultData = () => {
     setWorkspace(INITIAL_WORKSPACE);
     setWorkspaces([INITIAL_WORKSPACE]);
@@ -995,6 +1211,8 @@ As partes comprometem-se a guardar absoluto sigilo sobre credenciais, acessos e 
         expenses,
         proposals,
         contracts,
+        chatMessages,
+        aiAgentConfig,
         metrics,
         switchWorkspace,
         createWorkspace,
@@ -1028,6 +1246,12 @@ As partes comprometem-se a guardar absoluto sigilo sobre credenciais, acessos e 
         getClientTasks,
         getClientApprovals,
         getClientInvoices,
+        getProposalMessages,
+        sendChatMessage,
+        toggleAiBotStatus,
+        updateAiAgentConfig,
+        simulateLeadTurn,
+        recalculateProposalScore,
         resetToDefaultData,
         isLoaded,
       }}

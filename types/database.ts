@@ -77,7 +77,7 @@ export interface Client {
   updated_at?: string;
 }
 
-// 3. PROPOSALS (CRM Comercial e Propostas Interativas)
+// 3. PROPOSALS (CRM Comercial, Qualificação IA e Propostas Interativas)
 export interface Proposal {
   id: string;
   workspace_id: string;
@@ -104,6 +104,65 @@ export interface Proposal {
   valid_until: string;
   accepted_at?: string;
   created_at: string;
+
+  // QUALIFICAÇÃO DE LEADS COM IA (Inspirado no DeskcommCRM)
+  lead_score?: number; // 0 a 100
+  score_band?: 'frio' | 'morno' | 'quente';
+  score_reason?: string;
+  bant_qualification?: {
+    budget?: boolean;
+    authority?: boolean;
+    need?: boolean;
+    timing?: boolean;
+    notes?: string;
+  };
+  commitments?: string[];
+  objections?: string[];
+  ai_status?: 'bot_active' | 'human_takeover' | 'handoff_requested' | 'paused';
+  conversation_summary?: string;
+  last_interaction_at?: string;
+  unread_messages_count?: number;
+}
+
+// 3.1 CHAT_MESSAGES (Histórico de Conversas de WhatsApp com Leads e IA)
+export interface ChatMessage {
+  id: string;
+  proposal_id: string;
+  workspace_id: string;
+  sender: 'lead' | 'bot' | 'human';
+  sender_name?: string;
+  body: string;
+  created_at: string;
+  media_url?: string;
+  status?: 'sent' | 'delivered' | 'read';
+}
+
+// 3.2 AI_AGENT_CONFIG (Configuração do Robô SDR & Conexão WhatsApp da Agência)
+export type AgentNiche = 'servicos_b2b' | 'clinica_saude' | 'imobiliaria' | 'ecommerce' | 'personalizado';
+
+export interface AiAgentConfig {
+  id?: string;
+  workspace_id: string;
+  is_active: boolean;
+  niche: AgentNiche;
+  bot_name: string;
+  system_prompt: string;
+  knowledge_base: string;
+  qualification_questions: {
+    key: 'budget' | 'authority' | 'need' | 'timing';
+    question: string;
+  }[];
+  handoff_rules: {
+    trigger_on_explicit_request: boolean;
+    trigger_on_score_threshold: number; // ex: 75
+    trigger_on_objections_count: number; // ex: 2
+    notify_whatsapp_number: string;
+  };
+  whatsapp_provider: 'waha' | 'evolution_api' | 'zapi' | 'webhook';
+  whatsapp_server_url: string;
+  whatsapp_api_key: string;
+  whatsapp_session_name: string;
+  waha_engine?: 'NOWEB' | 'WEBJS';
 }
 
 // 4. CONTRACTS (Contratos Digitais)

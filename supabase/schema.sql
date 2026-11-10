@@ -60,7 +60,50 @@ CREATE TABLE IF NOT EXISTS public.proposals (
     scope_items JSONB DEFAULT '[]'::jsonb,
     valid_until DATE NOT NULL,
     accepted_at TIMESTAMPTZ,
+    -- QUALIFICAÇÃO IA & LEAD SCORING (DeskcommCRM)
+    lead_score INT DEFAULT 30,
+    score_band TEXT DEFAULT 'frio' CHECK (score_band IN ('frio', 'morno', 'quente')),
+    score_reason TEXT,
+    bant_qualification JSONB DEFAULT '{"budget": false, "authority": false, "need": false, "timing": false}'::jsonb,
+    commitments JSONB DEFAULT '[]'::jsonb,
+    objections JSONB DEFAULT '[]'::jsonb,
+    ai_status TEXT DEFAULT 'bot_active' CHECK (ai_status IN ('bot_active', 'human_takeover', 'handoff_requested', 'paused')),
+    conversation_summary TEXT,
+    last_interaction_at TIMESTAMPTZ,
+    unread_messages_count INT DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 3.1 CHAT_MESSAGES (Histórico WhatsApp & IA SDR)
+CREATE TABLE IF NOT EXISTS public.chat_messages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
+    proposal_id UUID NOT NULL REFERENCES public.proposals(id) ON DELETE CASCADE,
+    sender TEXT NOT NULL CHECK (sender IN ('lead', 'bot', 'human')),
+    sender_name TEXT,
+    body TEXT NOT NULL,
+    status TEXT DEFAULT 'sent',
+    media_url TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 3.2 AI_AGENT_CONFIGS (Configuração do Robô SDR & Conexão WAHA por Workspace)
+CREATE TABLE IF NOT EXISTS public.ai_agent_configs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    workspace_id UUID UNIQUE NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
+    is_active BOOLEAN DEFAULT true,
+    niche TEXT NOT NULL DEFAULT 'servicos_b2b',
+    bot_name TEXT NOT NULL DEFAULT 'Théo (SDR Tríade)',
+    system_prompt TEXT NOT NULL,
+    knowledge_base TEXT,
+    qualification_questions JSONB DEFAULT '[]'::jsonb,
+    handoff_rules JSONB DEFAULT '{"trigger_on_explicit_request": true, "trigger_on_score_threshold": 75}'::jsonb,
+    whatsapp_provider TEXT DEFAULT 'waha',
+    whatsapp_server_url TEXT,
+    whatsapp_api_key TEXT,
+    whatsapp_session_name TEXT DEFAULT 'default',
+    waha_engine TEXT DEFAULT 'NOWEB',
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- 4. CONTRACTS (Contratos Digitais)
@@ -188,6 +231,8 @@ ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.approvals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.expenses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.chat_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ai_agent_configs ENABLE ROW LEVEL SECURITY;
 
 -- POLÍTICAS PÚBLICAS PARA PORTAIS E PROPOSTAS INTERATIVAS
 CREATE POLICY "Public proposal view by token" ON public.proposals

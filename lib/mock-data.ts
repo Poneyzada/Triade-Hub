@@ -8,6 +8,8 @@ import {
   Expense,
   Proposal,
   Contract,
+  ChatMessage,
+  AiAgentConfig,
 } from "@/types/database";
 
 export const INITIAL_WORKSPACE: Workspace = {
@@ -192,6 +194,28 @@ export const INITIAL_PROPOSALS: Proposal[] = [
     ],
     valid_until: "2026-11-20",
     created_at: "2026-11-02T10:00:00Z",
+
+    // QUALIFICAÇÃO IA & LEAD SCORING (DeskcommCRM Style)
+    lead_score: 88,
+    score_band: "quente",
+    score_reason: "+24 (2 compromissos), +20 BANT completo, +10 conversa em dia",
+    bant_qualification: {
+      budget: true,
+      authority: true,
+      need: true,
+      timing: true,
+      notes: "Verba R$ 5k/mês aprovada. Sócio-administrador. Quer iniciar em até 10 dias.",
+    },
+    commitments: [
+      "Solicitou reunião de fechamento com diretor",
+      "Validou escopo e investimento proposto",
+    ],
+    objections: [],
+    ai_status: "handoff_requested",
+    conversation_summary:
+      "Qualificado pelo robô Théo no WhatsApp. Lead muito aquecido pedindo contato imediato para formalizar o contrato.",
+    last_interaction_at: "2026-11-10T19:40:00Z",
+    unread_messages_count: 1,
   },
   {
     id: "prop-02",
@@ -232,6 +256,29 @@ export const INITIAL_PROPOSALS: Proposal[] = [
     ],
     valid_until: "2026-11-18",
     created_at: "2026-11-03T14:00:00Z",
+
+    // QUALIFICAÇÃO IA & LEAD SCORING
+    lead_score: 64,
+    score_band: "morno",
+    score_reason: "+12 interesse demonstrado, +15 BANT (Necessidade + Orçamento + Prazo), -8 objeção de taxa de setup",
+    bant_qualification: {
+      budget: true,
+      authority: false,
+      need: true,
+      timing: true,
+      notes: "Decisão conjunta com o médico responsável pela clínica.",
+    },
+    commitments: [
+      "Demonstrou alto interesse em atrair pacientes de Ultraformer",
+    ],
+    objections: [
+      "Questionou o valor da taxa de setup inicial",
+    ],
+    ai_status: "bot_active",
+    conversation_summary:
+      "Robô Sofia tirando dúvidas sobre o ensaio de criativos e a blindagem contra bloqueios no Meta Ads.",
+    last_interaction_at: "2026-11-10T18:15:00Z",
+    unread_messages_count: 0,
   },
   {
     id: "prop-03",
@@ -266,6 +313,24 @@ export const INITIAL_PROPOSALS: Proposal[] = [
     ],
     valid_until: "2026-11-25",
     created_at: "2026-11-04T11:00:00Z",
+
+    // QUALIFICAÇÃO IA & LEAD SCORING
+    lead_score: 35,
+    score_band: "frio",
+    score_reason: "+5 necessidade de novo portal, -10 sem resposta nas últimas 24h",
+    bant_qualification: {
+      budget: false,
+      authority: true,
+      need: true,
+      timing: false,
+      notes: "Precisa apresentar a proposta ao conselho na próxima semana.",
+    },
+    commitments: [],
+    objections: ["Ainda não liberou dotação orçamentária"],
+    ai_status: "paused",
+    conversation_summary: "Cadência de follow-up pausada aguardando reunião de diretoria da empresa.",
+    last_interaction_at: "2026-11-09T10:00:00Z",
+    unread_messages_count: 0,
   },
 ];
 
@@ -718,5 +783,143 @@ export const INITIAL_EXPENSES: Expense[] = [
     status: "pendente",
     is_recurring: true,
     created_at: "2026-11-01T00:00:00Z",
+  },
+];
+
+export const INITIAL_AI_AGENT_CONFIG: AiAgentConfig = {
+  workspace_id: "ws-triade-01",
+  is_active: true,
+  niche: "servicos_b2b",
+  bot_name: "Théo (SDR Tríade)",
+  system_prompt: `Você é Théo, consultor executivo da Tríade Studio. Sua missão é atender leads corporativos no WhatsApp que chegam via anúncios, qualificar suas reais necessidades de captação de clientes, tráfego e desenvolvimento de sites/sistemas, e agendar uma reunião estratégica com nossos diretores.
+Seja direto, profissional, caloroso e use mensagens curtas (1 a 3 frases) adaptadas ao ritmo natural de conversa do WhatsApp. Jamais envie blocos gigantescos de texto.`,
+  knowledge_base: `A Tríade Studio é uma agência de tecnologia e tráfego pago premium focada em empresas de médio e grande porte, clínicas e indústrias.
+Nossos planos:
+- Tráfego Pago & Meta Ads: a partir de R$ 3.800/mês
+- Desenvolvimento Web Next.js & SEO: a partir de R$ 6.500 setup
+- Full-Service (Tráfego + Novo Site + CRM): a partir de R$ 8.500/mês
+Garantia: contrato transparente, reuniões quinzenais e dashboard em tempo real.`,
+  qualification_questions: [
+    { key: "need", question: "Qual é o principal desafio hoje: gerar mais leads qualificados ou ter um site/posicionamento moderno para fechar negócios?" },
+    { key: "budget", question: "Vocês já têm uma verba mensal separada para investimento em marketing e mídia paga?" },
+    { key: "authority", question: "Você é quem toma a decisão final sobre contratações ou tem outros sócios no projeto?" },
+    { key: "timing", question: "Qual a previsão de início: querem rodar ainda este mês ou estão apenas pesquisando?" },
+  ],
+  handoff_rules: {
+    trigger_on_explicit_request: true,
+    trigger_on_score_threshold: 75,
+    trigger_on_objections_count: 2,
+    notify_whatsapp_number: "(11) 99881-2244",
+  },
+  whatsapp_provider: "waha",
+  whatsapp_server_url: "http://localhost:3001",
+  whatsapp_api_key: "waha_session_key_secret_2026",
+  whatsapp_session_name: "triade_comercial_principal",
+  waha_engine: "NOWEB",
+};
+
+export const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
+  // Conversa do Lead 01 (Guilherme Bastos) - Qualificação BANT bem-sucedida + Handoff
+  {
+    id: "msg-01-01",
+    proposal_id: "prop-01",
+    workspace_id: "ws-triade-01",
+    sender: "lead",
+    sender_name: "Guilherme Bastos",
+    body: "Olá, vi o anúncio de vocês no Instagram sobre captação para escritórios de advocacia. Como funciona?",
+    created_at: "2026-11-10T19:20:00Z",
+    status: "read",
+  },
+  {
+    id: "msg-01-02",
+    proposal_id: "prop-01",
+    workspace_id: "ws-triade-01",
+    sender: "bot",
+    sender_name: "Théo (SDR Tríade)",
+    body: "Olá Guilherme! Que bom ter você por aqui. Me chamo Théo, consultor da Tríade Studio. Nós estruturamos máquinas de atração de clientes de alto valor no Google Ads e criamos sites jurídicos modernos. Qual é a principal área de atuação do seu escritório hoje?",
+    created_at: "2026-11-10T19:20:45Z",
+    status: "read",
+  },
+  {
+    id: "msg-01-03",
+    proposal_id: "prop-01",
+    workspace_id: "ws-triade-01",
+    sender: "lead",
+    sender_name: "Guilherme Bastos",
+    body: "Somos especialistas em Direito Tributário e Recuperação Judicial para empresas. Nosso site atual é muito antigo e não traz nenhum cliente novo.",
+    created_at: "2026-11-10T19:23:00Z",
+    status: "read",
+  },
+  {
+    id: "msg-01-04",
+    proposal_id: "prop-01",
+    workspace_id: "ws-triade-01",
+    sender: "bot",
+    sender_name: "Théo (SDR Tríade)",
+    body: "Perfeito! Direito Tributário tem um dos maiores retornos no Google Ads quando a landing page transmite autoridade imediata. Hoje vocês já têm uma verba mensal planejada para investir em tráfego e novo posicionamento?",
+    created_at: "2026-11-10T19:24:10Z",
+    status: "read",
+  },
+  {
+    id: "msg-01-05",
+    proposal_id: "prop-01",
+    workspace_id: "ws-triade-01",
+    sender: "lead",
+    sender_name: "Guilherme Bastos",
+    body: "Sim, separei cerca de R$ 5.000 mensais só para mídia, e quero contratar uma agência séria para fazer tudo.",
+    created_at: "2026-11-10T19:26:00Z",
+    status: "read",
+  },
+  {
+    id: "msg-01-06",
+    proposal_id: "prop-01",
+    workspace_id: "ws-triade-01",
+    sender: "bot",
+    sender_name: "Théo (SDR Tríade)",
+    body: "Excelente! Essa verba é ideal para dominar as buscas locais e de decisores de empresas. Você é o sócio que decide sobre a contratação ou temos mais pessoas envolvidas na reunião?",
+    created_at: "2026-11-10T19:27:00Z",
+    status: "read",
+  },
+  {
+    id: "msg-01-07",
+    proposal_id: "prop-01",
+    workspace_id: "ws-triade-01",
+    sender: "lead",
+    sender_name: "Guilherme Bastos",
+    body: "Sou o sócio-fundador e decido diretamente. Vi a proposta que você mandou no link e gostei muito. Quero falar com um diretor de vocês para assinar e começar essa semana ainda!",
+    created_at: "2026-11-10T19:40:00Z",
+    status: "read",
+  },
+
+  // Conversa do Lead 02 (Clínica Lumina)
+  {
+    id: "msg-02-01",
+    proposal_id: "prop-02",
+    workspace_id: "ws-triade-01",
+    sender: "lead",
+    sender_name: "Mariana Alencar",
+    body: "Boa tarde! Gostaria de saber como funciona o tráfego para clínica dermatológica.",
+    created_at: "2026-11-10T18:00:00Z",
+    status: "read",
+  },
+  {
+    id: "msg-02-02",
+    proposal_id: "prop-02",
+    workspace_id: "ws-triade-01",
+    sender: "bot",
+    sender_name: "Sofia (Consultora)",
+    body: "Boa tarde Mariana! Tudo bem? Me chamo Sofia. Nós ajudamos clínicas de alto padrão a lotar a agenda de procedimentos rentáveis (como Ultraformer, Harmonização e Laser). Qual procedimento é o foco principal da sua clínica hoje?",
+    created_at: "2026-11-10T18:02:00Z",
+    status: "read",
+  },
+  {
+    id: "msg-02-03",
+    proposal_id: "prop-02",
+    workspace_id: "ws-triade-01",
+    sender: "lead",
+    sender_name: "Mariana Alencar",
+    body: "Queremos focar em Ultraformer e Bioestimuladores. Mas vi que tem uma taxa de setup na proposta, o que está incluso nela?",
+    created_at: "2026-11-10T18:15:00Z",
+    status: "read",
   },
 ];
