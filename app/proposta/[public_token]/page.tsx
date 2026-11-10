@@ -20,6 +20,7 @@ import {
 import { useTriade } from "@/lib/store";
 import { TriadeLogo } from "@/components/ui/TriadeLogo";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { AmbientAsciiBackground } from "@/components/ui/AsciiArt";
 
 export default function PublicProposalPage() {
   const params = useParams();
@@ -34,9 +35,9 @@ export default function PublicProposalPage() {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen bg-[#09090B] flex items-center justify-center text-zinc-400">
+      <div className="min-h-screen bg-[#050B11] flex items-center justify-center text-zinc-400">
         <div className="flex items-center gap-3">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-triade-gold border-t-transparent" />
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-triade-cyan border-t-transparent" />
           <span className="text-sm font-medium">Carregando proposta comercial...</span>
         </div>
       </div>
@@ -45,7 +46,7 @@ export default function PublicProposalPage() {
 
   if (!proposal) {
     return (
-      <div className="min-h-screen bg-[#09090B] flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-[#050B11] flex flex-col items-center justify-center p-6 text-center">
         <div className="h-14 w-14 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 mb-4">
           <AlertCircle className="h-7 w-7 text-amber-500" />
         </div>
@@ -75,8 +76,8 @@ export default function PublicProposalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050B11] text-zinc-200 flex flex-col items-center">
-      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.08)_0%,transparent_60%)]" />
+    <div className="min-h-screen bg-[#050B11] text-zinc-200 flex flex-col items-center relative overflow-x-hidden">
+      <AmbientAsciiBackground opacity="opacity-20" />
 
       {/* Top Brand Header */}
       <header className="w-full border-b border-triade-border bg-[#08131F]/90 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">

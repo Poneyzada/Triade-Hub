@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { NewClientModal } from "@/components/clients/NewClientModal";
 import { NewTaskModal } from "@/components/tasks/NewTaskModal";
+import { AmbientAsciiBackground } from "@/components/ui/AsciiArt";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -17,6 +18,9 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
 
   return (
     <div className="relative flex min-h-screen bg-[#050B11]">
+      {/* Background Animado ASCII Tratado (Cosmic Atmospheric Effect) */}
+      <AmbientAsciiBackground opacity="opacity-15" />
+
       {/* Sidebar Desktop e Mobile */}
       <Sidebar
         isOpen={mobileMenuOpen}

@@ -29,6 +29,7 @@ import {
 import { useTriade } from "@/lib/store";
 import { TriadeLogo } from "@/components/ui/TriadeLogo";
 import { formatDate, formatCurrency } from "@/lib/utils";
+import { AmbientAsciiBackground } from "@/components/ui/AsciiArt";
 import { OnboardingStep, Task, Approval, Invoice, Contract } from "@/types/database";
 
 export default function ClientPortalPage() {
@@ -155,7 +156,8 @@ export default function ClientPortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050B11] text-zinc-200 flex flex-col items-center">
+    <div className="min-h-screen bg-[#050B11] text-zinc-200 flex flex-col items-center relative overflow-x-hidden">
+      <AmbientAsciiBackground opacity="opacity-15" />
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.08)_0%,transparent_60%)]" />
 
       {/* Top Header */}
