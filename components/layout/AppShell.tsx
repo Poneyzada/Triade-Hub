@@ -17,18 +17,20 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const [newTaskOpen, setNewTaskOpen] = useState(false);
 
   return (
-    <div className="relative flex min-h-screen bg-[#050B11]">
+    <div className="relative flex min-h-screen bg-[#050B11] overflow-x-hidden">
       {/* Background Animado ASCII Tratado (Cosmic Atmospheric Effect) */}
-      <AmbientAsciiBackground opacity="opacity-15" />
+      <AmbientAsciiBackground opacity="opacity-40" />
 
       {/* Sidebar Desktop e Mobile */}
-      <Sidebar
-        isOpen={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
-      />
+      <div className="relative z-30">
+        <Sidebar
+          isOpen={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+        />
+      </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col lg:pl-72 min-w-0">
+      <div className="flex flex-1 flex-col lg:pl-72 min-w-0 relative z-10">
         <Header
           onOpenMobileMenu={() => setMobileMenuOpen(true)}
           onOpenNewClient={() => setNewClientOpen(true)}

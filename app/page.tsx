@@ -23,6 +23,7 @@ import { useTriade } from "@/lib/store";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { ClientDetailModal } from "@/components/clients/ClientDetailModal";
 import { Client } from "@/types/database";
+import { AsciiArt } from "@/components/ui/sss";
 
 export default function DashboardPage() {
   const { clients, tasks, approvals, metrics, getClientSteps } = useTriade();
@@ -31,28 +32,42 @@ export default function DashboardPage() {
   return (
     <AppShell>
       <div className="space-y-8">
-        {/* Boas-Vindas Executiva & Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-triade-blue text-xs font-bold uppercase tracking-wider mb-1">
-              <Sparkles className="h-4 w-4" />
-              <span>Painel Executivo • Tríade Studio</span>
+        {/* Hero Card com ASCII Art Animado */}
+        <div className="relative rounded-3xl border border-triade-cyan/30 bg-[#07121A] p-6 sm:p-8 overflow-hidden shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+          {/* Fundo ASCII Art Animado */}
+          <div className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none filter saturate-200 hue-rotate-[185deg]">
+            <AsciiArt className="h-full w-full object-cover" />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050B11]/95 via-[#050B11]/75 to-[#050B11]/30 pointer-events-none" />
+
+          <div className="relative z-10 max-w-xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/40 bg-cyan-500/15 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-3">
+              <Sparkles className="h-3.5 w-3.5 animate-pulse" />
+              <span>Tríade Hub • Operating System</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-100">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
               Visão Geral Operacional & Financeira
             </h1>
-            <p className="text-sm text-zinc-400 mt-0.5">
-              Acompanhamento de MRR, motor de onboarding dinâmico e status das entregas.
+            <p className="text-xs sm:text-sm text-zinc-300 mt-2 leading-relaxed">
+              Gestão all-in-one para a Tríade Studio: MRR recorrente, CRM de leads qualificados por IA, contratos e faturamento.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="relative z-10 flex flex-wrap items-center gap-3">
+            <Link
+              href="/crm"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black text-xs font-bold shadow-blue-glow hover:opacity-95 transition-all"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>Ver CRM & Leads IA</span>
+            </Link>
+
             <Link
               href="/clientes"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-triade-border bg-triade-card hover:border-triade-blue/50 text-xs font-semibold text-zinc-200 transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-triade-border bg-[#0E1C2A]/90 hover:border-triade-cyan/50 text-xs font-semibold text-zinc-200 transition-colors backdrop-blur-sm"
             >
-              <Users className="h-4 w-4 text-triade-blue" />
-              <span>Ver Todos os Clientes</span>
+              <Users className="h-4 w-4 text-triade-cyan" />
+              <span>Clientes Ativos</span>
             </Link>
           </div>
         </div>
