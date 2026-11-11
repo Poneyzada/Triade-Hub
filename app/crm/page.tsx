@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -214,7 +214,7 @@ export default function CrmPage() {
                                       ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
                                       : prop.ai_status === "human_takeover"
                                       ? "bg-cyan-500/20 border-cyan-500/40 text-cyan-300"
-                                      : "bg-zinc-800 border-zinc-700 text-zinc-400"
+                                      : "bg-zinc-800 border-zinc-700 text-zinc-200"
                                   }`}
                                 >
                                   {prop.ai_status === "handoff_requested"
@@ -283,7 +283,7 @@ export default function CrmPage() {
                             <button
                               onClick={() => handleCopyLink(prop.public_token)}
                               title="Copiar link público da proposta"
-                              className="p-1.5 rounded-lg border border-triade-border bg-[#07121A] text-zinc-400 hover:text-zinc-100 text-xs flex items-center gap-1"
+                              className="p-1.5 rounded-lg border border-triade-border bg-[#07121A] text-zinc-200 hover:text-zinc-100 text-xs flex items-center gap-1"
                             >
                               {copiedToken === prop.public_token ? (
                                 <Check className="h-3 w-3 text-emerald-400" />
@@ -322,7 +322,7 @@ export default function CrmPage() {
                             {prev ? (
                               <button
                                 onClick={() => updateProposalStage(prop.id, prev)}
-                                className="text-[10px] text-zinc-500 hover:text-zinc-300 flex items-center gap-0.5"
+                                className="text-[10px] text-zinc-300 hover:text-zinc-300 flex items-center gap-0.5"
                               >
                                 <ArrowLeft className="h-2.5 w-2.5" />
                                 <span>Voltar</span>
@@ -341,7 +341,7 @@ export default function CrmPage() {
                             {next ? (
                               <button
                                 onClick={() => updateProposalStage(prop.id, next)}
-                                className="text-[10px] text-zinc-400 hover:text-triade-cyan flex items-center gap-0.5"
+                                className="text-[10px] text-zinc-200 hover:text-triade-cyan flex items-center gap-0.5"
                               >
                                 <span>Avançar</span>
                                 <ArrowRight className="h-2.5 w-2.5" />
@@ -354,7 +354,7 @@ export default function CrmPage() {
                   })}
 
                   {colProposals.length === 0 && (
-                    <div className="py-12 text-center text-[11px] text-zinc-600 italic">
+                    <div className="py-12 text-center text-[11px] text-zinc-300 italic">
                       Nenhum lead nesta fase
                     </div>
                   )}

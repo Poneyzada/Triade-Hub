@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { Flame, Zap, Snowflake, Info, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
@@ -83,7 +83,7 @@ export function LeadScoreBadge({ proposal, compact = false }: LeadScoreBadgeProp
             className={`px-1.5 py-0.5 rounded text-[9px] font-black tracking-wide border ${
               bant.budget
                 ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                : "bg-zinc-800 border-zinc-700 text-zinc-500"
+                : "bg-zinc-800 border-zinc-700 text-zinc-300"
             }`}
             title={bant.budget ? "Orçamento Qualificado ✓" : "Orçamento Pendente"}
           >
@@ -93,7 +93,7 @@ export function LeadScoreBadge({ proposal, compact = false }: LeadScoreBadgeProp
             className={`px-1.5 py-0.5 rounded text-[9px] font-black tracking-wide border ${
               bant.authority
                 ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                : "bg-zinc-800 border-zinc-700 text-zinc-500"
+                : "bg-zinc-800 border-zinc-700 text-zinc-300"
             }`}
             title={bant.authority ? "Decisor Identificado ✓" : "Decisor Pendente"}
           >
@@ -103,7 +103,7 @@ export function LeadScoreBadge({ proposal, compact = false }: LeadScoreBadgeProp
             className={`px-1.5 py-0.5 rounded text-[9px] font-black tracking-wide border ${
               bant.need
                 ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                : "bg-zinc-800 border-zinc-700 text-zinc-500"
+                : "bg-zinc-800 border-zinc-700 text-zinc-300"
             }`}
             title={bant.need ? "Necessidade Mapeada ✓" : "Necessidade Pendente"}
           >
@@ -113,7 +113,7 @@ export function LeadScoreBadge({ proposal, compact = false }: LeadScoreBadgeProp
             className={`px-1.5 py-0.5 rounded text-[9px] font-black tracking-wide border ${
               bant.timing
                 ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                : "bg-zinc-800 border-zinc-700 text-zinc-500"
+                : "bg-zinc-800 border-zinc-700 text-zinc-300"
             }`}
             title={bant.timing ? "Prazo / Urgência Alinhado ✓" : "Prazo Pendente"}
           >
@@ -144,7 +144,7 @@ export function LeadScoreBadge({ proposal, compact = false }: LeadScoreBadgeProp
             {showDetails ? (
               <ChevronUp className="h-3 w-3 flex-shrink-0 text-cyan-400" />
             ) : (
-              <ChevronDown className="h-3 w-3 flex-shrink-0 text-zinc-400" />
+              <ChevronDown className="h-3 w-3 flex-shrink-0 text-zinc-200" />
             )}
           </button>
 

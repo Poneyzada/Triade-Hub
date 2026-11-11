@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -315,7 +315,7 @@ export default function DashboardPage() {
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center justify-between text-[11px] text-zinc-400 mt-2">
+                      <div className="flex items-center justify-between text-[11px] text-zinc-200 mt-2">
                         <span className="truncate max-w-[150px]">
                           {client?.company_name}
                         </span>
@@ -325,7 +325,7 @@ export default function DashboardPage() {
                               ? "bg-red-500/10 text-red-400 border border-red-500/20"
                               : task.priority === "alta"
                               ? "bg-amber-500/10 text-amber-300 border border-amber-500/20"
-                              : "bg-zinc-800 text-zinc-400"
+                              : "bg-zinc-800 text-zinc-200"
                           }`}
                         >
                           {task.priority}
@@ -363,7 +363,7 @@ export default function DashboardPage() {
                       <p className="text-xs font-semibold text-zinc-200 line-clamp-1">
                         {appr.title}
                       </p>
-                      <div className="flex items-center justify-between text-[11px] text-zinc-400 mt-2">
+                      <div className="flex items-center justify-between text-[11px] text-zinc-200 mt-2">
                         <span>{client?.company_name}</span>
                         <span
                           className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${

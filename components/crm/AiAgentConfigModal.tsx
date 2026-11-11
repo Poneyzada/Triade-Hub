@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -100,7 +100,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                   WAHA + Supabase
                 </span>
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-200">
                 Atendimento, qualificação BANT e conexões de WhatsApp (Inspirado no DeskcommCRM).
               </p>
             </div>
@@ -108,7 +108,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
+            className="p-1.5 rounded-lg text-zinc-200 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -121,7 +121,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
             className={`pb-3 font-bold transition-colors border-b-2 flex items-center gap-1.5 ${
               activeTab === "prompts"
                 ? "border-triade-cyan text-triade-cyanLight"
-                : "border-transparent text-zinc-400 hover:text-zinc-200"
+                : "border-transparent text-zinc-200 hover:text-zinc-200"
             }`}
           >
             <Sparkles className="h-3.5 w-3.5" />
@@ -133,7 +133,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
             className={`pb-3 font-bold transition-colors border-b-2 flex items-center gap-1.5 ${
               activeTab === "whatsapp"
                 ? "border-triade-cyan text-triade-cyanLight"
-                : "border-transparent text-zinc-400 hover:text-zinc-200"
+                : "border-transparent text-zinc-200 hover:text-zinc-200"
             }`}
           >
             <Server className="h-3.5 w-3.5" />
@@ -145,7 +145,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
             className={`pb-3 font-bold transition-colors border-b-2 flex items-center gap-1.5 ${
               activeTab === "handoff"
                 ? "border-triade-cyan text-triade-cyanLight"
-                : "border-transparent text-zinc-400 hover:text-zinc-200"
+                : "border-transparent text-zinc-200 hover:text-zinc-200"
             }`}
           >
             <Layers className="h-3.5 w-3.5" />
@@ -171,7 +171,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                       className={`p-2.5 rounded-xl border text-left text-xs transition-all ${
                         selectedNiche === key
                           ? "border-triade-cyan bg-cyan-500/10 text-triade-cyanLight font-bold"
-                          : "border-triade-border bg-[#0E1C2A] text-zinc-400 hover:border-zinc-700"
+                          : "border-triade-border bg-[#0E1C2A] text-zinc-200 hover:border-zinc-700"
                       }`}
                     >
                       {val.label}
@@ -200,7 +200,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                   <label className="text-xs font-bold text-zinc-300">
                     Instrução Principal do Agente (System Prompt):
                   </label>
-                  <span className="text-[10px] text-zinc-500">
+                  <span className="text-[10px] text-zinc-300">
                     Mensagens curtas (1 a 3 frases) recomendadas
                   </span>
                 </div>
@@ -218,7 +218,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                   <label className="text-xs font-bold text-zinc-300">
                     Base de Conhecimento da Agência / FAQ & Preços:
                   </label>
-                  <span className="text-[10px] text-zinc-500">
+                  <span className="text-[10px] text-zinc-300">
                     A IA consulta esses dados antes de responder
                   </span>
                 </div>
@@ -249,7 +249,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                         Conectado (24/7)
                       </span>
                     </h4>
-                    <p className="text-[11px] text-zinc-400 mt-0.5">
+                    <p className="text-[11px] text-zinc-200 mt-0.5">
                       Engine: <strong className="text-zinc-200">NOWEB (WebSocket Ultra-Leve)</strong> • Ignora status e grupos automaticamente.
                     </p>
                   </div>
@@ -345,7 +345,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
 
           {activeTab === "handoff" && (
             <div className="space-y-4">
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-200">
                 Os <strong>4 Portões de Handoff</strong> determinam exatamente o momento em que o robô deve parar de falar e transferir o lead para um vendedor humano da agência:
               </p>
 
@@ -358,7 +358,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                     <h5 className="text-xs font-bold text-zinc-100">
                       Portão G1: Pedido Explícito de Humano (Ativo)
                     </h5>
-                    <p className="text-[11px] text-zinc-400 mt-0.5">
+                    <p className="text-[11px] text-zinc-200 mt-0.5">
                       Identifica termos em português como <em>"quero falar com atendente"</em>, <em>"humano por favor"</em>, <em>"sai do bot"</em>.
                     </p>
                   </div>
@@ -372,7 +372,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                     <h5 className="text-xs font-bold text-zinc-100">
                       Portão G2: Alerta de Sentimento Negativo / Frustração
                     </h5>
-                    <p className="text-[11px] text-zinc-400 mt-0.5">
+                    <p className="text-[11px] text-zinc-200 mt-0.5">
                       Pausa o robô imediatamente se o lead demonstrar irritação, xingamentos ou estresse.
                     </p>
                   </div>
@@ -386,7 +386,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                     <h5 className="text-xs font-bold text-zinc-100">
                       Portão G3: Incerteza do Robô / Dúvida Técnica
                     </h5>
-                    <p className="text-[11px] text-zinc-400 mt-0.5">
+                    <p className="text-[11px] text-zinc-200 mt-0.5">
                       Se o cliente fizer uma pergunta fora da base de conhecimento, o robô não alucina: sinaliza incerteza e transfere.
                     </p>
                   </div>
@@ -400,7 +400,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
                     <h5 className="text-xs font-bold text-zinc-100">
                       Portão G4: Lead com Score Quente (≥ 75 pts) ou Termos Jurídicos
                     </h5>
-                    <p className="text-[11px] text-zinc-400 mt-0.5">
+                    <p className="text-[11px] text-zinc-200 mt-0.5">
                       Quando o lead fecha todos os critérios BANT e pede reunião, o sistema notifica o vendedor para fechar a venda.
                     </p>
                   </div>
@@ -411,7 +411,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
 
           {/* Footer com Salvar */}
           <div className="pt-4 border-t border-triade-border flex items-center justify-between">
-            <span className="text-[11px] text-zinc-500">
+            <span className="text-[11px] text-zinc-300">
               Configurações salvas isoladamente por agência (Multi-Tenant).
             </span>
 
@@ -419,7 +419,7 @@ export function AiAgentConfigModal({ isOpen, onClose }: AiAgentConfigModalProps)
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl border border-triade-border text-zinc-400 hover:text-zinc-100 text-xs font-bold transition-colors"
+                className="px-4 py-2 rounded-xl border border-triade-border text-zinc-200 hover:text-zinc-100 text-xs font-bold transition-colors"
               >
                 Cancelar
               </button>

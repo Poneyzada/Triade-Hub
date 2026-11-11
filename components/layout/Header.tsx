@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -58,11 +58,11 @@ export const Header: React.FC<HeaderProps> = ({
                   Matriz
                 </span>
               </div>
-              <span className="text-[10px] text-cyan-300/60">
+              <span className="text-[10px] text-cyan-200 font-semibold">
                 Multi-Tenancy Ativo
               </span>
             </div>
-            <ChevronDown className="h-4 w-4 text-zinc-400 ml-1" />
+            <ChevronDown className="h-4 w-4 text-zinc-200 ml-1" />
           </button>
 
           {/* Dropdown Menu */}
@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => setWorkspaceMenuOpen(false)}
               />
               <div className="absolute left-0 top-full mt-2 w-72 rounded-xl border border-triade-border bg-[#0B1724] p-2 shadow-2xl z-50">
-                <div className="px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-cyan-300/60">
+                <div className="px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-cyan-200 font-semibold">
                   Workspace Ativo (Agência)
                 </div>
                 <div className="flex items-center justify-between rounded-lg bg-[#0F2030] p-2.5 border border-triade-blue/40">
@@ -106,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
             }
           }}
           title="Restaurar dados de demonstração iniciais"
-          className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-800 bg-[#0A1622]/60 hover:bg-[#0E1E2E] text-zinc-400 hover:text-cyan-200 text-xs transition-colors"
+          className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-800 bg-[#0A1622]/60 hover:bg-[#0E1E2E] text-zinc-200 hover:text-cyan-200 text-xs transition-colors"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           <span>Resetar Demo</span>

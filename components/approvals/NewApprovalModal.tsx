@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { X, CheckCircle2, Building, Image, FileText, Globe, Smartphone, Sparkles } from "lucide-react";
@@ -76,12 +76,12 @@ export const NewApprovalModal: React.FC<NewApprovalModalProps> = ({
               <h2 className="text-lg font-bold text-zinc-100">
                 Subir Item para Aprovação do Cliente
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-200">
                 O cliente poderá aprovar ou solicitar ajustes no portal
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800">
+          <button onClick={onClose} className="rounded-lg p-2 text-zinc-200 hover:bg-zinc-800">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -136,7 +136,7 @@ export const NewApprovalModal: React.FC<NewApprovalModalProps> = ({
                   className={`p-2.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all ${
                     type === t.id
                       ? "border-purple-500 bg-purple-500/15 text-purple-300 shadow-sm"
-                      : "border-zinc-800 bg-zinc-900/60 text-zinc-400"
+                      : "border-zinc-800 bg-zinc-900/60 text-zinc-200"
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" />

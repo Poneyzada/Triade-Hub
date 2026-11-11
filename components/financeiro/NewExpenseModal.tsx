@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { X, DollarSign, Tag, Calendar, Wallet } from "lucide-react";
@@ -56,12 +56,12 @@ export const NewExpenseModal: React.FC<NewExpenseModalProps> = ({ isOpen, onClos
               <h2 className="text-lg font-bold text-zinc-100">
                 Cadastrar Despesa / Custo
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-200">
                 Custos fixos e variáveis para cálculo de margem líquida real
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800">
+          <button onClick={onClose} className="rounded-lg p-2 text-zinc-200 hover:bg-zinc-800">
             <X className="h-5 w-5" />
           </button>
         </div>

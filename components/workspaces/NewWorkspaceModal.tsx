@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { X, Building2, Palette, Globe, Sparkles, Check } from "lucide-react";
@@ -63,12 +63,12 @@ export const NewWorkspaceModal: React.FC<NewWorkspaceModalProps> = ({ isOpen, on
               <h2 className="text-lg font-bold text-zinc-100">
                 Criar Nova Agência (Multi-Tenant White-Label)
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-200">
                 Gera um workspace isolado com identidade e domínio próprio
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800">
+          <button onClick={onClose} className="rounded-lg p-2 text-zinc-200 hover:bg-zinc-800">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -100,7 +100,7 @@ export const NewWorkspaceModal: React.FC<NewWorkspaceModalProps> = ({ isOpen, on
                 onChange={(e) => setSlug(e.target.value)}
                 className="bg-transparent flex-1 text-zinc-100 focus:outline-none font-mono text-xs"
               />
-              <span className="text-zinc-500 text-xs">.hub.triade</span>
+              <span className="text-zinc-300 text-xs">.hub.triade</span>
             </div>
           </div>
 

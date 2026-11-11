@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -91,7 +91,7 @@ export default function FinanceiroPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-100">
               MRR, Cobranças 50/50 & Lucro Líquido Real
             </h1>
-            <p className="text-sm text-zinc-400 mt-0.5">
+            <p className="text-sm text-zinc-200 mt-0.5">
               Controle inteligente de receitas, faturas conectadas ao Asaas/AbacatePay e despesas da agência.
             </p>
           </div>
@@ -118,29 +118,29 @@ export default function FinanceiroPage() {
         <div className="grid grid-cols-2 lg:grid-cols-6 gap-3.5">
           {/* MRR de Tráfego */}
           <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
-            <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
+            <span className="text-[10px] uppercase font-bold text-zinc-200 block mb-1">
               MRR (Tráfego Recorrente)
             </span>
             <span className="text-xl font-bold text-sky-300">
               {formatCurrency(metrics.activeMRR)}
             </span>
-            <span className="text-[10px] text-zinc-500 mt-1 block">Mensalidade base</span>
+            <span className="text-[10px] text-zinc-300 mt-1 block">Mensalidade base</span>
           </div>
 
           {/* Receita Projetos (Sites/Apps) */}
           <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
-            <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
+            <span className="text-[10px] uppercase font-bold text-zinc-200 block mb-1">
               Receita Projetos (50/50)
             </span>
             <span className="text-xl font-bold text-triade-cyanLight">
               {formatCurrency(metrics.projectsRevenue)}
             </span>
-            <span className="text-[10px] text-zinc-500 mt-1 block">Entradas e entregas</span>
+            <span className="text-[10px] text-zinc-300 mt-1 block">Entradas e entregas</span>
           </div>
 
           {/* Total Recebido no Mês */}
           <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
-            <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
+            <span className="text-[10px] uppercase font-bold text-zinc-200 block mb-1">
               Total Recebido (Mês)
             </span>
             <span className="text-xl font-bold text-emerald-400">
@@ -151,24 +151,24 @@ export default function FinanceiroPage() {
 
           {/* Inadimplência / Atrasados */}
           <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
-            <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
+            <span className="text-[10px] uppercase font-bold text-zinc-200 block mb-1">
               Inadimplência
             </span>
             <span className="text-xl font-bold text-amber-400">
               {formatCurrency(metrics.totalOverdue)}
             </span>
-            <span className="text-[10px] text-zinc-500 mt-1 block">Aguardando pagamento</span>
+            <span className="text-[10px] text-zinc-300 mt-1 block">Aguardando pagamento</span>
           </div>
 
           {/* Despesas da Agência */}
           <div className="rounded-xl border border-triade-border bg-[#0E1C2A] p-4">
-            <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
+            <span className="text-[10px] uppercase font-bold text-zinc-200 block mb-1">
               Despesas & Custos
             </span>
             <span className="text-xl font-bold text-red-400">
               {formatCurrency(metrics.totalExpenses)}
             </span>
-            <span className="text-[10px] text-zinc-500 mt-1 block">Ferramentas & equipe</span>
+            <span className="text-[10px] text-zinc-300 mt-1 block">Ferramentas & equipe</span>
           </div>
 
           {/* Lucro Líquido Real */}
@@ -188,7 +188,7 @@ export default function FinanceiroPage() {
         {/* Barra Visual de Fluxo de Caixa */}
         <div className="p-4 rounded-2xl border border-triade-border bg-[#0E1C2A] space-y-2">
           <div className="flex items-center justify-between text-xs font-semibold">
-            <span className="text-zinc-400 flex items-center gap-1.5">
+            <span className="text-zinc-200 flex items-center gap-1.5">
               <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
               <span>Fluxo de Caixa: Recebimentos ({formatCurrency(metrics.monthRevenue)}) vs Despesas ({formatCurrency(metrics.totalExpenses)})</span>
             </span>
@@ -217,7 +217,7 @@ export default function FinanceiroPage() {
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === "invoices"
                 ? "bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black shadow-blue-glow"
-                : "text-zinc-400 hover:text-zinc-200"
+                : "text-zinc-200 hover:text-zinc-200"
             }`}
           >
             Contas a Receber (Faturas Clientes)
@@ -227,7 +227,7 @@ export default function FinanceiroPage() {
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === "expenses"
                 ? "bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-black shadow-blue-glow"
-                : "text-zinc-400 hover:text-zinc-200"
+                : "text-zinc-200 hover:text-zinc-200"
             }`}
           >
             Despesas & Custos da Agência
@@ -268,7 +268,7 @@ export default function FinanceiroPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-triade-border bg-[#0B1724] text-zinc-400 uppercase text-[10px] font-bold">
+                    <tr className="border-b border-triade-border bg-[#0B1724] text-zinc-200 uppercase text-[10px] font-bold">
                       <th className="p-4">Cliente</th>
                       <th className="p-4">Título da Fatura</th>
                       <th className="p-4">Tipo</th>
@@ -289,10 +289,10 @@ export default function FinanceiroPage() {
                             {client?.company_name}
                           </td>
                           <td className="p-4 text-zinc-300 max-w-xs truncate">{inv.title}</td>
-                          <td className="p-4 uppercase text-[10px] text-zinc-400 font-semibold">
+                          <td className="p-4 uppercase text-[10px] text-zinc-200 font-semibold">
                             {inv.type.replace("_", " ")}
                           </td>
-                          <td className="p-4 text-zinc-400">
+                          <td className="p-4 text-zinc-200">
                             {formatDate(inv.due_date)}
                           </td>
                           <td className="p-4 font-bold text-triade-cyanLight text-sm">
@@ -341,7 +341,7 @@ export default function FinanceiroPage() {
                                   Dar Baixa
                                 </button>
                               ) : (
-                                <span className="text-[11px] text-zinc-500 italic">Pago ✓</span>
+                                <span className="text-[11px] text-zinc-300 italic">Pago ✓</span>
                               )}
                             </div>
                           </td>
@@ -362,7 +362,7 @@ export default function FinanceiroPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-triade-border bg-[#0B1724] text-zinc-400 uppercase text-[10px] font-bold">
+                    <tr className="border-b border-triade-border bg-[#0B1724] text-zinc-200 uppercase text-[10px] font-bold">
                       <th className="p-4">Despesa / Custo</th>
                       <th className="p-4">Categoria</th>
                       <th className="p-4">Vencimento</th>
@@ -375,14 +375,14 @@ export default function FinanceiroPage() {
                     {expenses.map((exp) => (
                       <tr key={exp.id} className="hover:bg-zinc-900/40 transition-colors">
                         <td className="p-4 font-bold text-zinc-200">{exp.title}</td>
-                        <td className="p-4 uppercase text-[10px] text-zinc-400 font-semibold">
+                        <td className="p-4 uppercase text-[10px] text-zinc-200 font-semibold">
                           {exp.category}
                         </td>
-                        <td className="p-4 text-zinc-400">{formatDate(exp.due_date)}</td>
+                        <td className="p-4 text-zinc-200">{formatDate(exp.due_date)}</td>
                         <td className="p-4 font-bold text-red-400 text-sm">
                           {formatCurrency(exp.amount)}
                         </td>
-                        <td className="p-4 text-zinc-400">
+                        <td className="p-4 text-zinc-200">
                           {exp.is_recurring ? "Mensal (Fixo)" : "Avulso"}
                         </td>
                         <td className="p-4 text-right">
@@ -391,7 +391,7 @@ export default function FinanceiroPage() {
                             className={`px-3 py-1 rounded-lg text-xs font-bold border transition-colors ${
                               exp.status === "pago"
                                 ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"
-                                : "bg-zinc-800 border-zinc-700 text-zinc-400 hover:text-white"
+                                : "bg-zinc-800 border-zinc-700 text-zinc-200 hover:text-white"
                             }`}
                           >
                             {exp.status === "pago" ? "Pago ✓" : "Marcar como Pago"}

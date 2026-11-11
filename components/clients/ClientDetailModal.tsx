@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -168,14 +168,14 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                   {getServiceBadge().label}
                 </span>
               </div>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-zinc-200 mt-0.5">
                 Contato: <span className="text-zinc-200 font-medium">{client.name}</span> • {client.email} • {client.phone}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
+            className="rounded-lg p-2 text-zinc-200 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -206,7 +206,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                 className={`flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
                   isActive
                     ? "border-triade-blue text-triade-blueLight bg-triade-blue/10"
-                    : "border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-[#0D1C2A]"
+                    : "border-transparent text-zinc-200 hover:text-zinc-200 hover:bg-[#0D1C2A]"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -267,7 +267,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
               {/* Grid de Métricas do Cliente */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
                 <div className="rounded-xl border border-triade-border bg-zinc-900/50 p-4">
-                  <span className="text-[10px] uppercase font-semibold text-zinc-400 block mb-1">
+                  <span className="text-[10px] uppercase font-semibold text-zinc-200 block mb-1">
                     Mensalidade (MRR)
                   </span>
                   <span className="text-lg font-bold text-sky-300">
@@ -275,7 +275,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                   </span>
                 </div>
                 <div className="rounded-xl border border-triade-border bg-zinc-900/50 p-4">
-                  <span className="text-[10px] uppercase font-semibold text-zinc-400 block mb-1">
+                  <span className="text-[10px] uppercase font-semibold text-zinc-200 block mb-1">
                     Valor Contratado
                   </span>
                   <span className="text-lg font-bold text-zinc-100">
@@ -283,7 +283,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                   </span>
                 </div>
                 <div className="rounded-xl border border-triade-border bg-zinc-900/50 p-4">
-                  <span className="text-[10px] uppercase font-semibold text-zinc-400 block mb-1">
+                  <span className="text-[10px] uppercase font-semibold text-zinc-200 block mb-1">
                     Progresso Onboarding
                   </span>
                   <span className="text-lg font-bold text-triade-cyanLight">
@@ -291,7 +291,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                   </span>
                 </div>
                 <div className="rounded-xl border border-triade-border bg-zinc-900/50 p-4">
-                  <span className="text-[10px] uppercase font-semibold text-zinc-400 block mb-1">
+                  <span className="text-[10px] uppercase font-semibold text-zinc-200 block mb-1">
                     Status da Conta
                   </span>
                   <select
@@ -312,7 +312,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                 <h3 className="text-xs font-bold text-zinc-200 uppercase tracking-wider mb-2">
                   Observações e Alinhamento
                 </h3>
-                <p className="text-xs text-zinc-400 leading-relaxed whitespace-pre-wrap">
+                <p className="text-xs text-zinc-200 leading-relaxed whitespace-pre-wrap">
                   {client.notes || "Nenhuma observação interna cadastrada para este cliente."}
                 </p>
               </div>
@@ -451,7 +451,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                             href={link.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-[11px] text-zinc-400 hover:text-triade-cyanLight truncate block"
+                            className="text-[11px] text-zinc-200 hover:text-triade-cyanLight truncate block"
                           >
                             {link.url}
                           </a>
@@ -462,7 +462,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                           href={link.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
+                          className="p-1.5 rounded-lg text-zinc-200 hover:text-zinc-100 hover:bg-zinc-800"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
                         </a>
@@ -477,7 +477,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                     </div>
                   ))}
                   {usefulLinks.length === 0 && (
-                    <p className="text-xs text-zinc-500 italic py-2">
+                    <p className="text-xs text-zinc-300 italic py-2">
                       Nenhum link adicional cadastrado ainda.
                     </p>
                   )}
@@ -520,7 +520,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                   <h3 className="text-sm font-bold text-zinc-100">
                     Passos do Motor de Onboarding Dinâmico
                   </h3>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-200">
                     Gerados com base no serviço ({client.service_type.toUpperCase()}).
                   </p>
                 </div>
@@ -562,7 +562,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
                                 : isSubmitted
                                 ? "bg-triade-cyan/20 text-triade-cyanLight border border-triade-cyan/40"
-                                : "bg-zinc-800 text-zinc-400"
+                                : "bg-zinc-800 text-zinc-200"
                             }`}
                           >
                             {step.order_index}
@@ -571,7 +571,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                             <h4 className="text-sm font-bold text-zinc-100">
                               {step.title}
                             </h4>
-                            <p className="text-xs text-zinc-400 mt-0.5">
+                            <p className="text-xs text-zinc-200 mt-0.5">
                               {step.description}
                             </p>
 
@@ -586,7 +586,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                                 </p>
                               </div>
                             ) : (
-                              <p className="text-[11px] text-zinc-500 italic mt-1.5">
+                              <p className="text-[11px] text-zinc-300 italic mt-1.5">
                                 Aguardando envio de dados pelo cliente no portal.
                               </p>
                             )}
@@ -649,7 +649,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                 <h3 className="text-sm font-bold text-zinc-100">
                   Tarefas Operacionais de {client.company_name}
                 </h3>
-                <span className="text-xs text-zinc-400">
+                <span className="text-xs text-zinc-200">
                   Total de {tasks.length} tarefas vinculadas
                 </span>
               </div>
@@ -677,7 +677,7 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                           {task.title}
                         </p>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-[10px] text-zinc-400">
+                          <span className="text-[10px] text-zinc-200">
                             Prazo: {formatDate(task.deadline)}
                           </span>
                           {task.visible_to_client && (
@@ -688,14 +688,14 @@ export const ClientDetailModal: React.FC<ClientDetailModalProps> = ({
                         </div>
                       </div>
                     </div>
-                    <span className="text-xs font-medium uppercase text-zinc-400">
+                    <span className="text-xs font-medium uppercase text-zinc-200">
                       {task.status.replace("_", " ")}
                     </span>
                   </div>
                 ))}
 
                 {tasks.length === 0 && (
-                  <p className="text-xs text-zinc-500 italic text-center py-6">
+                  <p className="text-xs text-zinc-300 italic text-center py-6">
                     Nenhuma tarefa criada para este cliente ainda.
                   </p>
                 )}

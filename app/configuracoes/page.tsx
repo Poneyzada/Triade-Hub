@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -86,7 +86,7 @@ export default function ConfiguracoesPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-100">
               White-Label, Multi-Tenancy & Automações
             </h1>
-            <p className="text-sm text-zinc-400 mt-0.5">
+            <p className="text-sm text-zinc-200 mt-0.5">
               Personalize sua agência, configure webhooks do WhatsApp e gerencie múltiplos workspaces parceiros.
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function ConfiguracoesPage() {
         {/* Workspaces Ativos / Seletor */}
         <div className="p-4 rounded-2xl border border-triade-border bg-[#0E1C2A] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-[10px] uppercase font-bold text-zinc-400 block mb-1">
+            <span className="text-[10px] uppercase font-bold text-zinc-200 block mb-1">
               Workspaces Multi-Tenant Registrados ({workspaces.length})
             </span>
             <p className="text-sm font-bold text-zinc-100">
@@ -119,7 +119,7 @@ export default function ConfiguracoesPage() {
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
                   ws.id === workspace.id
                     ? "border-triade-cyan bg-triade-cyan/15 text-triade-cyanLight shadow-sm"
-                    : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-white"
+                    : "border-zinc-800 bg-zinc-900 text-zinc-200 hover:text-white"
                 }`}
               >
                 {ws.name}
@@ -141,7 +141,7 @@ export default function ConfiguracoesPage() {
                   <h3 className="text-sm font-bold text-zinc-100">
                     Identidade Visual da Agência (White-Label)
                   </h3>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-200">
                     Será exibida no Portal do Cliente e Propostas Públicas
                   </p>
                 </div>
@@ -219,7 +219,7 @@ export default function ConfiguracoesPage() {
                   <h3 className="text-sm font-bold text-zinc-100">
                     Central de Automações & Webhooks
                   </h3>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-200">
                     Evolution API, Z-API, Asaas e AbacatePay
                   </p>
                 </div>
@@ -237,7 +237,7 @@ export default function ConfiguracoesPage() {
                     onChange={(e) => setWebhookUrl(e.target.value)}
                     className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2.5 text-xs text-zinc-100 focus:outline-none"
                   />
-                  <span className="text-[10px] text-zinc-500 mt-1 block">
+                  <span className="text-[10px] text-zinc-300 mt-1 block">
                     Caso não informado, o sistema utilizará o link direto <code>wa.me</code> com 1 clique.
                   </span>
                 </div>
@@ -253,7 +253,7 @@ export default function ConfiguracoesPage() {
                     onChange={(e) => setPaymentKey(e.target.value)}
                     className="w-full rounded-xl border border-triade-border bg-zinc-900 px-4 py-2.5 text-xs text-zinc-100 focus:outline-none"
                   />
-                  <span className="text-[10px] text-zinc-500 mt-1 block">
+                  <span className="text-[10px] text-zinc-300 mt-1 block">
                     Endpoint de Webhook pronto em: <code>/api/webhooks/payment</code>
                   </span>
                 </div>

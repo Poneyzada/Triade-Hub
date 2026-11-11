@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -113,7 +113,7 @@ export function WhatsAppLiveChatModal({
               <div className="flex items-center gap-2">
                 <h3 className="text-sm font-bold text-zinc-100 flex items-center gap-1.5">
                   <span>{proposal.lead_name}</span>
-                  <span className="text-[11px] font-normal text-zinc-400">
+                  <span className="text-[11px] font-normal text-zinc-200">
                     ({proposal.company_name})
                   </span>
                 </h3>
@@ -121,9 +121,9 @@ export function WhatsAppLiveChatModal({
                 <LeadScoreBadge proposal={proposal} compact />
               </div>
 
-              <div className="flex items-center gap-2 text-[11px] text-zinc-400 mt-0.5">
+              <div className="flex items-center gap-2 text-[11px] text-zinc-200 mt-0.5">
                 <span className="flex items-center gap-1">
-                  <Phone className="h-3 w-3 text-zinc-500" />
+                  <Phone className="h-3 w-3 text-zinc-300" />
                   <span>{proposal.lead_phone}</span>
                 </span>
                 <span>•</span>
@@ -165,7 +165,7 @@ export function WhatsAppLiveChatModal({
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
+              className="p-1.5 rounded-lg text-zinc-200 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
@@ -197,7 +197,7 @@ export function WhatsAppLiveChatModal({
             className={`pb-2 font-bold transition-colors border-b-2 ${
               activeTab === "chat"
                 ? "border-triade-cyan text-triade-cyanLight"
-                : "border-transparent text-zinc-400 hover:text-zinc-200"
+                : "border-transparent text-zinc-200 hover:text-zinc-200"
             }`}
           >
             Histórico da Conversa WhatsApp ({messages.length})
@@ -208,7 +208,7 @@ export function WhatsAppLiveChatModal({
             className={`pb-2 font-bold transition-colors border-b-2 flex items-center gap-1.5 ${
               activeTab === "test_sim"
                 ? "border-triade-cyan text-triade-cyanLight"
-                : "border-transparent text-zinc-400 hover:text-zinc-200"
+                : "border-transparent text-zinc-200 hover:text-zinc-200"
             }`}
           >
             <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
@@ -225,7 +225,7 @@ export function WhatsAppLiveChatModal({
                   <Bot className="h-4 w-4" />
                   <span>Testar Reação do Robô ({aiAgentConfig.bot_name})</span>
                 </span>
-                <span className="text-[10px] text-zinc-400">
+                <span className="text-[10px] text-zinc-200">
                   Simula o lead digitando no WhatsApp
                 </span>
               </div>
@@ -312,7 +312,7 @@ export function WhatsAppLiveChatModal({
                     <span
                       className={
                         isLead
-                          ? "text-zinc-400"
+                          ? "text-zinc-200"
                           : isBot
                           ? "text-triade-cyanLight flex items-center gap-1"
                           : "text-sky-300 flex items-center gap-1"
@@ -323,7 +323,7 @@ export function WhatsAppLiveChatModal({
                       <span>{msg.sender_name || (isLead ? proposal.lead_name : "Agência")}</span>
                     </span>
 
-                    <span className="text-zinc-500 font-normal">
+                    <span className="text-zinc-300 font-normal">
                       {new Date(msg.created_at).toLocaleTimeString("pt-BR", {
                         hour: "2-digit",
                         minute: "2-digit",

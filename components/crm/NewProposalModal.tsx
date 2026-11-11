@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { X, Sparkles, Building, User, Mail, Phone, DollarSign, Calendar, Plus, Trash2, CheckCircle2 } from "lucide-react";
@@ -99,12 +99,12 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
               <h2 className="text-lg font-bold text-zinc-100">
                 Criar Nova Proposta Comercial Interativa
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-200">
                 Gera link público (/proposta/[token]) com apresentação comercial de alto padrão
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200">
+          <button onClick={onClose} className="rounded-lg p-2 text-zinc-200 hover:bg-zinc-800 hover:text-zinc-200">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -235,7 +235,7 @@ export const NewProposalModal: React.FC<NewProposalModalProps> = ({
                 <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl border border-zinc-800 bg-zinc-900/60">
                   <div className="min-w-0 pr-2">
                     <p className="text-xs font-bold text-zinc-100 truncate">{item.title}</p>
-                    <p className="text-[11px] text-zinc-400 truncate">{item.description}</p>
+                    <p className="text-[11px] text-zinc-200 truncate">{item.description}</p>
                   </div>
                   <button
                     type="button"

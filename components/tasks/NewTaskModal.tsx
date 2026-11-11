@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { X, Layers, User, Calendar, AlertCircle, Eye, EyeOff, Tag } from "lucide-react";
@@ -80,14 +80,14 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
               <h2 className="text-lg font-bold text-zinc-100">
                 Criar Nova Tarefa Operacional
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-200">
                 Adicione entregas ao fluxo da Tríade Studio
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
+            className="rounded-lg p-2 text-zinc-200 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -212,7 +212,7 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
                   className={`flex h-8 w-8 items-center justify-center rounded-lg ${
                     visibleToClient
                       ? "bg-triade-cyan/20 text-triade-cyanLight border border-triade-cyan/40"
-                      : "bg-zinc-800 text-zinc-500"
+                      : "bg-zinc-800 text-zinc-300"
                   }`}
                 >
                   {visibleToClient ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
@@ -221,7 +221,7 @@ export const NewTaskModal: React.FC<NewTaskModalProps> = ({
                   <span className="text-xs font-bold text-zinc-200 block">
                     Visível no Portal do Cliente (/portal/[token])
                   </span>
-                  <span className="text-[11px] text-zinc-400">
+                  <span className="text-[11px] text-zinc-200">
                     Se ativado, o cliente poderá acompanhar esta tarefa em tempo real.
                   </span>
                 </div>

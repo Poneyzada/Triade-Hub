@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -113,7 +113,7 @@ export default function ProjetosKanbanPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-100">
               Kanban Operacional de Projetos
             </h1>
-            <p className="text-sm text-zinc-400 mt-0.5">
+            <p className="text-sm text-zinc-200 mt-0.5">
               Gestão de fluxo das entregas com sincronização em tempo real para o Portal do Cliente.
             </p>
           </div>
@@ -132,7 +132,7 @@ export default function ProjetosKanbanPage() {
           <div className="flex flex-wrap items-center gap-3">
             {/* Filtro por Cliente */}
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-zinc-400">Cliente:</span>
+              <span className="text-xs font-semibold text-zinc-200">Cliente:</span>
               <select
                 value={selectedClientId}
                 onChange={(e) => setSelectedClientId(e.target.value)}
@@ -149,7 +149,7 @@ export default function ProjetosKanbanPage() {
 
             {/* Filtro por Prioridade */}
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-zinc-400">Prioridade:</span>
+              <span className="text-xs font-semibold text-zinc-200">Prioridade:</span>
               <select
                 value={selectedPriority}
                 onChange={(e) => setSelectedPriority(e.target.value)}
@@ -170,7 +170,7 @@ export default function ProjetosKanbanPage() {
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
               onlyClientVisible
                 ? "border-triade-cyan bg-triade-cyan/15 text-triade-cyanLight shadow-blue-glow"
-                : "border-zinc-800 bg-[#0B1724] text-zinc-400 hover:text-zinc-200"
+                : "border-zinc-800 bg-[#0B1724] text-zinc-200 hover:text-zinc-200"
             }`}
           >
             {onlyClientVisible ? (
@@ -207,7 +207,7 @@ export default function ProjetosKanbanPage() {
                   <button
                     onClick={() => openNewTaskInColumn(col.id)}
                     title={`Adicionar tarefa em ${col.label}`}
-                    className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                    className="p-1 rounded-lg text-zinc-200 hover:text-white hover:bg-zinc-800 transition-colors"
                   >
                     <Plus className="h-4 w-4" />
                   </button>
@@ -228,7 +228,7 @@ export default function ProjetosKanbanPage() {
                         <div>
                           {/* Top: Client Name & Visibilidade */}
                           <div className="flex items-center justify-between gap-2 mb-2">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 truncate max-w-[140px]">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-200 truncate max-w-[140px]">
                               {client?.company_name || "Cliente"}
                             </span>
 
@@ -247,7 +247,7 @@ export default function ProjetosKanbanPage() {
                                 className={`flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded transition-colors ${
                                   task.visible_to_client
                                     ? "bg-triade-cyan/15 text-triade-cyanLight border border-triade-cyan/30"
-                                    : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-zinc-200"
+                                    : "bg-zinc-900 border border-zinc-800 text-zinc-200 hover:text-zinc-200"
                                 }`}
                               >
                                 {task.visible_to_client ? (
@@ -271,7 +271,7 @@ export default function ProjetosKanbanPage() {
                           </h4>
 
                           {task.description && (
-                            <p className="text-[11px] text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
+                            <p className="text-[11px] text-zinc-200 mt-1 line-clamp-2 leading-relaxed">
                               {task.description}
                             </p>
                           )}
@@ -282,7 +282,7 @@ export default function ProjetosKanbanPage() {
                               {task.tags.map((tag, i) => (
                                 <span
                                   key={i}
-                                  className="text-[9px] font-medium px-1.5 py-0.2 rounded bg-zinc-900 border border-zinc-800 text-zinc-400"
+                                  className="text-[9px] font-medium px-1.5 py-0.2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200"
                                 >
                                   {tag}
                                 </span>
@@ -300,12 +300,12 @@ export default function ProjetosKanbanPage() {
                                   ? "bg-red-500/15 text-red-400 border border-red-500/30"
                                   : task.priority === "alta"
                                   ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
-                                  : "bg-zinc-800 text-zinc-400"
+                                  : "bg-zinc-800 text-zinc-200"
                               }`}
                             >
                               {task.priority}
                             </span>
-                            <span className="text-zinc-500 flex items-center gap-1 text-[10px]">
+                            <span className="text-zinc-300 flex items-center gap-1 text-[10px]">
                               <Calendar className="h-3 w-3" />
                               {formatDate(task.deadline)}
                             </span>
@@ -317,7 +317,7 @@ export default function ProjetosKanbanPage() {
                               <button
                                 onClick={() => updateTaskStatus(task.id, prevStatus)}
                                 title="Voltar coluna"
-                                className="p-1 rounded bg-zinc-800/60 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
+                                className="p-1 rounded bg-zinc-800/60 hover:bg-zinc-700 text-zinc-200 hover:text-white transition-colors"
                               >
                                 <ArrowLeft className="h-3 w-3" />
                               </button>
@@ -326,7 +326,7 @@ export default function ProjetosKanbanPage() {
                               <button
                                 onClick={() => updateTaskStatus(task.id, nextStatus)}
                                 title="Avançar coluna"
-                                className="p-1 rounded bg-zinc-800/60 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
+                                className="p-1 rounded bg-zinc-800/60 hover:bg-zinc-700 text-zinc-200 hover:text-white transition-colors"
                               >
                                 <ArrowRight className="h-3 w-3" />
                               </button>
@@ -338,7 +338,7 @@ export default function ProjetosKanbanPage() {
                                 }
                               }}
                               title="Excluir"
-                              className="p-1 rounded text-zinc-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                              className="p-1 rounded text-zinc-300 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                             >
                               <Trash2 className="h-3 w-3" />
                             </button>
@@ -349,7 +349,7 @@ export default function ProjetosKanbanPage() {
                   })}
 
                   {columnTasks.length === 0 && (
-                    <div className="py-12 text-center text-xs text-zinc-600 italic">
+                    <div className="py-12 text-center text-xs text-zinc-300 italic">
                       Nenhuma tarefa nesta coluna
                     </div>
                   )}

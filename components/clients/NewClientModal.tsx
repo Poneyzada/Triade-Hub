@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { X, Sparkles, User, Building, Mail, Phone, DollarSign, CheckCircle2, Shield } from "lucide-react";
@@ -110,14 +110,14 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
               <h2 className="text-lg font-bold text-zinc-100">
                 Cadastrar Novo Cliente
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-200">
                 Criação de conta com disparo automático do Motor de Onboarding
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
+            className="rounded-lg p-2 text-zinc-200 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -131,7 +131,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 Nome da Empresa / Marca *
               </label>
               <div className="relative">
-                <Building className="absolute left-3 top-3 h-4 w-4 text-zinc-500" />
+                <Building className="absolute left-3 top-3 h-4 w-4 text-zinc-300" />
                 <input
                   type="text"
                   required
@@ -148,7 +148,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 Contato Principal (Nome) *
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-zinc-500" />
+                <User className="absolute left-3 top-3 h-4 w-4 text-zinc-300" />
                 <input
                   type="text"
                   required
@@ -167,7 +167,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 E-mail Corporativo *
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-500" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-300" />
                 <input
                   type="email"
                   required
@@ -184,7 +184,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 Telefone / WhatsApp *
               </label>
               <div className="relative">
-                <Phone className="absolute left-3 top-3 h-4 w-4 text-zinc-500" />
+                <Phone className="absolute left-3 top-3 h-4 w-4 text-zinc-300" />
                 <input
                   type="tel"
                   placeholder="(11) 99999-8888"
@@ -215,11 +215,11 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   className={`flex flex-col text-left p-3 rounded-xl border transition-all ${
                     serviceType === item.type
                       ? "border-triade-cyan bg-triade-cyan/15 text-triade-cyanLight shadow-blue-glow"
-                      : "border-triade-border bg-zinc-900/50 text-zinc-400 hover:border-zinc-700"
+                      : "border-triade-border bg-zinc-900/50 text-zinc-200 hover:border-zinc-700"
                   }`}
                 >
                   <span className="text-xs font-bold text-zinc-100">{item.label}</span>
-                  <span className="text-[10px] text-zinc-400 mt-0.5">{item.desc}</span>
+                  <span className="text-[10px] text-zinc-200 mt-0.5">{item.desc}</span>
                 </button>
               ))}
             </div>
@@ -232,7 +232,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 Mensalidade / MRR (R$)
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-3 h-4 w-4 text-zinc-500" />
+                <DollarSign className="absolute left-3 top-3 h-4 w-4 text-zinc-300" />
                 <input
                   type="number"
                   placeholder="Ex: 3500"
@@ -248,7 +248,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 Valor Total do Contrato (R$)
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-3 h-4 w-4 text-zinc-500" />
+                <DollarSign className="absolute left-3 top-3 h-4 w-4 text-zinc-300" />
                 <input
                   type="number"
                   placeholder="Ex: 42000"

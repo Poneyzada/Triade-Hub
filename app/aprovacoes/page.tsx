@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -63,7 +63,7 @@ export default function AprovacoesPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-100">
               Aprovação de Criativos, Copys, Sites & Telas
             </h1>
-            <p className="text-sm text-zinc-400 mt-0.5">
+            <p className="text-sm text-zinc-200 mt-0.5">
               Validação visual e feedback direto dos clientes conectado à tabela approvals do Supabase.
             </p>
           </div>
@@ -80,7 +80,7 @@ export default function AprovacoesPage() {
         {/* Filtros */}
         <div className="flex flex-wrap items-center gap-3 p-4 rounded-2xl border border-triade-border bg-[#0E1C2A]">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-zinc-400">Cliente:</span>
+            <span className="text-xs font-semibold text-zinc-200">Cliente:</span>
             <select
               value={clientFilter}
               onChange={(e) => setClientFilter(e.target.value)}
@@ -96,7 +96,7 @@ export default function AprovacoesPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-zinc-400">Status:</span>
+            <span className="text-xs font-semibold text-zinc-200">Status:</span>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -153,14 +153,14 @@ export default function AprovacoesPage() {
                   <h3 className="text-sm font-bold text-zinc-100 mt-3">
                     {appr.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
+                  <p className="text-xs text-zinc-200 mt-1 leading-relaxed">
                     {appr.description}
                   </p>
 
                   {/* Texto de Copy se houver */}
                   {appr.copy_text && (
                     <div className="mt-2.5 p-3 rounded-xl border border-zinc-800 bg-zinc-900/80">
-                      <span className="text-[10px] font-bold uppercase text-zinc-400 block mb-1">
+                      <span className="text-[10px] font-bold uppercase text-zinc-200 block mb-1">
                         Texto de Copy / Anúncio:
                       </span>
                       <p className="text-xs text-zinc-300 italic whitespace-pre-wrap leading-relaxed">
@@ -182,7 +182,7 @@ export default function AprovacoesPage() {
 
                 <div className="mt-4 pt-3 border-t border-triade-border flex flex-col gap-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-zinc-500">
+                    <span className="text-[11px] text-zinc-300">
                       Enviado em {formatDate(appr.created_at)}
                     </span>
                     <a
@@ -221,7 +221,7 @@ export default function AprovacoesPage() {
 
           {filtered.length === 0 && (
             <div className="col-span-full py-16 text-center rounded-2xl border border-dashed border-zinc-800">
-              <CheckCircle2 className="h-10 w-10 text-zinc-600 mx-auto mb-2" />
+              <CheckCircle2 className="h-10 w-10 text-zinc-300 mx-auto mb-2" />
               <p className="text-sm font-semibold text-zinc-300">
                 Nenhum item encontrado com os filtros selecionados.
               </p>

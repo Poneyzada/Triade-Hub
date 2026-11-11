@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -108,7 +108,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   HUB
                 </span>
               </div>
-              <span className="text-[10px] tracking-wider text-cyan-200/50">
+              <span className="text-[10px] tracking-wider text-cyan-200 font-semibold">
                 Agency Operating System
               </span>
             </div>
@@ -192,7 +192,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               <Sparkles className="h-3.5 w-3.5" />
               <span>Portal do Cliente VIP</span>
             </div>
-            <p className="text-[11px] text-zinc-400 leading-relaxed mb-3">
+            <p className="text-[11px] text-zinc-200 leading-relaxed mb-3">
               Rotas exclusivas com aprovações, faturas e tarefas.
             </p>
             <Link
@@ -205,7 +205,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </Link>
           </div>
 
-          <div className="mt-3 flex items-center justify-between text-[11px] text-zinc-500 px-1">
+          <div className="mt-3 flex items-center justify-between text-[11px] text-zinc-300 px-1">
             <div className="flex items-center gap-1.5">
               <ShieldCheck className="h-3.5 w-3.5 text-triade-blue" />
               <span>Tríade Studio v2.0</span>
