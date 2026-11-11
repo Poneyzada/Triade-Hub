@@ -133,7 +133,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
         {/* Navigation Items */}
         <div className="flex-1 overflow-y-auto px-4 py-5 space-y-1.5">
-          <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-cyan-300/40">
+          <div className="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-cyan-300/80">
             Navegação da Agência
           </div>
           {navItems.map((item) => {
@@ -146,10 +146,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "group relative flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-200",
+                  "group relative flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-all duration-200",
                   isActive
-                    ? "bg-gradient-to-r from-triade-cardHover to-[#0D1D2B] text-cyan-100 border border-triade-blue/40 shadow-card-subtle"
-                    : "text-zinc-400 hover:bg-triade-card/60 hover:text-zinc-200 border border-transparent"
+                    ? "bg-gradient-to-r from-triade-cardHover to-[#0D1D2B] text-white border border-triade-blue/50 shadow-card-subtle"
+                    : "text-zinc-200 hover:bg-triade-card/60 hover:text-white border border-transparent"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -157,8 +157,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                     className={cn(
                       "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
                       isActive
-                        ? "bg-triade-blue/15 text-triade-blue"
-                        : "bg-[#0A1622]/60 text-zinc-400 group-hover:text-cyan-200"
+                        ? "bg-triade-blue/20 text-triade-cyan"
+                        : "bg-[#0A1622] text-zinc-300 group-hover:text-cyan-200"
                     )}
                   >
                     <Icon className="h-4 w-4" />

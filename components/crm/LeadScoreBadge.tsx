@@ -68,7 +68,7 @@ export function LeadScoreBadge({ proposal, compact = false }: LeadScoreBadgeProp
             <Icon className="h-3.5 w-3.5" />
           </div>
           <div>
-            <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-bold block leading-none">
+            <span className="text-[10px] uppercase tracking-wider text-zinc-300 font-bold block leading-none">
               Lead Score
             </span>
             <span className={`text-xs font-black ${bandConfig.color}`}>
@@ -136,15 +136,15 @@ export function LeadScoreBadge({ proposal, compact = false }: LeadScoreBadgeProp
           <button
             type="button"
             onClick={() => setShowDetails(!showDetails)}
-            className="w-full flex items-center justify-between text-[10px] text-zinc-400 hover:text-zinc-200 transition-colors text-left"
+            className="w-full flex items-center justify-between text-[10px] text-zinc-300 hover:text-white transition-colors text-left"
           >
-            <span className="truncate max-w-[200px] text-[10px] text-zinc-400">
+            <span className="truncate max-w-[200px] text-[10px] text-zinc-300">
               {proposal.score_reason}
             </span>
             {showDetails ? (
-              <ChevronUp className="h-3 w-3 flex-shrink-0 text-zinc-500" />
+              <ChevronUp className="h-3 w-3 flex-shrink-0 text-cyan-400" />
             ) : (
-              <ChevronDown className="h-3 w-3 flex-shrink-0 text-zinc-500" />
+              <ChevronDown className="h-3 w-3 flex-shrink-0 text-zinc-400" />
             )}
           </button>
 
@@ -154,12 +154,12 @@ export function LeadScoreBadge({ proposal, compact = false }: LeadScoreBadgeProp
                 <ShieldCheck className="h-3 w-3" />
                 <span>Auditoria da Pontuação (Deskcomm Formula)</span>
               </div>
-              <p className="text-zinc-300 leading-relaxed">
+              <p className="text-zinc-100 font-medium leading-relaxed">
                 {proposal.score_reason}
               </p>
               {proposal.bant_qualification?.notes && (
-                <div className="pt-1 text-zinc-400 border-t border-zinc-800">
-                  <span className="text-zinc-500 font-semibold">Nota da IA: </span>
+                <div className="pt-1 text-zinc-200 border-t border-zinc-800">
+                  <span className="text-triade-cyanLight font-semibold">Nota da IA: </span>
                   {proposal.bant_qualification.notes}
                 </div>
               )}

@@ -77,7 +77,7 @@ export default function DashboardPage() {
           {/* Card 1: MRR Ativo */}
           <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-triade-blue/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-200">
                 MRR Ativo
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-triade-blue/15 text-triade-blue border border-triade-blue/30">
@@ -87,7 +87,7 @@ export default function DashboardPage() {
             <p className="mt-3 text-2xl font-black text-triade-blueLight tracking-tight">
               {formatCurrency(metrics.activeMRR)}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-300 font-medium">
               <TrendingUp className="h-3.5 w-3.5" />
               <span>Receita Recorrente Mensal</span>
             </div>
@@ -97,17 +97,17 @@ export default function DashboardPage() {
           {/* Card 2: Projetos em Andamento */}
           <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-cyan-400/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-200">
                 Projetos Ativos
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
                 <Layers className="h-4 w-4" />
               </div>
             </div>
-            <p className="mt-3 text-2xl font-black text-zinc-100 tracking-tight">
+            <p className="mt-3 text-2xl font-black text-white tracking-tight">
               {metrics.ongoingProjectsCount}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-300 font-medium">
               <span>Tarefas em fluxo operacional</span>
             </div>
           </div>
@@ -115,7 +115,7 @@ export default function DashboardPage() {
           {/* Card 3: Onboardings Pendentes */}
           <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-cyan-400/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-200">
                 Onboardings
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
@@ -125,7 +125,7 @@ export default function DashboardPage() {
             <p className="mt-3 text-2xl font-black text-cyan-300 tracking-tight">
               {metrics.pendingOnboardingsCount}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-300 font-medium">
               <Clock className="h-3.5 w-3.5" />
               <span>Contas aguardando dados</span>
             </div>
@@ -134,7 +134,7 @@ export default function DashboardPage() {
           {/* Card 4: Aprovações Aguardando Cliente */}
           <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-cyan-400/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-200">
                 Aprovações
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
@@ -144,7 +144,7 @@ export default function DashboardPage() {
             <p className="mt-3 text-2xl font-black text-cyan-300 tracking-tight">
               {metrics.pendingApprovalsCount}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-cyan-300 font-medium">
               <span>Artes & páginas na fila</span>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function DashboardPage() {
           {/* Card 5: Faturamento do Mês */}
           <div className="rounded-2xl border border-triade-border bg-[#0E1C2A] p-5 shadow-card-subtle relative overflow-hidden group hover:border-cyan-400/50 transition-colors">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200/60">
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-200">
                 Faturamento Mês
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
@@ -162,7 +162,7 @@ export default function DashboardPage() {
             <p className="mt-3 text-2xl font-black text-emerald-400 tracking-tight">
               {formatCurrency(metrics.monthRevenue)}
             </p>
-            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-zinc-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-zinc-300 font-medium">
               <span>MRR + Entradas 50/50</span>
             </div>
           </div>
@@ -178,13 +178,13 @@ export default function DashboardPage() {
                   <Sparkles className="h-4 w-4 text-triade-blue" />
                   <span>Radar de Onboarding Dinâmico</span>
                 </h2>
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-zinc-300 font-medium">
                   Progresso de coleta de acessos e materiais em tempo real
                 </p>
               </div>
               <Link
                 href="/clientes"
-                className="text-xs text-triade-blue hover:underline font-medium"
+                className="text-xs text-triade-cyanLight hover:underline font-bold"
               >
                 Gerenciar Todos →
               </Link>
@@ -218,9 +218,9 @@ export default function DashboardPage() {
                               {c.service_type}
                             </span>
                           </div>
-                          <p className="text-xs text-zinc-400 mt-0.5">
-                            Contato: {c.name} • Mensalidade:{" "}
-                            <span className="text-triade-blue font-medium">
+                          <p className="text-xs text-zinc-200 font-medium mt-0.5">
+                            Contato: <span className="text-white font-semibold">{c.name}</span> • Mensalidade:{" "}
+                            <span className="text-triade-cyanLight font-bold">
                               {formatCurrency(c.monthly_fee)}
                             </span>
                           </p>
@@ -250,7 +250,7 @@ export default function DashboardPage() {
                     {/* Barra de Progresso do Onboarding */}
                     <div className="mt-4 pt-3 border-t border-zinc-800/60">
                       <div className="flex items-center justify-between text-xs mb-1.5">
-                        <span className="text-zinc-400">
+                        <span className="text-zinc-200 font-medium">
                           Passos Coletados ({completed}/{steps.length})
                         </span>
                         <span

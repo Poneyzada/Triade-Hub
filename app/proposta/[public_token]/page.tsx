@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Sparkles,
   CheckCircle2,
@@ -81,17 +82,23 @@ export default function PublicProposalPage() {
 
       {/* Top Brand Header */}
       <header className="w-full border-b border-triade-border bg-[#08131F]/90 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <TriadeLogo size={36} />
+        <Link
+          href="/"
+          title="Voltar ao Painel Geral Tríade Hub"
+          className="flex items-center gap-3 group hover:opacity-95 transition-opacity"
+        >
+          <TriadeLogo size={36} className="group-hover:scale-105 transition-transform" />
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-black tracking-widest text-zinc-100 uppercase">
+              <span className="text-xs font-black tracking-widest text-zinc-100 uppercase group-hover:text-triade-cyanLight transition-colors">
                 {workspace.name}
               </span>
             </div>
-            <p className="text-[10px] text-zinc-400">Apresentação Estratégica de Serviços</p>
+            <p className="text-[10px] text-zinc-300">
+              Apresentação Comercial • <span className="text-triade-cyan underline font-semibold">Voltar ao Hub</span>
+            </p>
           </div>
-        </div>
+        </Link>
 
         <a
           href={`https://wa.me/5511999999999?text=${encodeURIComponent(

@@ -1,0 +1,16 @@
+<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="triadeCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7DD3FC" />
+      <stop offset="50%" stop-color="#22D3EE" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+  </defs>
+  <rect width="44" height="44" rx="12" fill="#07121A" stroke="#22D3EE" stroke-width="1.5" />
+  <!-- Traço 1: Superior -->
+  <rect x="9" y="11" width="21" height="5" rx="2.5" fill="url(#triadeCyanGrad)" />
+  <!-- Traço 2: Meio Deslocado -->
+  <rect x="14" y="19.5" width="21" height="5" rx="2.5" fill="url(#triadeCyanGrad)" />
+  <!-- Traço 3: Inferior -->
+  <rect x="9" y="28" width="21" height="5" rx="2.5" fill="url(#triadeCyanGrad)" />
+</svg>

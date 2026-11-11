@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "Tríade Hub | Sistema de Gestão All-in-One da Tríade Studio",
   description:
     "Plataforma executiva de gestão de clientes, cofre de acessos, onboarding dinâmico e projetos da Tríade Studio.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
